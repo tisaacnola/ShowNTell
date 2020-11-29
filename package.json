@@ -8,7 +8,6 @@
     "build": "webpack",
     "start": "nodemon server/index.js"
   },
-  
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
@@ -19,7 +18,7 @@
     "*.{js,jsx}": [
       "eslint --fix",
       "git add"
-]
+    ]
   },
   "repository": {
     "type": "git",
