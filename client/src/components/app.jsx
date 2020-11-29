@@ -1,19 +1,30 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Nav from './nav.jsx';
 
 const App = () => {
   const [user, setUser] = useState();
-
+  const getUser = () => {
+    axios.get('/user')
+      .then(({ data }) => setUser(data));
+  };
+  getUser();
   return (
-    <div>{
+    <div>
+      {
       user
-      ? <h1>logged in</h1>
-      : <a
-      href="/auth/google"
-      // style={{color: 'blue'}}
-      >sign in</a>
-    }</div>
+        ? <Nav user={user} />
+        : (
+          <a
+            href="/auth/google"
+            onClick={(e) => setUser(e)}
+          >
+            login with google
+          </a>
+        )
+    }
+    </div>
   );
-}
+};
 
 export default App;
