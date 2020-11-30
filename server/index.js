@@ -87,12 +87,14 @@ app.get('/posts', (req, res) => {
       show: 'The Office',
       title: 'This is the greatest show ever!',
       content: 'For reasons that will be later disclosed.',
+      comments: { 1: 'cool stuff', 2: 'love this show' },
     },
     {
       user: 'John Allgood',
       show: 'Community',
       title: 'Season 1 was cool.',
       content: 'Abed is by far my favorite character.',
+      comments: {},
     },
   ];
   Posts.deleteMany().then(() => {
