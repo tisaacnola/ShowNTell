@@ -21,5 +21,6 @@ module.exports = {
     'object-curly-newline': 0,
     'react/prop-types': 0,
     'react/button-has-type': 0,
+    'no-underscore-dangle': 0,
   },
 };
