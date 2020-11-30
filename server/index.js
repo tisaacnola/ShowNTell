@@ -81,7 +81,25 @@ app.get('/database', (req, res) => {
 });
 
 app.get('/posts', (req, res) => {
-  Posts.find().then((posts) => res.send(posts));
+  const posts = [
+    {
+      user: 'Teamer Tibebu',
+      show: 'The Office',
+      title: 'This is the greatest show ever!',
+      content: 'For reasons that will be later disclosed.',
+    },
+    {
+      user: 'John Allgood',
+      show: 'Community',
+      title: 'Season 1 was cool.',
+      content: 'Abed is by far my favorite character.',
+    },
+  ];
+  Posts.deleteMany().then(() => {
+    Posts.insertMany(posts).then(() => {
+      Posts.find().then((posts) => res.send(posts));
+    });
+  });
 });
 
 app.get('/delete', (req, res) => {

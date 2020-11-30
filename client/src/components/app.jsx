@@ -6,36 +6,32 @@ import HomeFeed from './homeFeed.jsx';
 const App = () => {
   const [user, setUser] = useState();
   const [posts, setPosts] = useState([]);
-  // const posts = [
-  //   {
-  //     user: 'Tea',
-  //     show: 'Community',
-  //     title: 'Almost as good as the office',
-  //     content: 'Abed is funny',
-  //   },
-  // ];
+
   let count = 0;
   const getUser = () => {
     axios.get('/user').then(({ data }) => setUser(data));
   };
-  getUser();
   const getPosts = () => {
     axios.get('/posts').then(({ data }) => setPosts(data));
   };
-  getPosts();
+  if (count === 0) {
+    getUser();
+    getPosts();
+    count++;
+  }
 
   return (
     <div>
       {user ? (
         <div>
           <Nav user={user} />
+          <HomeFeed posts={posts} />
         </div>
       ) : (
         <a href="/auth/google" onClick={(e) => setUser(e)}>
           login with google
         </a>
       )}
-      <HomeFeed posts={posts} />
     </div>
   );
 };
