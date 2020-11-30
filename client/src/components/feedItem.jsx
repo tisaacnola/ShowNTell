@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 const FeedItem = ({ post }) => {
   const [liked, setLiked] = useState(false);
+  const comments = [];
   const mainDiv = {
     display: 'flex',
     flexDirection: 'column',
     border: '3px solid black',
     margin: '10px',
     boxShadow: '5px 5px #888888',
+    width: '50%',
   };
 
   const changeLiked = () => setLiked(!liked);
+
+  for (let key in post.comments) {
+    comments.push(post.comments[key]);
+  }
 
   return (
     <div style={mainDiv}>
@@ -32,6 +38,12 @@ const FeedItem = ({ post }) => {
           Like
         </button>
       )}
+      <div>
+        <h3>Comments:</h3>
+        {comments.map((comment) => (
+          <p>{comment}</p>
+        ))}
+      </div>
     </div>
   );
 };
