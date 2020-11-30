@@ -1,3 +1,5 @@
+/* eslint-disable import/extensions */
+/* eslint-disable max-len */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable consistent-return */
@@ -13,7 +15,7 @@ const DMs = ({ user }) => {
   const [find, setfind] = useState();
   return (
     <div>
-      { messages ? <Messages />
+      { messages ? <Messages id={messages} messages={user.messages} />
         : (
           <div>
             <h1>Direct Messages</h1>
@@ -28,11 +30,44 @@ const DMs = ({ user }) => {
                     placeholder="search for a user"
                   />
                   <div>
-                    {Users.map(({ name }) => {
-                      if (find) {
-                        return name.includes(find) ? (<h4>{name}</h4>) : null;
+                    {Users.map(({ name, id }) => {
+                      if (user.id === id) {
+                        return null;
                       }
-                      return (<h4>{name}</h4>);
+                      if (find) {
+                        return name.toLowerCase().includes(find.toLowerCase()) ? (
+                          <h4
+                            key={String(id)}
+                            onClick={() => {
+                              for (let i = 0; i < user.messages.length; i += 1) {
+                                if (user.messages[i].id === String(id)) {
+                                  return setMessages(String(id));
+                                }
+                              }
+                              axios.put(`/startMessage/${id}/${name}`)
+                                .then(() => setMessages(String(id)));
+                            }}
+                          >
+                            {name}
+                          </h4>
+                        ) : null;
+                      }
+                      return (
+                        <h4
+                          key={String(id)}
+                          onClick={() => {
+                            for (let i = 0; i < user.messages.length; i += 1) {
+                              if (user.messages[i].id === String(id)) {
+                                return setMessages(String(id));
+                              }
+                            }
+                            axios.put(`/startMessage/${id}/${name}`)
+                              .then(() => setMessages(String(id)));
+                          }}
+                        >
+                          {name}
+                        </h4>
+                      );
                     })}
                   </div>
                   <div />
@@ -51,13 +86,9 @@ const DMs = ({ user }) => {
             }
             </div>
             <div>
-              <h1 onClick={() => setMessages('billy')}>user 1</h1>
-            </div>
-            <div>
-              <h1 onClick={() => setMessages('billy')}>user 2</h1>
-            </div>
-            <div>
-              <h1 onClick={() => setMessages('billy')}>user 3</h1>
+              {
+              user.messages.map((({ id, name }) => (<h1 key={String(id)} onClick={() => setMessages(String(id))}>{name}</h1>)))
+              }
             </div>
           </div>
         )}
