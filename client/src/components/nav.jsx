@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react/button-has-type */
+import React from 'react';
 import axios from 'axios';
 
-const Nav = ({ user }) => (
-  <div>
-    <h1>{`hello ${user.name}`}</h1>
-    <button>Home</button>
-    <button>list of subs</button>
-    <button>post</button>
-    <button>notifs</button>
-    <button>DMs</button>
+const Nav = ({ user, onClick }) => (
+  <div onClick={(e) => {
+    if (e.target.className === 'views') {
+      onClick(e.target.value);
+    }
+  }}
+  >
+    <h1>{`Hello ${user.name}`}</h1>
+    <button value="home" className="views">Home</button>
+    <button value="sub" className="views">list of subs</button>
+    <button value="post" className="views">post</button>
+    <button value="notifs" className="views">notifs</button>
+    <button value="DMs" className="views">DMs</button>
     <input />
     <button onClick={() => axios.get('/logout')}>logout</button>
   </div>
