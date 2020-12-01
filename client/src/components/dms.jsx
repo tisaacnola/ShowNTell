@@ -9,13 +9,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Messages from './messages.jsx';
 
-const DMs = ({ user }) => {
+const DMs = ({ user, setUser }) => {
   const [messages, setMessages] = useState();
   const [Users, setUsers] = useState();
   const [find, setfind] = useState();
   return (
     <div>
-      { messages ? <Messages id={messages} messages={user.messages} />
+      { messages ? <Messages id={messages} messages={user.messages} setUser={setUser} />
         : (
           <div>
             <h1>Direct Messages</h1>
@@ -45,7 +45,11 @@ const DMs = ({ user }) => {
                                 }
                               }
                               axios.put(`/startMessage/${id}/${name}`)
-                                .then(() => setMessages(String(id)));
+                                .then(() => {
+                                  setMessages(String(id));
+                                  axios.get('/user')
+                                    .then((result) => setUser(result.data));
+                                });
                             }}
                           >
                             {name}
@@ -62,7 +66,11 @@ const DMs = ({ user }) => {
                               }
                             }
                             axios.put(`/startMessage/${id}/${name}`)
-                              .then(() => setMessages(String(id)));
+                              .then(() => {
+                                setMessages(String(id));
+                                axios.get('/user')
+                                  .then((result) => setUser(result.data));
+                              });
                           }}
                         >
                           {name}
@@ -76,7 +84,11 @@ const DMs = ({ user }) => {
                 : (
                   <button onClick={() => {
                     axios.get('/findUser')
-                      .then(({ data }) => setUsers(data))
+                      .then(({ data }) => {
+                        setUsers(data);
+                        axios.get('/user')
+                          .then((result) => setUser(result.data));
+                      })
                       .catch();
                   }}
                   >

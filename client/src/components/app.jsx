@@ -1,29 +1,50 @@
+/* eslint-disable import/no-named-as-default */
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable import/extensions */
 /* eslint-disable consistent-return */
 import React, { useState } from 'react';
 import axios from 'axios';
 import Nav from './nav.jsx';
+import HomeFeed from './homeFeed.jsx';
 import Sub from './sub.jsx';
 import Post from './post.jsx';
 import DMs from './dms.jsx';
 import Notifs from './notifs.jsx';
 
 const App = () => {
+  const [posts, setPosts] = useState();
   const [user, setUser] = useState();
   const [view, setView] = useState('home');
 
   const getUser = () => {
-    axios.get('/user')
-      .then(({ data }) => setUser(data));
+    if (!user) {
+      axios.get('/user')
+        .then(({ data }) => setUser(data));
+    }
   };
-  getUser();
+
+  const getPosts = () => {
+    if (!posts && user) {
+      axios.get('/posts').then(({ data }) => setPosts(data));
+    }
+  };
 
   const changeView = (newView) => {
     setView(newView);
   };
 
+  const logout = () => {
+    axios.get('/logout')
+      .then(() => {
+        setView('home');
+        setUser(null);
+        setPosts(null);
+      });
+  };
+
   const createPost = (post) => {
-    axios.post('/posts', post)
+    axios
+      .post('/posts', post)
       .then(() => setView('home'))
       .catch();
   };
@@ -36,10 +57,10 @@ const App = () => {
       return <Post user={user} createPost={createPost} />;
     }
     if (view === 'home') {
-      return (<h1>home view</h1>);
+      return <HomeFeed posts={posts} />;
     }
     if (view === 'DMs') {
-      return <DMs user={user} />;
+      return <DMs user={user} setUser={setUser} />;
     }
     if (view === 'notifs') {
       return <Notifs />;
@@ -49,7 +70,7 @@ const App = () => {
   return (
     <div>
       {user
-        ? <Nav user={user} onClick={changeView} />
+        ? <Nav user={user} onClick={changeView} logout={logout} />
         : (
           <a
             href="/auth/google"
@@ -58,6 +79,8 @@ const App = () => {
             login with google
           </a>
         )}
+      {getUser()}
+      {getPosts()}
       {getView()}
     </div>
   );
