@@ -57,6 +57,11 @@ const Nav = ({ user, onClick, logout, search, setSearch, onSearch }) => (
               placeholder="What are you watching?"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  onSearch();
+                }
+              }}
             />
             <FaSearch
               type="submit"
