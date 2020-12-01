@@ -81,28 +81,28 @@ app.get('/database', (req, res) => {
 });
 
 app.get('/posts', (req, res) => {
-  const posts = [
-    {
-      user: 'Teamer Tibebu',
-      show: 'The Office',
-      title: 'This is the greatest show ever!',
-      content: 'For reasons that will be later disclosed.',
-      comments: { 1: 'cool stuff', 2: 'love this show' },
-    },
-    {
-      user: 'John Allgood',
-      show: 'Community',
-      title: 'Season 1 was cool.',
-      content: 'Abed is by far my favorite character.',
-      comments: {},
-    },
-  ];
+  // const posts = [
+  //   {
+  //     user: 'Teamer Tibebu',
+  //     show: 'The Office',
+  //     title: 'This is the greatest show ever!',
+  //     content: 'For reasons that will be later disclosed.',
+  //     comments: { 1: 'cool stuff', 2: 'love this show' },
+  //   },
+  //   {
+  //     user: 'John Allgood',
+  //     show: 'Community',
+  //     title: 'Season 1 was cool.',
+  //     content: 'Abed is by far my favorite character.',
+  //     comments: {},
+  //   },
+  // ];
 
-  Posts.deleteMany().then(() => {
-    Posts.insertMany(posts).then(() => {
-      Posts.find().then((posts) => res.send(posts));
-    });
-  });
+  // Posts.deleteMany().then(() => {
+  //   Posts.insertMany(posts).then(() => {
+  Posts.find().then((posts) => res.send(posts));
+  //   });
+  // });
 });
 
 app.post('/addComment', (req, res) => {
