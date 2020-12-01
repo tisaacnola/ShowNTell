@@ -19,8 +19,7 @@ const App = () => {
 
   const getUser = () => {
     if (!user) {
-      axios.get('/user')
-        .then(({ data }) => setUser(data));
+      axios.get('/user').then(({ data }) => setUser(data));
     }
   };
 
@@ -35,12 +34,11 @@ const App = () => {
   };
 
   const logout = () => {
-    axios.get('/logout')
-      .then(() => {
-        setView('home');
-        setUser(null);
-        setPosts(null);
-      });
+    axios.get('/logout').then(() => {
+      setView('homePage');
+      setUser(null);
+      setPosts(null);
+    });
   };
 
   const createPost = (post) => {
@@ -73,16 +71,13 @@ const App = () => {
 
   return (
     <div>
-      {user
-        ? <Nav user={user} onClick={changeView} logout={logout} />
-        : (
-          <a
-            href="/auth/google"
-            onClick={(e) => setUser(e)}
-          >
-            login with google
-          </a>
-        )}
+      {user ? (
+        <Nav user={user} onClick={changeView} logout={logout} />
+      ) : (
+        <a href="/auth/google" onClick={(e) => setUser(e)}>
+          login with google
+        </a>
+      )}
       {getUser()}
       {getPosts()}
       {getView()}
