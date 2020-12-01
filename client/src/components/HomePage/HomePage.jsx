@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import React, { useState } from 'react';
 import './HomePage.css';
 import { FaComments, FaHandHoldingHeart, FaChalkboardTeacher } from 'react-icons/fa';
@@ -7,7 +8,7 @@ import Card from './Card.jsx';
 const HomePage = () => (
   <div>
     <div className="top-of-page">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&display=swap" rel="stylesheet"/>
+      <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&display=swap" rel="stylesheet" />
       <div id="text-block">
         <p className="text1">
           Tired of finishing a show and having no one to talk about it with?

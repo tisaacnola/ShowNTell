@@ -4,6 +4,7 @@
 /* eslint-disable consistent-return */
 import React, { useState } from 'react';
 import axios from 'axios';
+import HomePage from './HomePage/HomePage.jsx';
 import Nav from './nav.jsx';
 import HomeFeed from './homeFeed.jsx';
 import Sub from './sub.jsx';
@@ -50,6 +51,9 @@ const App = () => {
   };
 
   const getView = () => {
+    if (view === 'homePage') {
+      return <HomePage />;
+    }
     if (view === 'sub') {
       return <Sub user={user} />;
     }
