@@ -108,8 +108,6 @@ app.get('/posts', (req, res) => {
 app.post('/addComment', (req, res) => {
   const comment = req.body.comment;
   const postId = req.body.postId;
-  console.log('comment', comment);
-  console.log('postId', postId);
   Posts.find().then((posts) => {
     posts.forEach((post) => {
       if (post._id === postId) {
