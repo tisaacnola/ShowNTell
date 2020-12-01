@@ -1,6 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React from 'react';
+/* eslint-disable import/extensions */
+/* eslint-disable consistent-return */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/button-has-type */
+import React, { useState } from 'react';
 import axios from 'axios';
 
 const Nav = ({ user, onClick }) => (

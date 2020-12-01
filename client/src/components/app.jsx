@@ -5,6 +5,8 @@ import axios from 'axios';
 import Nav from './nav.jsx';
 import Sub from './sub.jsx';
 import Post from './post.jsx';
+import DMs from './dms.jsx';
+import Notifs from './notifs.jsx';
 
 const App = () => {
   const [user, setUser] = useState();
@@ -32,6 +34,15 @@ const App = () => {
     }
     if (view === 'post') {
       return <Post user={user} createPost={createPost} />;
+    }
+    if (view === 'home') {
+      return (<h1>home view</h1>);
+    }
+    if (view === 'DMs') {
+      return <DMs user={user} />;
+    }
+    if (view === 'notifs') {
+      return <Notifs />;
     }
   };
 
