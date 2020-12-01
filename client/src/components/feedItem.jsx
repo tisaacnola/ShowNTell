@@ -44,13 +44,7 @@ const FeedItem = ({ post }) => {
     <div style={mainDiv}>
       <div>
         <h4>
-          Posted By:
-          {' '}
-          {post.user}
-          {' '}
-          in
-          {' '}
-          {post.show}
+          Posted By: {post.name} in {post.show}
         </h4>
       </div>
       <h3>{post.title}</h3>

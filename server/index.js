@@ -38,7 +38,7 @@ app.use(
     secret: process.env.GOOGLE_CLIENT_SECRET,
     saveUninitialized: false,
     resave: true,
-  }),
+  })
 );
 app.use(passport.initialize());
 app.use(passport.session());
@@ -50,8 +50,8 @@ app.get(
     { scope: ['https://www.googleapis.com/auth/plus.login'] },
     (req, res) => {
       // res.redirect('/');
-    },
-  ),
+    }
+  )
 );
 
 app.get(
@@ -74,7 +74,7 @@ app.get(
         });
       }
     });
-  },
+  }
 );
 
 app.get('/user', (req, res) => {
@@ -94,7 +94,9 @@ app.get('/users', (req, res) => {
 });
 
 app.get('/posts', (req, res) => {
-  Posts.find().then((posts) => res.send(posts));
+  Posts.find().then((posts) => {
+    res.send(posts);
+  });
 });
 
 app.get('/shows', (req, res) => {
@@ -115,7 +117,7 @@ app.put('/startMessage/:user/:name', (req, res) => {
         ...userInfo.messages,
         { id: req.params.user, name: req.params.name, text: [] },
       ],
-    },
+    }
   )
     .then((data) => res.json(data))
     .catch();
@@ -147,7 +149,7 @@ app.put('/sendMessage/:id/:text', (req, res) => {
       if (test) {
         Users.updateOne(
           { id: Number(req.params.id) },
-          { messages: replace },
+          { messages: replace }
         ).then((result) => res.json(result));
       } else {
         // console.log(content, 'here');
@@ -162,7 +164,7 @@ app.put('/sendMessage/:id/:text', (req, res) => {
                 text: [{ name: userInfo.name, message: req.params.text }],
               },
             ],
-          },
+          }
         ).then((result) => res.json(result));
       }
     });
@@ -194,11 +196,13 @@ app.get('/logout', (req, res) => {
 });
 
 app.post('/posts', (req, res) => {
-  const { title, content, poster, show } = req.body;
+  const { title, content, poster, show, name } = req.body;
+
   return Posts.create({
     title,
     content,
     user: poster,
+    name,
     show,
     comments: {},
     createdAt: new Date(),
@@ -208,7 +212,7 @@ app.post('/posts', (req, res) => {
         .then((user) => {
           Users.updateOne(
             { _id: poster },
-            { posts: [...user.posts, post._id] },
+            { posts: [...user.posts, post._id] }
           ).catch();
         })
         .catch();

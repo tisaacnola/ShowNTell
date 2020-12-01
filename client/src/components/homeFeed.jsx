@@ -2,12 +2,15 @@
 import React, { useState } from 'react';
 import FeedItem from './feedItem.jsx';
 
-const HomeFeed = ({ posts }) => (
-  <div>
-    {posts ? posts.map((post, i) => (
-      <FeedItem post={post} key={post + i} />
-    )) : null}
-  </div>
-);
+const HomeFeed = ({ posts }) => {
+  console.log('inside your thoughts', posts);
+  return (
+    <div>
+      {posts
+        ? posts.map((post, i) => <FeedItem post={post} key={post + i} />)
+        : null}
+    </div>
+  );
+};
 
 export default HomeFeed;

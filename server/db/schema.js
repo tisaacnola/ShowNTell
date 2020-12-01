@@ -21,6 +21,7 @@ const Shows = mongoose.model('Shows', showSchema);
 
 const postSchema = mongoose.Schema({
   user: String,
+  name: String,
   show: String,
   title: String,
   content: String,
