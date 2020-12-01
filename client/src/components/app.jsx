@@ -13,10 +13,11 @@ const App = () => {
   const [view, setView] = useState('home');
 
   const getUser = () => {
-    axios.get('/user')
-      .then(({ data }) => setUser(data));
+    if (!user) {
+      axios.get('/user')
+        .then(({ data }) => setUser(data));
+    }
   };
-  getUser();
 
   const changeView = (newView) => {
     setView(newView);
@@ -24,7 +25,10 @@ const App = () => {
 
   const logout = () => {
     axios.get('/logout')
-      .then(() => setView('home'));
+      .then(() => {
+        setView('home');
+        setUser(null);
+      });
   };
 
   const createPost = (post) => {
@@ -44,7 +48,7 @@ const App = () => {
       return (<h1>home view</h1>);
     }
     if (view === 'DMs') {
-      return <DMs user={user} />;
+      return <DMs user={user} setUser={setUser} />;
     }
     if (view === 'notifs') {
       return <Notifs />;
@@ -63,6 +67,7 @@ const App = () => {
             login with google
           </a>
         )}
+      {getUser()}
       {getView()}
     </div>
   );
