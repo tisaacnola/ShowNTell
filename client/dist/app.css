@@ -10,7 +10,7 @@ li {
 
 .navbar {
     float:right;
-    margin-right: 10%;
+    margin-right: 35%;
     margin-top: 3%;
 }
 
@@ -58,9 +58,9 @@ li {
 }
 
 .wrap{
-  width: 20%;
-  position: absolute;
-  top: 10%;
-  right: 10%;
-  /* transform: translate(-50%, -50%); */
+  width: 18%;
+  position: fixed;
+  top: 20%;
+  right: 13%;
+  transform: translate(-20%);
 }
