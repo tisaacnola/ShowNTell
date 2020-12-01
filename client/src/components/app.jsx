@@ -15,7 +15,7 @@ import Notifs from './notifs.jsx';
 const App = () => {
   const [posts, setPosts] = useState();
   const [user, setUser] = useState();
-  const [view, setView] = useState('home');
+  const [view, setView] = useState('homePage');
 
   const getUser = () => {
     if (!user) {

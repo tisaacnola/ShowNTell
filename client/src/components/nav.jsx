@@ -8,54 +8,16 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/button-has-type */
 import React, { useState } from 'react';
-import axios from 'axios';
-
-// const Nav = ({ user, onClick, logout }) => (
-//   <div onClick={(e) => {
-//     if (e.target.className === 'views') {
-//       onClick(e.target.value);
-//     }
-//   }}
-//   >
-//     <h1>{`Hello ${user.name}`}</h1>
-//     <button value="home" className="views">
-//       Home
-//     </button>
-//     <button value="sub" className="views">
-//       list of subs
-//     </button>
-//     <button value="post" className="views">
-//       post
-//     </button>
-//     <button value="notifs" className="views">
-//       notifs
-//     </button>
-//     <button value="DMs" className="views">
-//       DMs
-//     </button>
-//     <input />
-//     <button onClick={logout}>logout</button>
-//   </div>
-// );
 import { FaHome, FaStar, FaPen, FaBell, FaEnvelope, FaSearch, FaDoorOpen } from 'react-icons/fa';
-import HomePage from './HomePage/HomePage.jsx';
-import DMs from './dms.jsx';
-import Notifs from './notifs.jsx';
 import logo from './HomePage/img/logo.jpg';
 
 const Nav = ({ user, onClick, logout }) => (
-  <div onClick={(e) => {
-    if (e.target.className === 'views') {
-      onClick(e.target.value);
-    }
-  }}
-  >
+  <div>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet" />
     <img
       id="homeButton"
       src={logo}
       alt="logo"
-    // onClick={() => { console.log('hey'); setPage('home'); }}
       onClick={() => onClick('homePage')} className="views" title="home feed"
     />
     <ul className="navbar">
@@ -87,9 +49,9 @@ const Nav = ({ user, onClick, logout }) => (
         <div className="wrap">
           <div className="search">
             <input type="text" className="search-term" placeholder="What are you watching?" />
-            <button type="submit" className="search-button">
-              <i className="FaSearch" />
-            </button>
+            <FaSearch type="submit" className="search-button">
+              <i className="search-icon" />
+            </FaSearch>
           </div>
         </div>
       </li>
