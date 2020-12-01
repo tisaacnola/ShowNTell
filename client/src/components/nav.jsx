@@ -7,7 +7,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Nav = ({ user, onClick }) => (
+const Nav = ({ user, onClick, logout }) => (
   <div onClick={(e) => {
     if (e.target.className === 'views') {
       onClick(e.target.value);
@@ -21,7 +21,7 @@ const Nav = ({ user, onClick }) => (
     <button value="notifs" className="views">notifs</button>
     <button value="DMs" className="views">DMs</button>
     <input />
-    <button onClick={() => axios.get('/logout')}>logout</button>
+    <button onClick={logout}>logout</button>
   </div>
 );
 
