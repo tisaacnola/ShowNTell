@@ -1,6 +1,8 @@
+/* eslint-disable import/extensions */
 import React, { useState } from 'react';
 import axios from 'axios';
 import Nav from './nav.jsx';
+import './app.css';
 
 const App = () => {
   const [user, setUser] = useState();

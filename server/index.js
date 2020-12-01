@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable max-len */
 const path = require('path');
 const express = require('express');
 const passport = require('passport');
@@ -36,7 +38,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }, (req, res) => {
+app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }, () => {
   // res.redirect('/');
 }));
 
@@ -60,11 +62,62 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
 });
 
 app.get('/user', (req, res) => {
-  res.json(userInfo);
+  if (userInfo !== null) {
+    Users.findOne({ id: userInfo.id })
+      .then((data) => {
+        userInfo = data;
+        res.json(userInfo);
+      });
+  } else {
+    res.json(userInfo);
+  }
+});
+
+app.get('/findUser', (req, res) => {
+  Users.find()
+    .then((data) => res.json(data))
+    .catch();
+});
+
+app.put('/startMessage/:user/:name', (req, res) => {
+  Users.updateOne({ id: userInfo.id }, { messages: [...userInfo.messages, { id: req.params.user, name: req.params.name, text: [] }] })
+    .then((data) => res.json(data))
+    .catch();
+});
+
+app.put('/sendMessage/:id/:text', (req, res) => {
+  const content = userInfo.messages;
+  for (let i = 0; i < content.length; i += 1) {
+    if (content[i].id === req.params.id) {
+      content[i].text.push({ name: userInfo.name, message: req.params.text });
+      break;
+    }
+  }
+  Users.updateOne({ id: userInfo.id }, { messages: content })
+    .then(() => Users.findOne({ id: req.params.id }))
+    .then((data) => {
+      const replace = data.messages || [];
+      let test = false;
+      for (let i = 0; i < replace.length; i += 1) {
+        if (replace[i].id === String(userInfo.id)) {
+          replace[i].text.push({ name: userInfo.name, message: req.params.text });
+          test = true;
+          break;
+        }
+      }
+      if (test) {
+        Users.updateOne({ id: Number(req.params.id) }, { messages: replace })
+          .then((result) => res.json(result));
+      } else {
+        // console.log(content, 'here');
+        Users.updateOne({ id: Number(req.params.id) }, { messages: [...replace, { id: String(userInfo.id), name: userInfo.name, text: [{ name: userInfo.name, message: req.params.text }] }] })
+          .then((result) => res.json(result));
+      }
+    });
 });
 
 app.get('/database', (req, res) => {
-  Users.find().then(data => res.json(data));
+  Users.find().then((data) => res.json(data));
 });
 
 app.get('/delete', (req, res) => {
