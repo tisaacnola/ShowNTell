@@ -194,12 +194,14 @@ app.get('/delete', (req, res) => {
   Users.deleteMany()
     .then(() => Posts.deleteMany())
     .then(() => Shows.deleteMany())
-    .then(() => res.status(200).json('done'));
+    .then(() => res.status(200).json('done'))
+    .catch();
 });
 
 app.get('/logout', (req, res) => {
   userInfo = null;
-  res.status(200).json(userInfo);
+  res.status(200).json(userInfo)
+    .catch();
 });
 
 app.post('/posts', (req, res) => {
