@@ -4,6 +4,7 @@ const userSchema = mongoose.Schema({
   id: Number,
   name: String,
   posts: Array,
+  messages: Array,
   follows: Array,
   subscriptions: Array,
 });
