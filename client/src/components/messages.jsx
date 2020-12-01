@@ -16,12 +16,13 @@ const Messages = ({ id, messages }) => {
     <div>
       <div>
         {
-        message.text.map((data) => (
-          <div>
-            <h2>{data.name}</h2>
-            <div>{data.message}</div>
-          </div>
-        ))
+        message
+          ? message.text.map((data) => (
+            <div key={data.message}>
+              <h2>{data.name}</h2>
+              <div>{data.message}</div>
+            </div>
+          )) : null
         }
       </div>
       <input placeholder="write a message" onChange={(e) => setContent(e.target.value)} />
