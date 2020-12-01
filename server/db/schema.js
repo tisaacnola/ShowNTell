@@ -4,6 +4,7 @@ const userSchema = mongoose.Schema({
   id: Number,
   name: String,
   posts: Array,
+  messages: Array,
   follows: Array,
   subscriptions: Array,
 });
@@ -24,6 +25,7 @@ const postSchema = mongoose.Schema({
   title: String,
   content: String,
   comments: Object,
+  createdAt: Date,
 });
 
 const Posts = mongoose.model('Posts', postSchema);
