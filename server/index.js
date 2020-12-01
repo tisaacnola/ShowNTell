@@ -9,7 +9,7 @@ const session = require('express-session');
 require('dotenv').config();
 require('./db/index');
 const { GoogleStrategy } = require('./oauth/passport');
-const { Users } = require('./db/schema.js');
+const { Users, Posts, Shows } = require('./db/schema.js');
 // const { session } = require('passport');
 
 const app = express();
@@ -62,6 +62,7 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
 });
 
 app.get('/user', (req, res) => {
+  // res.status(200).json(userInfo);
   if (userInfo !== null) {
     Users.findOne({ id: userInfo.id })
       .then((data) => {
@@ -71,6 +72,18 @@ app.get('/user', (req, res) => {
   } else {
     res.json(userInfo);
   }
+});
+
+app.get('/users', (req, res) => {
+  Users.find().then((data) => res.status(200).json(data));
+});
+
+app.get('/posts', (req, res) => {
+  Posts.find().then((data) => res.status(200).json(data));
+});
+
+app.get('/shows', (req, res) => {
+  Shows.find().then((data) => res.status(200).json(data));
 });
 
 app.get('/findUser', (req, res) => {
@@ -121,12 +134,31 @@ app.get('/database', (req, res) => {
 });
 
 app.get('/delete', (req, res) => {
-  Users.deleteMany().then(() => res.json('done'));
+  Users.deleteMany()
+    .then(() => Posts.deleteMany())
+    .then(() => Shows.deleteMany())
+    .then(() => res.status(200).json('done'));
 });
 
 app.get('/logout', (req, res) => {
   userInfo = null;
-  res.json(userInfo);
+  res.status(200).json(userInfo);
+});
+
+app.post('/posts', (req, res) => {
+  const { title, content, poster, show } = req.body;
+  return Posts.create({
+    title, content, user: poster, show, comments: {}, createdAt: new Date(),
+  }).then((post) => {
+    Users.findById(poster)
+      .then((user) => {
+        Users.updateOne({ _id: poster }, { posts: [...user.posts, post._id] })
+          .catch();
+      })
+      .catch();
+  })
+    .then(() => res.status(201).send())
+    .catch(() => res.status(500).send());
 });
 
 app.listen(3000, () => {
