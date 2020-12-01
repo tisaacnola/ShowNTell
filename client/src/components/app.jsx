@@ -42,10 +42,14 @@ const App = () => {
   };
 
   const createPost = (post) => {
-    axios
-      .post('/posts', post)
-      .then(() => setView('home'))
-      .catch();
+    // console.log('POST', post);
+    axios.get('/user').then(({ data }) => {
+      post.name = data.name;
+      axios
+        .post('/posts', post)
+        .then(() => setView('home'))
+        .catch();
+    });
   };
 
   const getView = () => {
