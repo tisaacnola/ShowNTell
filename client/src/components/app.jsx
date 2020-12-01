@@ -7,18 +7,14 @@ const App = () => {
   const [user, setUser] = useState();
   const [posts, setPosts] = useState([]);
 
-  let count = 0;
   const getUser = () => {
     axios.get('/user').then(({ data }) => setUser(data));
   };
   const getPosts = () => {
     axios.get('/posts').then(({ data }) => setPosts(data));
   };
-  if (count === 0) {
-    getUser();
-    getPosts();
-    count++;
-  }
+  getUser();
+  getPosts();
 
   return (
     <div>
