@@ -90,7 +90,7 @@ app.get('/logout', (req, res) => {
 app.post('/posts', (req, res) => {
   const { title, content, poster, show } = req.body;
   return Posts.create({
-    title, content, user: poster, show, comments: {},
+    title, content, user: poster, show, comments: {}, createdAt: new Date(),
   }).then((post) => {
     Users.findById(poster)
       .then((user) => {
