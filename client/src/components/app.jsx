@@ -22,6 +22,11 @@ const App = () => {
     setView(newView);
   };
 
+  const logout = () => {
+    axios.get('/logout')
+      .then(() => setView('home'));
+  };
+
   const createPost = (post) => {
     axios.post('/posts', post)
       .then(() => setView('home'))
@@ -49,7 +54,7 @@ const App = () => {
   return (
     <div>
       {user
-        ? <Nav user={user} onClick={changeView} />
+        ? <Nav user={user} onClick={changeView} logout={logout} />
         : (
           <a
             href="/auth/google"

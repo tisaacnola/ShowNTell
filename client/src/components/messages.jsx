@@ -4,14 +4,17 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Messages = ({ id, messages }) => {
+const Messages = (props = {}) => {
   const [content, setContent] = useState();
+  const { id, messages } = props;
   let message;
-  messages.forEach((data) => {
-    if (data.id === id) {
-      message = data;
-    }
-  });
+  if (messages) {
+    messages.forEach((data) => {
+      if (data.id === id) {
+        message = data;
+      }
+    });
+  }
   return (
     <div>
       <div>
