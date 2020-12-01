@@ -8,7 +8,7 @@ import Post from './post.jsx';
 
 const App = () => {
   const [user, setUser] = useState();
-  const [view, setView] = useState('login');
+  const [view, setView] = useState('home');
 
   const getUser = () => {
     axios.get('/user')
@@ -20,12 +20,18 @@ const App = () => {
     setView(newView);
   };
 
+  const createPost = (post) => {
+    axios.post('/posts', post)
+      .then(() => setView('home'))
+      .catch();
+  };
+
   const getView = () => {
     if (view === 'sub') {
-      return <Sub />;
+      return <Sub user={user} />;
     }
     if (view === 'post') {
-      return <Post />;
+      return <Post user={user} createPost={createPost} />;
     }
   };
 
