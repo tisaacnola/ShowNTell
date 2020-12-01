@@ -15,11 +15,21 @@ const Nav = ({ user, onClick, logout }) => (
   }}
   >
     <h1>{`Hello ${user.name}`}</h1>
-    <button value="home" className="views">Home</button>
-    <button value="sub" className="views">list of subs</button>
-    <button value="post" className="views">post</button>
-    <button value="notifs" className="views">notifs</button>
-    <button value="DMs" className="views">DMs</button>
+    <button value="home" className="views">
+      Home
+    </button>
+    <button value="sub" className="views">
+      list of subs
+    </button>
+    <button value="post" className="views">
+      post
+    </button>
+    <button value="notifs" className="views">
+      notifs
+    </button>
+    <button value="DMs" className="views">
+      DMs
+    </button>
     <input />
     <button onClick={logout}>logout</button>
   </div>

@@ -1,14 +1,18 @@
+/* eslint-disable import/no-named-as-default */
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable import/extensions */
 /* eslint-disable consistent-return */
 import React, { useState } from 'react';
 import axios from 'axios';
 import Nav from './nav.jsx';
+import HomeFeed from './homeFeed.jsx';
 import Sub from './sub.jsx';
 import Post from './post.jsx';
 import DMs from './dms.jsx';
 import Notifs from './notifs.jsx';
 
 const App = () => {
+  const [posts, setPosts] = useState();
   const [user, setUser] = useState();
   const [view, setView] = useState('home');
 
@@ -16,6 +20,12 @@ const App = () => {
     if (!user) {
       axios.get('/user')
         .then(({ data }) => setUser(data));
+    }
+  };
+
+  const getPosts = () => {
+    if (!posts && user) {
+      axios.get('/posts').then(({ data }) => setPosts(data));
     }
   };
 
@@ -28,11 +38,13 @@ const App = () => {
       .then(() => {
         setView('home');
         setUser(null);
+        setPosts(null);
       });
   };
 
   const createPost = (post) => {
-    axios.post('/posts', post)
+    axios
+      .post('/posts', post)
       .then(() => setView('home'))
       .catch();
   };
@@ -45,7 +57,7 @@ const App = () => {
       return <Post user={user} createPost={createPost} />;
     }
     if (view === 'home') {
-      return (<h1>home view</h1>);
+      return <HomeFeed posts={posts} />;
     }
     if (view === 'DMs') {
       return <DMs user={user} setUser={setUser} />;
@@ -68,6 +80,7 @@ const App = () => {
           </a>
         )}
       {getUser()}
+      {getPosts()}
       {getView()}
     </div>
   );
