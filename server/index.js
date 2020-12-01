@@ -6,6 +6,7 @@
 const path = require('path');
 const express = require('express');
 const passport = require('passport');
+const axios = require('axios');
 const cors = require('cors');
 // const $ = require('jquery');
 const session = require('express-session');
@@ -90,15 +91,15 @@ app.get('/user', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
-  Users.find().then((data) => res.status(200).json(data));
+  Users.find().then((data) => res.status(200).json(data)).catch();
 });
 
 app.get('/posts', (req, res) => {
-  Posts.find().then((posts) => res.send(posts));
+  Posts.find().then((posts) => res.send(posts)).catch();
 });
 
 app.get('/shows', (req, res) => {
-  Shows.find().then((data) => res.status(200).json(data));
+  Shows.find().then((data) => res.status(200).json(data)).catch();
 });
 
 app.get('/findUser', (req, res) => {
@@ -179,6 +180,14 @@ app.post('/addComment', (req, res) => {
     });
     res.send(posts);
   });
+});
+
+app.get('/search/:query', (req, res) => {
+  const url = `http://api.tvmaze.com/search/shows?q=${req.params.query}`;
+  return axios(url)
+    .then(({ data }) => data)
+    .then((data) => res.status(200).send(data))
+    .catch(() => console.log('error'));
 });
 
 app.get('/delete', (req, res) => {
