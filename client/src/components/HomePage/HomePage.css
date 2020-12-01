@@ -1,0 +1,41 @@
+body {
+  background-color: #140e3e;
+}
+
+.top-of-page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Only if you want it vertically center-aligned as well */
+  /* padding: 40px; */
+}
+
+#text-block {
+  color: white;
+  display: inline-block;
+  white-space: pre-wrap;
+  font-family: 'Noto Serif', serif;
+  float: right;
+  text-align: center;
+  margin-left: 8%;
+}
+
+.text1{
+  font-size: 150%;
+  margin-bottom: 8%;
+}
+.text2{
+  font-size: 200%;
+  margin-bottom: 8%;
+  color: 	#f2d75e
+}
+.text3{
+  font-size: 150%;
+}
+
+#main-pic {
+  height: 50%;
+  width: 50%;
+  display: inline-block;
+  float: right;
+}
