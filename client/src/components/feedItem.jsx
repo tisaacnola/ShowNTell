@@ -30,7 +30,6 @@ const FeedItem = ({ post }) => {
     axios
       .post('/addComment', { comment: currentComment, postId: post._id })
       .then((posts) => {
-        console.log('comment added');
         console.log('000000', posts);
       })
       .catch((err) => {
