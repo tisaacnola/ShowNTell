@@ -97,10 +97,26 @@ app.get('/posts', (req, res) => {
       comments: {},
     },
   ];
+
   Posts.deleteMany().then(() => {
     Posts.insertMany(posts).then(() => {
       Posts.find().then((posts) => res.send(posts));
     });
+  });
+});
+
+app.post('/addComment', (req, res) => {
+  const comment = req.body.comment;
+  const postId = req.body.postId;
+  console.log('comment', comment);
+  console.log('postId', postId);
+  Posts.find().then((posts) => {
+    posts.forEach((post) => {
+      if (post._id === postId) {
+        post.comments[comment] = comment;
+      }
+    });
+    res.send(posts);
   });
 });
 
