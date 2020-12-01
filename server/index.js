@@ -1,3 +1,6 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 const path = require('path');
@@ -30,45 +33,57 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-app.use(session({
-  secret: process.env.GOOGLE_CLIENT_SECRET,
-  saveUninitialized: false,
-  resave: true,
-}));
+app.use(
+  session({
+    secret: process.env.GOOGLE_CLIENT_SECRET,
+    saveUninitialized: false,
+    resave: true,
+  }),
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }, () => {
-  // res.redirect('/');
-}));
+app.get(
+  '/auth/google',
+  passport.authenticate(
+    'google',
+    { scope: ['https://www.googleapis.com/auth/plus.login'] },
+    (req, res) => {
+      // res.redirect('/');
+    },
+  ),
+);
 
-app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/logout' }), (req, res) => {
-  const newUser = new Users({
-    id: Number(req.user.id),
-    name: req.user.displayName,
-  });
+app.get(
+  '/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/logout' }),
+  (req, res) => {
+    const newUser = new Users({
+      id: Number(req.user.id),
+      name: req.user.displayName,
+    });
 
-  Users.findOne({ id: Number(req.user.id) }).then((data) => {
-    if (data) {
-      res.redirect('/');
-      userInfo = data;
-    } else {
-      newUser.save().then(() => {
-        userInfo = newUser;
+    Users.findOne({ id: Number(req.user.id) }).then((data) => {
+      if (data) {
         res.redirect('/');
-      });
-    }
-  });
-});
+        userInfo = data;
+      } else {
+        newUser.save().then(() => {
+          userInfo = newUser;
+          res.redirect('/');
+        });
+      }
+    });
+  },
+);
 
 app.get('/user', (req, res) => {
   // res.status(200).json(userInfo);
   if (userInfo !== null) {
-    Users.findOne({ id: userInfo.id })
-      .then((data) => {
-        userInfo = data;
-        res.json(userInfo);
-      });
+    Users.findOne({ id: userInfo.id }).then((data) => {
+      userInfo = data;
+      res.json(userInfo);
+    });
   } else {
     res.json(userInfo);
   }
@@ -79,7 +94,7 @@ app.get('/users', (req, res) => {
 });
 
 app.get('/posts', (req, res) => {
-  Posts.find().then((data) => res.status(200).json(data));
+  Posts.find().then((posts) => res.send(posts));
 });
 
 app.get('/shows', (req, res) => {
@@ -93,7 +108,15 @@ app.get('/findUser', (req, res) => {
 });
 
 app.put('/startMessage/:user/:name', (req, res) => {
-  Users.updateOne({ id: userInfo.id }, { messages: [...userInfo.messages, { id: req.params.user, name: req.params.name, text: [] }] })
+  Users.updateOne(
+    { id: userInfo.id },
+    {
+      messages: [
+        ...userInfo.messages,
+        { id: req.params.user, name: req.params.name, text: [] },
+      ],
+    },
+  )
     .then((data) => res.json(data))
     .catch();
 });
@@ -113,24 +136,49 @@ app.put('/sendMessage/:id/:text', (req, res) => {
       let test = false;
       for (let i = 0; i < replace.length; i += 1) {
         if (replace[i].id === String(userInfo.id)) {
-          replace[i].text.push({ name: userInfo.name, message: req.params.text });
+          replace[i].text.push({
+            name: userInfo.name,
+            message: req.params.text,
+          });
           test = true;
           break;
         }
       }
       if (test) {
-        Users.updateOne({ id: Number(req.params.id) }, { messages: replace })
-          .then((result) => res.json(result));
+        Users.updateOne(
+          { id: Number(req.params.id) },
+          { messages: replace },
+        ).then((result) => res.json(result));
       } else {
         // console.log(content, 'here');
-        Users.updateOne({ id: Number(req.params.id) }, { messages: [...replace, { id: String(userInfo.id), name: userInfo.name, text: [{ name: userInfo.name, message: req.params.text }] }] })
-          .then((result) => res.json(result));
+        Users.updateOne(
+          { id: Number(req.params.id) },
+          {
+            messages: [
+              ...replace,
+              {
+                id: String(userInfo.id),
+                name: userInfo.name,
+                text: [{ name: userInfo.name, message: req.params.text }],
+              },
+            ],
+          },
+        ).then((result) => res.json(result));
       }
     });
 });
 
-app.get('/database', (req, res) => {
-  Users.find().then((data) => res.json(data));
+app.post('/addComment', (req, res) => {
+  const comment = req.body.comment;
+  const postId = req.body.postId;
+  Posts.find().then((posts) => {
+    posts.forEach((post) => {
+      if (post._id === postId) {
+        post.comments[comment] = comment;
+      }
+    });
+    res.send(posts);
+  });
 });
 
 app.get('/delete', (req, res) => {
@@ -148,15 +196,23 @@ app.get('/logout', (req, res) => {
 app.post('/posts', (req, res) => {
   const { title, content, poster, show } = req.body;
   return Posts.create({
-    title, content, user: poster, show, comments: {}, createdAt: new Date(),
-  }).then((post) => {
-    Users.findById(poster)
-      .then((user) => {
-        Users.updateOne({ _id: poster }, { posts: [...user.posts, post._id] })
-          .catch();
-      })
-      .catch();
+    title,
+    content,
+    user: poster,
+    show,
+    comments: {},
+    createdAt: new Date(),
   })
+    .then((post) => {
+      Users.findById(poster)
+        .then((user) => {
+          Users.updateOne(
+            { _id: poster },
+            { posts: [...user.posts, post._id] },
+          ).catch();
+        })
+        .catch();
+    })
     .then(() => res.status(201).send())
     .catch(() => res.status(500).send());
 });
