@@ -4,6 +4,7 @@
 /* eslint-disable consistent-return */
 import React, { useState } from 'react';
 import axios from 'axios';
+import HomePage from './HomePage/HomePage.jsx';
 import Nav from './nav.jsx';
 import HomeFeed from './homeFeed.jsx';
 import Sub from './sub.jsx';
@@ -14,7 +15,7 @@ import Notifs from './notifs.jsx';
 const App = () => {
   const [posts, setPosts] = useState();
   const [user, setUser] = useState();
-  const [view, setView] = useState('home');
+  const [view, setView] = useState('homePage');
 
   const getUser = () => {
     if (!user) {
@@ -50,6 +51,9 @@ const App = () => {
   };
 
   const getView = () => {
+    if (view === 'homePage') {
+      return <HomePage />;
+    }
     if (view === 'sub') {
       return <Sub user={user} />;
     }
