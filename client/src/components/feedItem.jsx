@@ -29,12 +29,8 @@ const FeedItem = ({ post }) => {
   const handleSubmit = () => {
     axios
       .post('/addComment', { comment: currentComment, postId: post._id })
-      .then((posts) => {
-        console.log('000000', posts);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then((posts) => {})
+      .catch((err) => {});
     comments.push(currentComment);
     setComments(comments);
   };
