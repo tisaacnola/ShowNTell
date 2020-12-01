@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const Messages = (props = {}) => {
   const [content, setContent] = useState();
-  const { id, messages } = props;
+  const { id, messages, setUser } = props;
   let message;
   if (messages) {
     messages.forEach((data) => {
@@ -29,7 +29,16 @@ const Messages = (props = {}) => {
         }
       </div>
       <input placeholder="write a message" onChange={(e) => setContent(e.target.value)} />
-      <button onClick={() => axios.put(`/sendMessage/${id}/${content}`)}>send message</button>
+      <button onClick={() => {
+        axios.put(`/sendMessage/${id}/${content}`)
+          .then(() => {
+            axios.get('/user')
+              .then((result) => setUser(result.data));
+          });
+      }}
+      >
+        send message
+      </button>
     </div>
   );
 };
