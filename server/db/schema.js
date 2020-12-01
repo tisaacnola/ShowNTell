@@ -24,6 +24,7 @@ const postSchema = mongoose.Schema({
   title: String,
   content: String,
   comments: Object,
+  createdAt: Date,
 });
 
 const Posts = mongoose.model('Posts', postSchema);
