@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const Post = ({ user, createPost }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [show, setShow] = useState('');
+  const [show, setShow] = useState('none');
   const [error, setError] = useState('');
 
   const onClick = () => {
@@ -13,6 +13,8 @@ const Post = ({ user, createPost }) => {
       setContent('');
     } else if (title === '') {
       setError('Must have a title.');
+    } else if (show === 'none') {
+      setError('Please choose a show to talk about.');
     }
   };
 
