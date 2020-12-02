@@ -190,6 +190,24 @@ app.get('/search/:query', (req, res) => {
     .catch(() => console.log('error'));
 });
 
+app.get('/show/:id',
+  (req, res) => Shows.find({ id: req.params.id })
+    .then((record) => {
+      if (record.length > 0) {
+        console.log(record);
+      } else {
+        return axios(`http://api.tvmaze.com/shows/${req.params.id}`)
+          .then(({ data }) => Shows.create({
+            id: data.id,
+            name: data.name,
+            posts: [],
+            subscriberCount: 0,
+          })).then((result) => console.log(result))
+          .catch();
+      }
+    })
+    .catch());
+
 app.get('/delete', (req, res) => {
   Users.deleteMany()
     .then(() => Posts.deleteMany())
