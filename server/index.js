@@ -152,7 +152,9 @@ app.put('/sendMessage/:id/:text', (req, res) => {
       if (test) {
         Users.updateOne(
           { id: Number(req.params.id) },
-          { messages: replace },
+          { messages: replace,
+            notifs: [...data.notifs, `${userInfo.name} messaged you`],
+          },
         ).then((result) => res.json(result));
       } else {
         // console.log(content, 'here');
@@ -167,6 +169,7 @@ app.put('/sendMessage/:id/:text', (req, res) => {
                 text: [{ name: userInfo.name, message: req.params.text }],
               },
             ],
+            notifs: [...data.notifs, `${userInfo.name} messaged you`],
           },
         ).then((result) => res.json(result));
       }
