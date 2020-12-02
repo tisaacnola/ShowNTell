@@ -46,6 +46,10 @@
   color: white;
 }
 
-h1{
+.receive-notifs-message{
+  margin-left: 20%;
+}
+
+h2{
   margin-left: 20%;
 }

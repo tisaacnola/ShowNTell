@@ -38,14 +38,18 @@ const Messages = (props = {}) => {
         }
       </div>
       <h3>send a new message:</h3>
-      <input className="write-message-box" placeholder="new message" onChange={(e) => setContent(e.target.value)} />
+      <input className="write-message-box" placeholder="write a message" onChange={(e) => setContent(e.target.value)} />
       <button
         className="send-message-button"
         onClick={() => {
           axios.put(`/sendMessage/${id}/${content}`)
             .then(() => {
               axios.get('/user')
-                .then((result) => setUser(result.data));
+                .then((result) => {
+                  setUser(result.data);
+                  const body = 'Receive an message on Show&Tell';
+                  axios.get(`/notifs/${body}/${id}`);
+                });
             });
         }}
       >

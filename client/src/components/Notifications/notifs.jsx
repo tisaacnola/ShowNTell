@@ -37,7 +37,7 @@ const Notifs = ({ user, setUser }) => {
           >
             change number
           </button>
-          <div>
+          <div id="receive-notifs-message">
             {
               user.notifs.map((text, i) => (<h2 key={text + i}>{text}</h2>))
             }
