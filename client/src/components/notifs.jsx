@@ -17,7 +17,11 @@ const Notifs = ({ user, setUser }) => {
           <input onChange={(e) => setNumber(e.target.value)} />
           <button onClick={() => axios.post('/number', { number })
             .then(() => axios.get('/user'))
-            .then((result) => setUser(result.data))}
+            .then((result) => {
+              setUser(result.data);
+              const body = 'Welcome to Show&Tell! Congrats on your first notification';
+              axios.get(`/notifs/${body}/null`);
+            })}
           >
             add number
           </button>
