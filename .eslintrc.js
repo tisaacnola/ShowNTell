@@ -19,5 +19,7 @@ module.exports = {
     'no-underscore-dangle': 0,
     'react/no-array-index-key': 0,
     'no-unused-vars': 0,
+    'import/extensions': 0,
+    'consistent-return': 0,
   },
 };
