@@ -97,9 +97,11 @@ app.get('/users', (req, res) => {
 });
 
 app.get('/posts', (req, res) => {
+  // Posts.remove().then(
   Posts.find()
     .then((posts) => res.send(posts))
     .catch();
+  // );
 });
 
 app.get('/shows', (req, res) => {
@@ -176,6 +178,7 @@ app.put('/sendMessage/:id/:text', (req, res) => {
 });
 
 app.post('/addComment', (req, res) => {
+  //this is an object...
   const comment = req.body.comment;
   const postId = req.body.postId;
   Posts.updateOne({ _id: postId }, { $push: { comments: comment } }).then(
@@ -185,6 +188,29 @@ app.post('/addComment', (req, res) => {
       });
     }
   );
+});
+
+app.post('/addResponse', (req, res) => {
+  const update = (comments) => {
+    comments.forEach((comment) => {});
+  };
+  Posts.updateOne(
+    { 'comments.currentComment': req.body.comment.parentComment },
+    {
+      $push: {
+        'comments.$.childComments': req.body.comment.currentComment,
+      },
+    }
+  )
+    .then((post) => {
+      Posts.find({ _id: req.body.comment.postId }).then((post) => {
+        console.log('HEER FIRST', post[0].comments);
+        res.send(post[0].comments);
+      });
+    })
+    .catch((err) => {
+      console.log('nowowwo');
+    });
 });
 
 app.get('/search/:query', (req, res) => {
