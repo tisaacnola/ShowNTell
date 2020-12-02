@@ -14,6 +14,8 @@ import logo from './HomePage/img/logo.jpg';
 const Nav = ({ user, onClick, logout }) => (
   <div>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet" />
     <img
       id="homeButton"
       src={logo}
@@ -48,7 +50,7 @@ const Nav = ({ user, onClick, logout }) => (
         {' '}
         <div className="wrap">
           <div className="search">
-            <input type="text" className="search-term" placeholder="What are you watching?" />
+            <input type="text" className="search-term" placeholder="what are you watching?" />
             <FaSearch type="submit" className="search-button">
               <i className="search-icon" />
             </FaSearch>

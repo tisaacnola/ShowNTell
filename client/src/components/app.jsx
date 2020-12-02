@@ -8,8 +8,8 @@ import HomePage from './HomePage/HomePage.jsx';
 import Nav from './nav.jsx';
 import HomeFeed from './homeFeed.jsx';
 import Sub from './sub.jsx';
-import Post from './post.jsx';
-import DMs from './dms.jsx';
+import Post from './CreatePost/post.jsx';
+import DMs from './DMs/dms.jsx';
 import Notifs from './notifs.jsx';
 
 const App = () => {
@@ -77,10 +77,11 @@ const App = () => {
         ? <Nav user={user} onClick={changeView} logout={logout} />
         : (
           <a
+            className="login-button"
             href="/auth/google"
             onClick={(e) => setUser(e)}
           >
-            login with google
+            LOGIN WITH GOOGLE
           </a>
         )}
       {getUser()}
