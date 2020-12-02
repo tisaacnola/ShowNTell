@@ -178,18 +178,13 @@ app.put('/sendMessage/:id/:text', (req, res) => {
 app.post('/addComment', (req, res) => {
   const comment = req.body.comment;
   const postId = req.body.postId;
-  Posts.update({ _id: postId }, { $push: { comments: comment } }).then(() => {
-    Posts.find({ _id: postId }).then((post) => {
-      console.log(post);
-      res.send(post[0].comments);
-    });
-  });
-
-  // Posts.find({ _id: postId }).then((posts) => {
-  //   posts[0].hello = 'hello';
-  //   console.log(posts[0]);
-  //   // res.send(posts);
-  // });
+  Posts.updateOne({ _id: postId }, { $push: { comments: comment } }).then(
+    () => {
+      Posts.find({ _id: postId }).then((post) => {
+        res.send(post[0].comments);
+      });
+    }
+  );
 });
 
 app.get('/search/:query', (req, res) => {
