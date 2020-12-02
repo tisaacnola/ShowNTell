@@ -12,6 +12,7 @@ const FeedItem = ({ post }) => {
 
   const [currentComment, setCurrentComment] = useState('');
   const [commentsList, setCommentsList] = useState(post.comments || []);
+  const [responseList, setResponseList] = useState([]);
 
   const mainDiv = {
     color: 'white',
@@ -31,27 +32,7 @@ const FeedItem = ({ post }) => {
 
   const changeLiked = () => setLiked(!liked);
   const handleCommentClicked = () => setCommentClicked(!commentClicked);
-  const handleRespondClicked = (id, event) => {
-    // if (id)
-    // console.log(handleRespondClicked);
-    // console.log(id);
-    // console.log(event.target.parentElement.id);
-    setRespondId(id);
-    // if (event.target.parentElement.id === id) {
-    //   return (
-    //     <div>
-    //       <textarea
-    //         placeholder="Respond Here."
-    //         cols="50"
-    //         onChange={handleChange}
-    //       />
-    //       <button style={buttons} onClick={handleRespondSubmit}>
-    //         Submit
-    //       </button>
-    //     </div>
-    //   );
-    // }
-  };
+  const handleRespondClicked = (id) => setRespondId(id);
 
   const handleSubmit = (e) => {
     e.target.previousSibling.value = '';
@@ -61,21 +42,31 @@ const FeedItem = ({ post }) => {
         postId: post._id,
       })
       .then(({ data }) => {
+        console.log('object', data);
         setCommentsList(data);
       })
       .catch((err) => {});
   };
 
   const handleRespondSubmit = (e) => {
-    console.log('IN THERE RIGHT NOW!');
     e.target.previousSibling.value = '';
-    // axios
-    //   .post('/addResponse', { comment: { currentComment, childComments: [] } })
-    //   .then(() => {});
+    const parentComment =
+      e.target.parentElement.parentElement.firstChild.innerHTML;
+
+    axios
+      .post('/addResponse', {
+        comment: { currentComment, parentComment, postId: post._id },
+      })
+      .then(({ data }) => {
+        console.log('DATA', data);
+        setCommentsList(data);
+      })
+      .catch((err) => {
+        console.log('AXIOS');
+      });
   };
 
   const handleChange = (event) => setCurrentComment(event.target.value);
-  // const handleResponseChange = (event) =>
 
   return (
     <div style={mainDiv}>
@@ -127,6 +118,14 @@ const FeedItem = ({ post }) => {
               id={i + comment.currentComment}
             >
               <p>{comment.currentComment}</p>
+              <h3>Responses</h3>
+              {comment.childComments.map((childComment, i) => {
+                return (
+                  <h4 key={i + childComment} style={{ color: 'red' }}>
+                    {childComment}
+                  </h4>
+                );
+              })}
               <button
                 onClick={handleRespondClicked.bind(
                   this,
