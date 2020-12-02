@@ -35,7 +35,8 @@ const FeedItem = ({ post }) => {
       .post('/liked', { postId: post._id, liked: !liked })
       .then(({ data }) => {
         setLiked(data);
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleCommentClicked = () => setCommentClicked(!commentClicked);
@@ -65,11 +66,10 @@ const FeedItem = ({ post }) => {
         comment: { currentComment, parentComment, postId: post._id },
       })
       .then(({ data }) => {
-        console.log('DATA', data);
         setCommentsList(data);
       })
       .catch((err) => {
-        console.log('AXIOS');
+        console.log(err);
       });
   };
 

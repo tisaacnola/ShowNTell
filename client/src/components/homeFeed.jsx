@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import FeedItem from './feedItem.jsx';
 
 const HomeFeed = ({ posts }) => {
-  console.log('inside your thoughts', posts);
   return (
     <div>
       {posts

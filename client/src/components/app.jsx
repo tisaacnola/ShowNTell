@@ -13,6 +13,7 @@ import DMs from './dms.jsx';
 import Notifs from './notifs.jsx';
 import SearchFeed from './searchFeed.jsx';
 
+let executed = false;
 const App = () => {
   const [posts, setPosts] = useState();
   const [user, setUser] = useState();
@@ -22,14 +23,23 @@ const App = () => {
 
   const getUser = () => {
     if (!user) {
-      axios.get('/user').then(({ data }) => setUser(data));
+      axios
+        .get('/user')
+        .then(({ data }) => setUser(data))
+        .catch();
     }
   };
 
   const getPosts = () => {
-    if (!posts && user) {
-      axios.get('/posts').then(({ data }) => setPosts(data));
-    }
+    // if (!posts && user) {
+    executed = !executed;
+    axios
+      .get('/posts')
+      .then(({ data }) => {
+        setPosts(data);
+      })
+      .catch((err) => console.log('----', err));
+    // }
   };
 
   const changeView = (newView) => {
@@ -45,7 +55,6 @@ const App = () => {
   };
 
   const createPost = (post) => {
-    // console.log('POST', post);
     axios.get('/user').then(({ data }) => {
       post.name = data.name;
       axios
@@ -108,7 +117,7 @@ const App = () => {
         </a>
       )}
       {getUser()}
-      {getPosts()}
+      {!executed ? getPosts() : (executed = !executed)}
       {getView()}
     </div>
   );
