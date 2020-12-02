@@ -2,6 +2,7 @@
 /* eslint-disable guard-for-in */
 import React, { useState } from 'react';
 import axios from 'axios';
+import $ from 'jquery';
 
 const FeedItem = ({ post }) => {
   const [liked, setLiked] = useState(false);
@@ -27,7 +28,8 @@ const FeedItem = ({ post }) => {
 
   const changeLiked = () => setLiked(!liked);
   const handleCommentClicked = () => setCommentClicked(!commentClicked);
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.target.previousSibling.value = '';
     axios
       .post('/addComment', { comment: currentComment, postId: post._id })
       .then(({ data }) => {
