@@ -93,7 +93,7 @@ const DMs = ({ user, setUser }) => {
                   <button
                     id="create-message-button"
                     onClick={() => {
-                      axios.get('/findUser')
+                      axios.get('/users')
                         .then(({ data }) => {
                           setUsers(data);
                           axios.get('/user')

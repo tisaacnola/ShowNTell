@@ -6,11 +6,16 @@
 const path = require('path');
 const express = require('express');
 const passport = require('passport');
+const axios = require('axios');
 const cors = require('cors');
 // const $ = require('jquery');
 const session = require('express-session');
 require('dotenv').config();
 require('./db/index');
+
+// const accountSid = process.env.TWILIO_ACCOUNT_SID;
+// const authToken = process.env.TWILIO_AUTH_TOKEN;
+// const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
 const { Users, Posts, Shows } = require('./db/schema.js');
 // const { session } = require('passport');
@@ -90,15 +95,15 @@ app.get('/user', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
-  Users.find().then((data) => res.status(200).json(data));
+  Users.find().then((data) => res.status(200).json(data)).catch();
 });
 
 app.get('/posts', (req, res) => {
-  Posts.find().then((posts) => res.send(posts));
+  Posts.find().then((posts) => res.send(posts)).catch();
 });
 
 app.get('/shows', (req, res) => {
-  Shows.find().then((data) => res.status(200).json(data));
+  Shows.find().then((data) => res.status(200).json(data)).catch();
 });
 
 app.get('/findUser', (req, res) => {
@@ -181,11 +186,20 @@ app.post('/addComment', (req, res) => {
   });
 });
 
+app.get('/search/:query', (req, res) => {
+  const url = `http://api.tvmaze.com/search/shows?q=${req.params.query}`;
+  return axios(url)
+    .then(({ data }) => data)
+    .then((data) => res.status(200).send(data))
+    .catch(() => console.log('error'));
+});
+
 app.get('/delete', (req, res) => {
   Users.deleteMany()
     .then(() => Posts.deleteMany())
     .then(() => Shows.deleteMany())
-    .then(() => res.status(200).json('done'));
+    .then(() => res.status(200).json('done'))
+    .catch();
 });
 
 app.get('/logout', (req, res) => {
@@ -216,6 +230,28 @@ app.post('/posts', (req, res) => {
     .then(() => res.status(201).send())
     .catch(() => res.status(500).send());
 });
+
+app.post('/number', (req, res) => {
+  const { number } = req.body;
+  if (!number) {
+    Users.updateOne({ id: userInfo.id }, { phone: number })
+      .then((data) => res.json(data));
+  } else {
+    Users.updateOne({ id: userInfo.id }, { phone: number, notifs: [`you will now receive notifications @${number}`] })
+      .then((data) => res.json(data));
+  }
+});
+
+// app.get('/notifs/:text', (req, res) => {
+//   Notifs.messages
+//     .create({
+//       body: req.params.text,
+//       from: '+12678677568',
+//       to: userInfo.phone,
+//     })
+//     .then((message) => res.json(message.sid))
+//     .catch((err) => console.log(err));
+// });
 
 app.listen(3000, () => {
   console.log('http://localhost:3000');
