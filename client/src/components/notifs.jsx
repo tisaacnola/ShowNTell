@@ -37,6 +37,7 @@ const Notifs = ({ user, setUser }) => {
           </button>
           <div>
             {
+              // maping over here
               user.notifs.map((text, i) => (<h2 key={text + i}>{text}</h2>))
             }
           </div>
