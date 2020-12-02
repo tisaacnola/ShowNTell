@@ -10,12 +10,15 @@ import HomeFeed from './homeFeed.jsx';
 import Sub from './sub.jsx';
 import Post from './CreatePost/post.jsx';
 import DMs from './DMs/dms.jsx';
-import Notifs from './notifs.jsx';
+import Notifs from './Notifications/notifs.jsx';
+import SearchFeed from './searchFeed.jsx';
 
 const App = () => {
   const [posts, setPosts] = useState();
   const [user, setUser] = useState();
   const [view, setView] = useState('homePage');
+  const [search, setSearch] = useState('');
+  const [searchedShows, setSearchedShows] = useState([]);
 
   const getUser = () => {
     if (!user) {
@@ -37,7 +40,7 @@ const App = () => {
   const logout = () => {
     axios.get('/logout')
       .then(() => {
-        setView('home');
+        setView('homePage');
         setUser(null);
         setPosts(null);
       });
@@ -48,6 +51,15 @@ const App = () => {
       .post('/posts', post)
       .then(() => setView('home'))
       .catch();
+  };
+
+  const searchShows = () => {
+    axios.get(`/search/${search}`).then(({ data }) => {
+      setView('search');
+      setSearch('');
+      setSearchedShows(data);
+      console.log(data);
+    }).catch();
   };
 
   const getView = () => {
@@ -67,14 +79,26 @@ const App = () => {
       return <DMs user={user} setUser={setUser} />;
     }
     if (view === 'notifs') {
-      return <Notifs />;
+      return <Notifs user={user} setUser={setUser} />;
+    }
+    if (view === 'search') {
+      return <SearchFeed shows={searchedShows} />;
     }
   };
 
   return (
     <div>
       {user
-        ? <Nav user={user} onClick={changeView} logout={logout} />
+        ? (
+          <Nav
+            user={user}
+            search={search}
+            onClick={changeView}
+            logout={logout}
+            setSearch={setSearch}
+            onSearch={searchShows}
+          />
+        )
         : (
           <a
             className="login-button"

@@ -16,17 +16,25 @@ const Messages = (props = {}) => {
       }
     });
   }
+  let current;
   return (
     <div>
       <div className="message-content">
         {
         message
-          ? message.text.map((data) => (
-            <div key={data.message}>
-              <h2>{data.name}</h2>
-              <div>{data.message}</div>
-            </div>
-          )) : null
+          ? message.text.map((data) => {
+            let test = true;
+            if (current === data.name) {
+              test = false;
+            }
+            current = data.name;
+            return (
+              <div key={data.message}>
+                <h2>{test ? data.name : null}</h2>
+                <div>{data.message}</div>
+              </div>
+            );
+          }) : null
         }
       </div>
       <h3>send a new message:</h3>
