@@ -27,6 +27,7 @@ const postSchema = mongoose.Schema({
   content: String,
   comments: Object,
   createdAt: Date,
+  liked: Boolean,
 });
 
 const Posts = mongoose.model('Posts', postSchema);

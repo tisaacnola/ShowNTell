@@ -5,7 +5,7 @@ import axios from 'axios';
 import $ from 'jquery';
 
 const FeedItem = ({ post }) => {
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(post.liked);
   const [commentClicked, setCommentClicked] = useState(false);
   const [respondClicked, setRespondClicked] = useState(false);
   const [respondId, setRespondId] = useState('');
@@ -30,7 +30,14 @@ const FeedItem = ({ post }) => {
     display: 'inline-block',
   };
 
-  const changeLiked = () => setLiked(!liked);
+  const changeLiked = () => {
+    axios
+      .post('/liked', { postId: post._id, liked: !liked })
+      .then(({ data }) => {
+        setLiked(data);
+      });
+  };
+
   const handleCommentClicked = () => setCommentClicked(!commentClicked);
   const handleRespondClicked = (id) => setRespondId(id);
 

@@ -177,6 +177,16 @@ app.put('/sendMessage/:id/:text', (req, res) => {
     });
 });
 
+app.post('/liked', (req, res) => {
+  const postId = req.body.postId;
+  const liked = req.body.liked;
+  Posts.updateOne({ _id: postId }, { liked }).then((data) => {
+    Posts.find({ _id: postId }).then((post) => {
+      res.send(post[0].liked);
+    });
+  });
+});
+
 app.post('/addComment', (req, res) => {
   //this is an object...
   const comment = req.body.comment;
@@ -245,6 +255,7 @@ app.post('/posts', (req, res) => {
     show,
     comments: {},
     createdAt: new Date(),
+    liked: false,
   })
     .then((post) => {
       Users.findById(poster)
