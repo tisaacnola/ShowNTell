@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './post.css';
 
 const Post = ({ user, createPost }) => {
   const [title, setTitle] = useState('');
@@ -18,9 +19,9 @@ const Post = ({ user, createPost }) => {
 
   return (
     <div>
-      <h1>Post</h1>
+      <h1 id="header">Post</h1>
       <select onChange={(e) => setShow(e.target.value)}>
-        <option value="none">Choose a Show</option>
+        <option id="choose-show" value="none">Choose a Show</option>
         {user.subscriptions.map((sub, i) => <option key={sub + i} value={sub}>{sub}</option>)}
       </select>
       <div className="title-container">
@@ -29,7 +30,7 @@ const Post = ({ user, createPost }) => {
       <div className="content-container">
         <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Text" />
       </div>
-      <button onClick={onClick}>Submit Post</button>
+      <button id="submit-button" onClick={onClick}>Submit Post</button>
       <h4 style={{ color: 'red' }}>{error}</h4>
     </div>
   );
