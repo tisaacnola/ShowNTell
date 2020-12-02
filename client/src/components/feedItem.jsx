@@ -7,12 +7,10 @@ const FeedItem = ({ post }) => {
   const [liked, setLiked] = useState(false);
   const [commentClicked, setCommentClicked] = useState(false);
   const [currentComment, setCurrentComment] = useState('');
-  const commentsList = [];
-  for (const key in post.comments) {
-    commentsList.push(post.comments[key]);
-  }
-  const [comments, setComments] = useState(commentsList);
+  const [commentsList, setCommentsList] = useState(post.comments || []);
+
   const mainDiv = {
+    color: 'white',
     display: 'flex',
     flexDirection: 'column',
     border: '3px solid black',
@@ -32,10 +30,10 @@ const FeedItem = ({ post }) => {
   const handleSubmit = () => {
     axios
       .post('/addComment', { comment: currentComment, postId: post._id })
-      .then((posts) => {})
+      .then(({ data }) => {
+        setCommentsList(data);
+      })
       .catch((err) => {});
-    comments.push(currentComment);
-    setComments(comments);
   };
 
   const handleChange = (event) => setCurrentComment(event.target.value);
@@ -83,7 +81,7 @@ const FeedItem = ({ post }) => {
       ) : null}
       <div>
         <h3>Comments</h3>
-        {comments.map((comment, i) => (
+        {commentsList.map((comment, i) => (
           <p key={i + comment}>{comment}</p>
         ))}
       </div>

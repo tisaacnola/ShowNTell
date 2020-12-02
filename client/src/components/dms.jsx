@@ -83,7 +83,7 @@ const DMs = ({ user, setUser }) => {
               )
                 : (
                   <button onClick={() => {
-                    axios.get('/findUser')
+                    axios.get('/users')
                       .then(({ data }) => {
                         setUsers(data);
                         axios.get('/user')

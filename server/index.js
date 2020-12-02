@@ -6,6 +6,7 @@
 const path = require('path');
 const express = require('express');
 const passport = require('passport');
+const axios = require('axios');
 const cors = require('cors');
 // const $ = require('jquery');
 const session = require('express-session');
@@ -90,17 +91,21 @@ app.get('/user', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
-  Users.find().then((data) => res.status(200).json(data));
+  Users.find()
+    .then((data) => res.status(200).json(data))
+    .catch();
 });
 
 app.get('/posts', (req, res) => {
-  Posts.find().then((posts) => {
-    res.send(posts);
-  });
+  Posts.find()
+    .then((posts) => res.send(posts))
+    .catch();
 });
 
 app.get('/shows', (req, res) => {
-  Shows.find().then((data) => res.status(200).json(data));
+  Shows.find()
+    .then((data) => res.status(200).json(data))
+    .catch();
 });
 
 app.get('/findUser', (req, res) => {
@@ -173,26 +178,39 @@ app.put('/sendMessage/:id/:text', (req, res) => {
 app.post('/addComment', (req, res) => {
   const comment = req.body.comment;
   const postId = req.body.postId;
-  Posts.find().then((posts) => {
-    posts.forEach((post) => {
-      if (post._id === postId) {
-        post.comments[comment] = comment;
-      }
+  Posts.update({ _id: postId }, { $push: { comments: comment } }).then(() => {
+    Posts.find({ _id: postId }).then((post) => {
+      console.log(post);
+      res.send(post[0].comments);
     });
-    res.send(posts);
   });
+
+  // Posts.find({ _id: postId }).then((posts) => {
+  //   posts[0].hello = 'hello';
+  //   console.log(posts[0]);
+  //   // res.send(posts);
+  // });
+});
+
+app.get('/search/:query', (req, res) => {
+  const url = `http://api.tvmaze.com/search/shows?q=${req.params.query}`;
+  return axios(url)
+    .then(({ data }) => data)
+    .then((data) => res.status(200).send(data))
+    .catch(() => console.log('error'));
 });
 
 app.get('/delete', (req, res) => {
   Users.deleteMany()
     .then(() => Posts.deleteMany())
     .then(() => Shows.deleteMany())
-    .then(() => res.status(200).json('done'));
+    .then(() => res.status(200).json('done'))
+    .catch();
 });
 
 app.get('/logout', (req, res) => {
   userInfo = null;
-  res.status(200).json(userInfo);
+  res.status(200).json(userInfo).catch();
 });
 
 app.post('/posts', (req, res) => {

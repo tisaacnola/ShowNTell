@@ -11,11 +11,14 @@ import Sub from './sub.jsx';
 import Post from './post.jsx';
 import DMs from './dms.jsx';
 import Notifs from './notifs.jsx';
+import SearchFeed from './searchFeed.jsx';
 
 const App = () => {
   const [posts, setPosts] = useState();
   const [user, setUser] = useState();
   const [view, setView] = useState('homePage');
+  const [search, setSearch] = useState('');
+  const [searchedShows, setSearchedShows] = useState([]);
 
   const getUser = () => {
     if (!user) {
@@ -52,6 +55,18 @@ const App = () => {
     });
   };
 
+  const searchShows = () => {
+    axios
+      .get(`/search/${search}`)
+      .then(({ data }) => {
+        setView('search');
+        setSearch('');
+        setSearchedShows(data);
+        console.log(data);
+      })
+      .catch();
+  };
+
   const getView = () => {
     if (view === 'homePage') {
       return <HomePage />;
@@ -71,12 +86,22 @@ const App = () => {
     if (view === 'notifs') {
       return <Notifs />;
     }
+    if (view === 'search') {
+      return <SearchFeed shows={searchedShows} />;
+    }
   };
 
   return (
     <div>
       {user ? (
-        <Nav user={user} onClick={changeView} logout={logout} />
+        <Nav
+          user={user}
+          search={search}
+          onClick={changeView}
+          logout={logout}
+          setSearch={setSearch}
+          onSearch={searchShows}
+        />
       ) : (
         <a href="/auth/google" onClick={(e) => setUser(e)}>
           login with google
