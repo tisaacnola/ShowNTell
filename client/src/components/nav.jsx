@@ -9,16 +9,19 @@
 /* eslint-disable react/button-has-type */
 import React, { useState } from 'react';
 import { FaHome, FaStar, FaPen, FaBell, FaEnvelope, FaSearch, FaDoorOpen } from 'react-icons/fa';
+import axios from 'axios';
 import logo from './HomePage/img/logo.jpg';
 
-const Nav = ({ user, onClick, logout }) => (
+const Nav = ({ user, onClick, logout, search, setSearch, onSearch }) => (
   <div>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet" />
     <img
       id="homeButton"
       src={logo}
       alt="logo"
-      onClick={() => onClick('homePage')} className="views" title="home feed"
+      onClick={() => onClick('homePage')}
+      className="views"
+      title="home feed"
     />
     <ul className="navbar">
       <li onClick={() => onClick('home')} className="views" title="home feed">
@@ -48,8 +51,23 @@ const Nav = ({ user, onClick, logout }) => (
         {' '}
         <div className="wrap">
           <div className="search">
-            <input type="text" className="search-term" placeholder="What are you watching?" />
-            <FaSearch type="submit" className="search-button">
+            <input
+              type="text"
+              className="search-term"
+              placeholder="What are you watching?"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  onSearch();
+                }
+              }}
+            />
+            <FaSearch
+              type="submit"
+              className="search-button"
+              onClick={onSearch}
+            >
               <i className="search-icon" />
             </FaSearch>
           </div>
