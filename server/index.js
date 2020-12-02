@@ -13,9 +13,9 @@ const session = require('express-session');
 require('dotenv').config();
 require('./db/index');
 
-// const accountSid = process.env.TWILIO_ACCOUNT_SID;
-// const authToken = process.env.TWILIO_AUTH_TOKEN;
-// const Notifs = require('twilio')(accountSid, authToken);
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
 const { Users, Posts, Shows } = require('./db/schema.js');
 // const { session } = require('passport');
@@ -247,28 +247,28 @@ app.post('/number', (req, res) => {
 
 app.get('/notifs/:text/:id', (req, res) => {
   res.json(req.params);
-  // if (req.params.id === 'null') {
-  //   Notifs.messages
-  //     .create({
-  //       body: req.params.text,
-  //       from: '+12678677568',
-  //       to: userInfo.phone,
-  //     })
-  //     .then((message) => res.json(message.sid))
-  //     .catch((err) => console.log(err));
-  // } else {
-  //   Users.findOne({ id: req.params.id })
-  //     .then((data) => {
-  //       Notifs.messages
-  //         .create({
-  //           body: req.params.text,
-  //           from: '+12678677568',
-  //           to: data.phone,
-  //         })
-  //         .then((message) => res.json(message.sid))
-  //         .catch((err) => console.log(err));
-  //     });
-  // }
+  if (req.params.id === 'null') {
+    Notifs.messages
+      .create({
+        body: req.params.text,
+        from: '+12678677568',
+        to: userInfo.phone,
+      })
+      .then((message) => res.json(message.sid))
+      .catch((err) => console.log(err));
+  } else {
+    Users.findOne({ id: req.params.id })
+      .then((data) => {
+        Notifs.messages
+          .create({
+            body: req.params.text,
+            from: '+12678677568',
+            to: data.phone,
+          })
+          .then((message) => res.json(message.sid))
+          .catch((err) => console.log(err));
+      });
+  }
 });
 
 app.listen(3000, () => {
