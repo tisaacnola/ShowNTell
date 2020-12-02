@@ -79,7 +79,7 @@ const App = () => {
       return <DMs user={user} setUser={setUser} />;
     }
     if (view === 'notifs') {
-      return <Notifs />;
+      return <Notifs user={user} setUser={setUser} />;
     }
     if (view === 'search') {
       return <SearchFeed shows={searchedShows} />;

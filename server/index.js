@@ -12,6 +12,10 @@ const cors = require('cors');
 const session = require('express-session');
 require('dotenv').config();
 require('./db/index');
+
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
 const { Users, Posts, Shows } = require('./db/schema.js');
 // const { session } = require('passport');
@@ -200,8 +204,7 @@ app.get('/delete', (req, res) => {
 
 app.get('/logout', (req, res) => {
   userInfo = null;
-  res.status(200).json(userInfo)
-    .catch();
+  res.status(200).json(userInfo);
 });
 
 app.post('/posts', (req, res) => {
@@ -227,6 +230,28 @@ app.post('/posts', (req, res) => {
     .then(() => res.status(201).send())
     .catch(() => res.status(500).send());
 });
+
+app.post('/number', (req, res) => {
+  const { number } = req.body;
+  if (!number) {
+    Users.updateOne({ id: userInfo.id }, { phone: number })
+      .then((data) => res.json(data));
+  } else {
+    Users.updateOne({ id: userInfo.id }, { phone: number, notifs: [`you will now receive notifications @${number}`] })
+      .then((data) => res.json(data));
+  }
+});
+
+// app.get('/notifs/:text', (req, res) => {
+//   Notifs.messages
+//     .create({
+//       body: req.params.text,
+//       from: '+12678677568',
+//       to: userInfo.phone,
+//     })
+//     .then((message) => res.json(message.sid))
+//     .catch((err) => console.log(err));
+// });
 
 app.listen(3000, () => {
   console.log('http://localhost:3000');

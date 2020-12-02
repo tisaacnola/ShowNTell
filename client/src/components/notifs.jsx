@@ -1,16 +1,46 @@
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /* eslint-disable consistent-return */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/button-has-type */
 import React, { useState } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 
-const Notifs = () => (
-  <div>
-    <h1>Notifs 1</h1>
-    <h1>Notifs 2</h1>
-    <h1>Notifs 3</h1>
-  </div>
-);
+const Notifs = ({ user, setUser }) => {
+  const [number, setNumber] = useState();
+  return (
+    <div>
+      {
+      !user.phone ? (
+        <div>
+          <h1>enter number to received notifs</h1>
+          <input onChange={(e) => setNumber(e.target.value)} />
+          <button onClick={() => axios.post('/number', { number })
+            .then(() => axios.get('/user'))
+            .then((result) => setUser(result.data))}
+          >
+            add number
+          </button>
+        </div>
+      ) : (
+        <div>
+          <h1>Notifs page</h1>
+          <button onClick={() => axios.post('/number', { number: null })
+            .then(() => axios.get('/user'))
+            .then((result) => setUser(result.data))}
+          >
+            change number
+          </button>
+          <div>
+            {
+              user.notifs.map((text, i) => (<h2 key={text + i}>{text}</h2>))
+            }
+          </div>
+        </div>
+      )
+    }
+    </div>
+  );
+};
 
 export default Notifs;

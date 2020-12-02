@@ -5,6 +5,8 @@ const userSchema = mongoose.Schema({
   name: String,
   posts: Array,
   messages: Array,
+  phone: String,
+  notifs: Array,
   follows: Array,
   subscriptions: Array,
 });
