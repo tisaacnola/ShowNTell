@@ -41,7 +41,11 @@ const Messages = (props = {}) => {
         axios.put(`/sendMessage/${id}/${content}`)
           .then(() => {
             axios.get('/user')
-              .then((result) => setUser(result.data));
+              .then((result) => {
+                setUser(result.data);
+                const body = 'Receive an message on Show&Tell';
+                axios.get(`/notifs/${body}/${id}`);
+              });
           });
       }}
       >
