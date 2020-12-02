@@ -188,7 +188,6 @@ app.post('/liked', (req, res) => {
 });
 
 app.post('/addComment', (req, res) => {
-  //this is an object...
   const comment = req.body.comment;
   const postId = req.body.postId;
   Posts.updateOne({ _id: postId }, { $push: { comments: comment } }).then(
