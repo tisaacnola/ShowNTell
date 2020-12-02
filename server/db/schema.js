@@ -13,6 +13,7 @@ const Users = mongoose.model('Users', userSchema);
 
 const showSchema = mongoose.Schema({
   name: String,
+  id: Number,
   posts: Array,
   subscriberCount: Number,
 });
