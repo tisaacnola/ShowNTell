@@ -231,7 +231,7 @@ app.get('/delete', (req, res) => {
 
 app.get('/logout', (req, res) => {
   userInfo = null;
-  res.status(200).json(userInfo).catch();
+  res.status(200).json(userInfo);
 });
 
 app.post('/posts', (req, res) => {
