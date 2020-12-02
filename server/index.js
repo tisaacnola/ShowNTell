@@ -271,6 +271,17 @@ app.get('/notifs/:text/:id', (req, res) => {
   }
 });
 
+app.delete('/notifs/:index', (req, res) => {
+  const replacementNotif = [];
+  for (let i = 0; i < userInfo.notifs.length; i += 1) {
+    if (i !== Number(req.params.index)) {
+      replacementNotif.push(userInfo.notifs[i]);
+    }
+  }
+  Users.update({ id: userInfo.id }, { notifs: replacementNotif })
+    .then((data) => res.json(data));
+});
+
 app.listen(3000, () => {
   console.log('http://localhost:3000');
 });
