@@ -6,29 +6,34 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './notifs.css';
+import { FaTrashAlt } from 'react-icons/fa';
 
 const Notifs = ({ user, setUser }) => {
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Work+Sans:wght@300&display=swap" rel="stylesheet" />;
   const [number, setNumber] = useState();
-  return (
-    <div>
-      {
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Work+Sans:wght@300&display=swap" rel="stylesheet" />;
+    return (
+      <div>
+        {
       !user.phone ? (
         <div>
-          <h1 id="enter-number-header"> enter number to receive notifications:</h1>
+          <h1 id="enter-number-header"> enter number to received notifs</h1>
           <input id="enter-number-box" onChange={(e) => setNumber(e.target.value)} />
           <button
             id="enter-number-button"
             onClick={() => axios.post('/number', { number })
               .then(() => axios.get('/user'))
-              .then((result) => setUser(result.data))}
+              .then((result) => {
+                setUser(result.data);
+                const body = 'Welcome to Show&Tell! Congrats on your first notification';
+                axios.get(`/notifs/${body}/null`);
+              })}
           >
             add number
           </button>
         </div>
       ) : (
         <div>
-          <h1 id="header"> Notifs page</h1>
+          <h1 id="header">Notifs page</h1>
           <button
             id="change-number-button"
             onClick={() => axios.post('/number', { number: null })
@@ -39,14 +44,34 @@ const Notifs = ({ user, setUser }) => {
           </button>
           <div id="receive-notifs-message">
             {
-              user.notifs.map((text, i) => (<h2 key={text + i}>{text}</h2>))
+              // maping over here
+              user.notifs.map((text, i) => (
+                <div key={text + i}>
+                  <h2>{text}</h2>
+                  <FaTrashAlt
+                    title="delete notification"
+                    id="trash-icon"
+                    onClick={() => {
+                      axios.delete(`/notifs/${i}`)
+                        .then(() => {
+                          console.log('hit one');
+                          axios.get('/user')
+                            .then((result) => {
+                              console.log('hit two');
+                              setUser(result.data);
+                            });
+                        });
+                    }}
+                  />
+                </div>
+              ))
             }
           </div>
         </div>
       )
     }
-    </div>
-  );
+      </div>
+    );
 };
 
 export default Notifs;

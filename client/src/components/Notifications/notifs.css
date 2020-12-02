@@ -51,6 +51,16 @@
   margin-left: 20%;
 }
 
-h2{
+/* h2{
   margin-left: 20%;
+} */
+
+#trash-icon {
+  color: #f2d75e;
+  display: inline;
+  margin-left: 30%
+}
+
+#trash-icon:hover {
+  color: red;
 }
