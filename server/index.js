@@ -242,16 +242,31 @@ app.post('/number', (req, res) => {
   }
 });
 
-// app.get('/notifs/:text', (req, res) => {
-//   Notifs.messages
-//     .create({
-//       body: req.params.text,
-//       from: '+12678677568',
-//       to: userInfo.phone,
-//     })
-//     .then((message) => res.json(message.sid))
-//     .catch((err) => console.log(err));
-// });
+app.get('/notifs/:text/:id', (req, res) => {
+  res.json(req.params);
+  // if (req.params.id === 'null') {
+  //   Notifs.messages
+  //     .create({
+  //       body: req.params.text,
+  //       from: '+12678677568',
+  //       to: userInfo.phone,
+  //     })
+  //     .then((message) => res.json(message.sid))
+  //     .catch((err) => console.log(err));
+  // } else {
+  //   Users.findOne({ id: req.params.id })
+  //     .then((data) => {
+  //       Notifs.messages
+  //         .create({
+  //           body: req.params.text,
+  //           from: '+12678677568',
+  //           to: data.phone,
+  //         })
+  //         .then((message) => res.json(message.sid))
+  //         .catch((err) => console.log(err));
+  //     });
+  // }
+});
 
 app.listen(3000, () => {
   console.log('http://localhost:3000');
