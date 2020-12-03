@@ -1,0 +1,56 @@
+.search-results-header{
+  font-family: 'Work Sans', sans-serif;
+}
+
+ #search-feed-entry {
+  display: flex;
+  overflow-x: auto;
+}
+
+#search-feed-entry:hover{
+  transform: scale(1.1);
+  box-shadow: 0px 0px 15px 0px;
+  background-color: #dd3e42;
+} */
+
+.card-content{
+  margin: 1rem;
+  margin-top: 0.5rem;
+  color: white;
+  font-family: 'Work Sans', sans-serif;
+}
+
+ .show-name {
+  margin: 1rem;
+  margin-top: 0.5rem;
+  color: white;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.show-summary {
+  margin: 1rem;
+  margin-top: 0.5rem;
+  color: white;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.show-img {
+  margin: 1rem;
+  margin-top: 0.5rem;
+  color: white;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.show-card {
+  font-family: 'Work Sans', sans-serif;
+  background-color: #6d6ca6;
+  display: flex;
+  overflow-x: auto;
+  width: 30%;
+   overflow:hidden;
+   box-shadow: 0px 0px 15px -5px;
+  transition: ease-in;
+  display:inline-block;
+  margin-left: 2%;
+  margin-bottom: 5%;
+  }

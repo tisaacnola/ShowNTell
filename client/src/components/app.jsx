@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-return-assign */
 /* eslint-disable import/no-named-as-default */
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable import/extensions */
@@ -6,32 +8,44 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import HomePage from './HomePage/HomePage.jsx';
 import Nav from './nav.jsx';
-import HomeFeed from './homeFeed.jsx';
-import Sub from './sub.jsx';
-import Post from './post.jsx';
-import DMs from './dms.jsx';
-import Notifs from './notifs.jsx';
-import SearchFeed from './searchFeed.jsx';
+import HomeFeed from './HomeFeed/homeFeed.jsx';
+import Sub from './Subscriptions/sub.jsx';
+import Post from './CreatePost/post.jsx';
+import DMs from './DMs/dms.jsx';
+import Notifs from './Notifications/notifs.jsx';
+import SearchFeed from './SearchBar/searchFeed.jsx';
 import ShowFeed from './showFeed.jsx';
 
+let executed = false;
 const App = () => {
   const [posts, setPosts] = useState();
   const [user, setUser] = useState();
   const [view, setView] = useState('homePage');
   const [search, setSearch] = useState('');
   const [searchedShows, setSearchedShows] = useState([]);
+  const [userClicked, setUsersClicked] = useState(false);
 
   const getUser = () => {
     if (!user) {
-      axios.get('/user')
-        .then(({ data }) => setUser(data));
+      axios
+        .get('/user')
+        .then(({ data }) => setUser(data))
+        .catch();
     }
   };
 
   const getPosts = () => {
-    if (!posts && user) {
-      axios.get('/posts').then(({ data }) => setPosts(data));
+    // if (!posts && user) {
+    if (!userClicked) {
+      executed = !executed;
+      axios
+        .get('/posts')
+        .then(({ data }) => {
+          setPosts(data);
+        })
+        .catch((err) => console.log(err));
     }
+    // }
   };
 
   const changeView = (newView) => {
@@ -39,12 +53,11 @@ const App = () => {
   };
 
   const logout = () => {
-    axios.get('/logout')
-      .then(() => {
-        setView('homePage');
-        setUser(null);
-        setPosts(null);
-      });
+    axios.get('/logout').then(() => {
+      setView('homePage');
+      setUser(null);
+      setPosts(null);
+    });
   };
 
   const createPost = (post) => {
@@ -62,6 +75,20 @@ const App = () => {
       setSearch('');
       setSearchedShows(data);
     }).catch();
+  };
+
+  const handleUserClick = (e) => {
+    setUsersClicked(!userClicked);
+    const usersName = e.target.innerHTML;
+    axios.get(`/user/posts/${usersName}`).then(({ data }) => {
+      console.log('TESTING', data);
+      setPosts(data);
+    });
+  };
+
+  const handleShowFeed = () => {
+    setUsersClicked(!userClicked);
+    getPosts();
   };
 
   const addShow = (show) => {
@@ -87,13 +114,13 @@ const App = () => {
       return <Post user={user} createPost={createPost} />;
     }
     if (view === 'home') {
-      return <HomeFeed posts={posts} />;
+      return <HomeFeed handleUserClick={handleUserClick} posts={posts} />;
     }
     if (view === 'DMs') {
       return <DMs user={user} setUser={setUser} />;
     }
     if (view === 'notifs') {
-      return <Notifs />;
+      return <Notifs user={user} setUser={setUser} />;
     }
     if (view === 'search') {
       return <SearchFeed shows={searchedShows} onClick={addShow} />;
@@ -116,14 +143,18 @@ const App = () => {
         )
         : (
           <a
+            className="login-button"
             href="/auth/google"
             onClick={(e) => setUser(e)}
           >
-            login with google
+            LOGIN WITH GOOGLE
           </a>
         )}
       {getUser()}
-      {getPosts()}
+      {!executed ? getPosts() : (executed = !executed)}
+      {userClicked ? (
+        <button onClick={handleShowFeed}>Show Home Feed</button>
+      ) : null}
       {getView()}
     </div>
   );

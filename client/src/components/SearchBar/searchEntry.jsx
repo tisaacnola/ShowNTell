@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import './search.css';
 
 const SearchFeedEntry = ({ show, onClick }) => {
   const getSummary = () => {
@@ -36,10 +37,12 @@ const SearchFeedEntry = ({ show, onClick }) => {
   };
 
   return (
-    <div style={{ color: 'white' }} value={show.id} onClick={() => onClick(show)}>
-      <h3>{show.name}</h3>
-      <div>{getSummary()}</div>
-      <img src={getImage()} alt="" />
+    <div className="show-card">
+      <div style={{ color: 'white' }} value={show.id} onClick={() => onClick(show)}>
+        <h3 className="show-name">{show.name}</h3>
+        <div className="show-summary">{getSummary()}</div>
+        <img className="show-img" src={getImage()} alt="" />
+      </div>
     </div>
   );
 };

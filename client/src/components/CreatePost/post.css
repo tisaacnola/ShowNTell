@@ -1,0 +1,96 @@
+#header {
+  color:white;
+  font-weight: bold;
+  font-size: 32px;
+}
+
+#post-sub-header {
+  font-family: 'Work Sans', sans-serif;
+  margin-left: 12%;
+  color: #f0ccb3;
+  font-style: italic;
+  width: 10%;
+  text-align: center;
+  font-size: 14px;
+}
+
+.create-post-form{
+  margin-left: 30%;
+  border-style: solid;
+  background-color: #6d6ca6;
+  width: 35%;
+  border-radius: 25px;
+  border-color: #6d6ca6;
+}
+
+.choose-show {
+  font-family: 'Work Sans', sans-serif;
+  background-color:#6d6ca6;
+  display: block;
+  margin-left: 5%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+  font-size: 20px;
+}
+
+#post-title {
+  font-family: 'Work Sans', sans-serif;
+  background-color:#6d6ca6;
+  border: 0;
+  display: block;
+  margin-left: 5%;
+  outline: none;
+  color:#bfbed2;
+  font-size: 20px;
+}
+
+#post-text {
+  font-family: 'Work Sans', sans-serif;
+  background-color:#6d6ca6;
+  display: block;
+  margin-left: 5%;
+  outline: none;
+  height: 80px;
+  width: 250px;
+  color:white;
+  font-size: 20px;
+  text-align: top;
+  border: 0;
+  resize: none;
+}
+
+#submit-button {
+  font-family: 'Work Sans', sans-serif;
+  border: 0;
+  display: block;
+  margin-top: 2%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 12px;
+  background-color: white;
+  padding: 10px 24px;
+}
+
+#submit-button:hover {
+  background-color: #bfbed2;
+  color:white;
+}
+
+::placeholder{
+  color:#bfbed2;
+}
+
+#error-message {
+  font-family: 'Work Sans', sans-serif;
+  font-style: italic;
+  font-weight: bold;
+  color: #dd3e42;
+  margin-left: 35%;
+}
+
+#pic {
+  height: 28%;
+  width: 28%;
+  display: inline-block;
+  margin-left: 65%
+}
