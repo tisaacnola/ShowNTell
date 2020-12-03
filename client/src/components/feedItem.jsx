@@ -9,6 +9,7 @@ const FeedItem = ({ post, handleUserClick }) => {
   const [commentClicked, setCommentClicked] = useState(false);
   const [respondClicked, setRespondClicked] = useState(false);
   const [respondId, setRespondId] = useState('');
+  const [likedCount, setLikedCount] = useState(post.likedCount);
 
   const [currentComment, setCurrentComment] = useState('');
   const [commentsList, setCommentsList] = useState(post.comments || []);
@@ -34,7 +35,9 @@ const FeedItem = ({ post, handleUserClick }) => {
     axios
       .post('/liked', { postId: post._id, liked: !liked })
       .then(({ data }) => {
-        setLiked(data);
+        console.log('DATA', data);
+        setLiked(data.liked);
+        setLikedCount(data.likedCount);
       })
       .catch((err) => console.log(err));
   };
@@ -110,6 +113,7 @@ const FeedItem = ({ post, handleUserClick }) => {
             Like
           </button>
         )}
+        <p style={{ display: 'inline' }}>{likedCount}</p>
         <button onClick={handleCommentClicked} style={buttons}>
           Comment
         </button>

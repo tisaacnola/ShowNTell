@@ -189,11 +189,20 @@ app.put('/sendMessage/:id/:text', (req, res) => {
 app.post('/liked', (req, res) => {
   const postId = req.body.postId;
   const liked = req.body.liked;
-  Posts.updateOne({ _id: postId }, { liked }).then((data) => {
-    Posts.find({ _id: postId }).then((post) => {
-      res.send(post[0].liked);
-    });
-  });
+  const addOrMinus = liked === true ? 1 : -1;
+
+  Posts.updateOne({ _id: postId }, { $inc: { likedCount: addOrMinus }, liked })
+    .then((data) => {
+      Posts.find({ _id: postId }).then((post) => {
+        const body = {
+          liked: post[0].liked,
+          likedCount: post[0].likedCount,
+        };
+        console.log('RIGHT HERE', body);
+        res.send(body);
+      });
+    })
+    .catch((err) => console.log(err));
 });
 
 app.post('/addComment', (req, res) => {
@@ -263,6 +272,7 @@ app.post('/posts', (req, res) => {
     comments: {},
     createdAt: new Date(),
     liked: false,
+    likedCount: 0,
   })
     .then((post) => {
       Users.findById(poster)
