@@ -8,7 +8,6 @@ const express = require('express');
 const passport = require('passport');
 const axios = require('axios');
 const cors = require('cors');
-// const $ = require('jquery');
 const session = require('express-session');
 require('dotenv').config();
 require('./db/index');
@@ -111,8 +110,18 @@ app.get('/shows', (req, res) => {
 });
 
 app.get('/findUser', (req, res) => {
+  // Users.remove().then(
   Users.find()
     .then((data) => res.json(data))
+    .catch();
+  // );
+});
+
+app.get('/user/posts/:name', (req, res) => {
+  console.log('PARAMS', req.params.name);
+  const user = req.params.name;
+  Posts.find({ name: user })
+    .then((posts) => res.send(posts))
     .catch();
 });
 
