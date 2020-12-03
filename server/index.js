@@ -207,10 +207,12 @@ app.post('/liked', (req, res) => {
 
 app.post('/addComment', (req, res) => {
   const comment = req.body.comment;
+  console.log('----', comment);
   const postId = req.body.postId;
   Posts.updateOne({ _id: postId }, { $push: { comments: comment } }).then(
     () => {
       Posts.find({ _id: postId }).then((post) => {
+        console.log(post);
         res.send(post[0].comments);
       });
     }
