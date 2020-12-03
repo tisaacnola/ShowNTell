@@ -16,7 +16,7 @@ const DMs = ({ user, setUser }) => {
   const [find, setfind] = useState();
   return (
     <div>
-      { messages ? <Messages id={messages} messages={user.messages} setUser={setUser} />
+      { messages ? <Messages id={messages} messages={user.messages} user={user} setUser={setUser} />
         : (
           <div>
             <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Work+Sans:wght@300&display=swap" rel="stylesheet" />

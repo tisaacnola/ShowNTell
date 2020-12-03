@@ -1,3 +1,5 @@
+/* eslint-disable no-alert */
+/* eslint-disable use-isnan */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /* eslint-disable consistent-return */
@@ -10,6 +12,7 @@ import { FaTrashAlt } from 'react-icons/fa';
 
 const Notifs = ({ user, setUser }) => {
   const [number, setNumber] = useState();
+  const [testNumber, setTestNumber] = useState(true);
     <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Work+Sans:wght@300&display=swap" rel="stylesheet" />;
     return (
       <div>
@@ -17,16 +20,23 @@ const Notifs = ({ user, setUser }) => {
       !user.phone ? (
         <div>
           <h1 id="enter-number-header"> enter number to received notifs</h1>
-          <input id="enter-number-box" onChange={(e) => setNumber(e.target.value)} />
+          <input id="enter-number-box" onChange={(e) => setNumber(e.target.value)} placeholder="Ex:555XXXXXXX" />
           <button
             id="enter-number-button"
-            onClick={() => axios.post('/number', { number })
-              .then(() => axios.get('/user'))
-              .then((result) => {
-                setUser(result.data);
-                const body = 'Welcome to Show&Tell! Congrats on your first notification';
-                axios.get(`/notifs/${body}/null`);
-              })}
+            onClick={() => {
+              if (number.length >= 10 && !Number.isNaN(Number(number))) {
+                setTestNumber('true');
+                axios.post('/number', { number })
+                  .then(() => axios.get('/user'))
+                  .then((result) => {
+                    setUser(result.data);
+                    const body = 'Welcome to Show&Tell! Congrats on your first notification';
+                    axios.get(`/notifs/${body}/null`);
+                  });
+              } else {
+                setTestNumber(false);
+              }
+            }}
           >
             add number
           </button>
@@ -54,10 +64,8 @@ const Notifs = ({ user, setUser }) => {
                     onClick={() => {
                       axios.delete(`/notifs/${i}`)
                         .then(() => {
-                          console.log('hit one');
                           axios.get('/user')
                             .then((result) => {
-                              console.log('hit two');
                               setUser(result.data);
                             });
                         });
@@ -70,6 +78,7 @@ const Notifs = ({ user, setUser }) => {
         </div>
       )
     }
+        <div>{(testNumber) ? null : <h2>invalid number</h2>}</div>
       </div>
     );
 };
