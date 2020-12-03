@@ -8,10 +8,13 @@ const express = require('express');
 const passport = require('passport');
 const axios = require('axios');
 const cors = require('cors');
-// const $ = require('jquery');
 const session = require('express-session');
 require('dotenv').config();
 require('./db/index');
+
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
 const { Users, Posts, Shows } = require('./db/schema.js');
 // const { session } = require('passport');
@@ -91,20 +94,38 @@ app.get('/user', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
-  Users.find().then((data) => res.status(200).json(data)).catch();
+  Users.find()
+    .then((data) => res.status(200).json(data))
+    .catch();
 });
 
 app.get('/posts', (req, res) => {
-  Posts.find().then((posts) => res.send(posts)).catch();
+  // Posts.remove().then(
+  Posts.find()
+    .then((posts) => res.send(posts))
+    .catch();
+  // );
 });
 
 app.get('/shows', (req, res) => {
-  Shows.find().then((data) => res.status(200).json(data)).catch();
+  Shows.find()
+    .then((data) => res.status(200).json(data))
+    .catch();
 });
 
 app.get('/findUser', (req, res) => {
+  // Users.remove().then(
   Users.find()
     .then((data) => res.json(data))
+    .catch();
+  // );
+});
+
+app.get('/user/posts/:name', (req, res) => {
+  console.log('PARAMS', req.params.name);
+  const user = req.params.name;
+  Posts.find({ name: user })
+    .then((posts) => res.send(posts))
     .catch();
 });
 
@@ -148,7 +169,9 @@ app.put('/sendMessage/:id/:text', (req, res) => {
       if (test) {
         Users.updateOne(
           { id: Number(req.params.id) },
-          { messages: replace },
+          { messages: replace,
+            notifs: [...data.notifs, `${userInfo.name} messaged you`],
+          },
         ).then((result) => res.json(result));
       } else {
         // console.log(content, 'here');
@@ -163,23 +186,66 @@ app.put('/sendMessage/:id/:text', (req, res) => {
                 text: [{ name: userInfo.name, message: req.params.text }],
               },
             ],
+            notifs: [...data.notifs, `${userInfo.name} messaged you`],
           },
         ).then((result) => res.json(result));
       }
     });
 });
 
+app.post('/liked', (req, res) => {
+  const postId = req.body.postId;
+  const liked = req.body.liked;
+  const addOrMinus = liked === true ? 1 : -1;
+
+  Posts.updateOne({ _id: postId }, { $inc: { likedCount: addOrMinus }, liked })
+    .then((data) => {
+      Posts.find({ _id: postId }).then((post) => {
+        const body = {
+          liked: post[0].liked,
+          likedCount: post[0].likedCount,
+        };
+        console.log('RIGHT HERE', body);
+        res.send(body);
+      });
+    })
+    .catch((err) => console.log(err));
+});
+
 app.post('/addComment', (req, res) => {
   const comment = req.body.comment;
+  console.log('----', comment);
   const postId = req.body.postId;
-  Posts.find().then((posts) => {
-    posts.forEach((post) => {
-      if (post._id === postId) {
-        post.comments[comment] = comment;
-      }
+  Posts.updateOne({ _id: postId }, { $push: { comments: comment } }).then(
+    () => {
+      Posts.find({ _id: postId }).then((post) => {
+        console.log(post);
+        res.send(post[0].comments);
+      });
+    },
+  );
+});
+
+app.post('/addResponse', (req, res) => {
+  const update = (comments) => {
+    comments.forEach((comment) => {});
+  };
+  Posts.updateOne(
+    { 'comments.currentComment': req.body.comment.parentComment },
+    {
+      $push: {
+        'comments.$.childComments': req.body.comment.currentComment,
+      },
+    },
+  )
+    .then(() => {
+      Posts.find({ _id: req.body.comment.postId }).then((post) => {
+        res.send(post[0].comments);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-    res.send(posts);
-  });
 });
 
 app.get('/search/:query', (req, res) => {
@@ -200,19 +266,22 @@ app.get('/delete', (req, res) => {
 
 app.get('/logout', (req, res) => {
   userInfo = null;
-  res.status(200).json(userInfo)
-    .catch();
+  res.status(200).json(userInfo);
 });
 
 app.post('/posts', (req, res) => {
-  const { title, content, poster, show } = req.body;
+  const { title, content, poster, show, name } = req.body;
+
   return Posts.create({
     title,
     content,
     user: poster,
+    name,
     show,
     comments: {},
     createdAt: new Date(),
+    liked: false,
+    likedCount: 0,
   })
     .then((post) => {
       Users.findById(poster)
@@ -226,6 +295,54 @@ app.post('/posts', (req, res) => {
     })
     .then(() => res.status(201).send())
     .catch(() => res.status(500).send());
+});
+
+app.post('/number', (req, res) => {
+  const { number } = req.body;
+  if (!number) {
+    Users.updateOne({ id: userInfo.id }, { phone: number })
+      .then((data) => res.json(data));
+  } else {
+    Users.updateOne({ id: userInfo.id }, { phone: number, notifs: [`you will now receive notifications @ ${number}   `] })
+      .then((data) => res.json(data));
+  }
+});
+
+app.get('/notifs/:text/:id', (req, res) => {
+  res.json(req.params);
+  if (req.params.id === 'null') {
+    Notifs.messages
+      .create({
+        body: req.params.text,
+        from: '+12678677568',
+        to: userInfo.phone,
+      })
+      .then((message) => res.json(message.sid))
+      .catch((err) => console.log(err));
+  } else {
+    Users.findOne({ id: req.params.id })
+      .then((data) => {
+        Notifs.messages
+          .create({
+            body: req.params.text,
+            from: '+12678677568',
+            to: data.phone,
+          })
+          .then((message) => res.json(message.sid))
+          .catch((err) => console.log(err));
+      });
+  }
+});
+
+app.delete('/notifs/:index', (req, res) => {
+  const replacementNotif = [];
+  for (let i = 0; i < userInfo.notifs.length; i += 1) {
+    if (i !== Number(req.params.index)) {
+      replacementNotif.push(userInfo.notifs[i]);
+    }
+  }
+  Users.update({ id: userInfo.id }, { notifs: replacementNotif })
+    .then((data) => res.json(data));
 });
 
 app.listen(3000, () => {

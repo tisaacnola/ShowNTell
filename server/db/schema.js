@@ -5,6 +5,8 @@ const userSchema = mongoose.Schema({
   name: String,
   posts: Array,
   messages: Array,
+  phone: String,
+  notifs: Array,
   follows: Array,
   subscriptions: Array,
 });
@@ -21,11 +23,14 @@ const Shows = mongoose.model('Shows', showSchema);
 
 const postSchema = mongoose.Schema({
   user: String,
+  name: String,
   show: String,
   title: String,
   content: String,
   comments: Object,
   createdAt: Date,
+  liked: Boolean,
+  likedCount: Number,
 });
 
 const Posts = mongoose.model('Posts', postSchema);
