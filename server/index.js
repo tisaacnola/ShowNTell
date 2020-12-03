@@ -8,7 +8,6 @@ const express = require('express');
 const passport = require('passport');
 const axios = require('axios');
 const cors = require('cors');
-// const $ = require('jquery');
 const session = require('express-session');
 require('dotenv').config();
 require('./db/index');
@@ -95,20 +94,38 @@ app.get('/user', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
-  Users.find().then((data) => res.status(200).json(data)).catch();
+  Users.find()
+    .then((data) => res.status(200).json(data))
+    .catch();
 });
 
 app.get('/posts', (req, res) => {
-  Posts.find().then((posts) => res.send(posts)).catch();
+  // Posts.remove().then(
+  Posts.find()
+    .then((posts) => res.send(posts))
+    .catch();
+  // );
 });
 
 app.get('/shows', (req, res) => {
-  Shows.find().then((data) => res.status(200).json(data)).catch();
+  Shows.find()
+    .then((data) => res.status(200).json(data))
+    .catch();
 });
 
 app.get('/findUser', (req, res) => {
+  // Users.remove().then(
   Users.find()
     .then((data) => res.json(data))
+    .catch();
+  // );
+});
+
+app.get('/user/posts/:name', (req, res) => {
+  console.log('PARAMS', req.params.name);
+  const user = req.params.name;
+  Posts.find({ name: user })
+    .then((posts) => res.send(posts))
     .catch();
 });
 
@@ -176,17 +193,59 @@ app.put('/sendMessage/:id/:text', (req, res) => {
     });
 });
 
+app.post('/liked', (req, res) => {
+  const postId = req.body.postId;
+  const liked = req.body.liked;
+  const addOrMinus = liked === true ? 1 : -1;
+
+  Posts.updateOne({ _id: postId }, { $inc: { likedCount: addOrMinus }, liked })
+    .then((data) => {
+      Posts.find({ _id: postId }).then((post) => {
+        const body = {
+          liked: post[0].liked,
+          likedCount: post[0].likedCount,
+        };
+        console.log('RIGHT HERE', body);
+        res.send(body);
+      });
+    })
+    .catch((err) => console.log(err));
+});
+
 app.post('/addComment', (req, res) => {
   const comment = req.body.comment;
+  console.log('----', comment);
   const postId = req.body.postId;
-  Posts.find().then((posts) => {
-    posts.forEach((post) => {
-      if (post._id === postId) {
-        post.comments[comment] = comment;
-      }
+  Posts.updateOne({ _id: postId }, { $push: { comments: comment } }).then(
+    () => {
+      Posts.find({ _id: postId }).then((post) => {
+        console.log(post);
+        res.send(post[0].comments);
+      });
+    },
+  );
+});
+
+app.post('/addResponse', (req, res) => {
+  const update = (comments) => {
+    comments.forEach((comment) => {});
+  };
+  Posts.updateOne(
+    { 'comments.currentComment': req.body.comment.parentComment },
+    {
+      $push: {
+        'comments.$.childComments': req.body.comment.currentComment,
+      },
+    },
+  )
+    .then(() => {
+      Posts.find({ _id: req.body.comment.postId }).then((post) => {
+        res.send(post[0].comments);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-    res.send(posts);
-  });
 });
 
 app.get('/search/:query', (req, res) => {
@@ -211,14 +270,18 @@ app.get('/logout', (req, res) => {
 });
 
 app.post('/posts', (req, res) => {
-  const { title, content, poster, show } = req.body;
+  const { title, content, poster, show, name } = req.body;
+
   return Posts.create({
     title,
     content,
     user: poster,
+    name,
     show,
     comments: {},
     createdAt: new Date(),
+    liked: false,
+    likedCount: 0,
   })
     .then((post) => {
       Users.findById(poster)
