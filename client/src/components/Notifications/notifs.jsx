@@ -1,3 +1,6 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable prefer-const */
+/* eslint-disable no-shadow */
 /* eslint-disable no-alert */
 /* eslint-disable use-isnan */
 /* eslint-disable no-console */
@@ -9,9 +12,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './notifs.css';
 import { FaTrashAlt } from 'react-icons/fa';
+import pic from './notifpic.png';
 
 const Notifs = ({ user, setUser }) => {
-  const [number, setNumber] = useState();
+  const [number, setNumber] = useState('');
   const [testNumber, setTestNumber] = useState(true);
     <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Work+Sans:wght@300&display=swap" rel="stylesheet" />;
     return (
@@ -19,7 +23,7 @@ const Notifs = ({ user, setUser }) => {
         {
       !user.phone ? (
         <div>
-          <h1 id="enter-number-header"> enter number to received notifs</h1>
+          <h1 id="enter-number-header"> enter phone number to receive notifications:</h1>
           <input id="enter-number-box" onChange={(e) => setNumber(e.target.value)} placeholder="Ex:555XXXXXXX" />
           <button
             id="enter-number-button"
@@ -43,7 +47,8 @@ const Notifs = ({ user, setUser }) => {
         </div>
       ) : (
         <div>
-          <h1 id="header">Notifs page</h1>
+          <h1 id="header">Notifications</h1>
+          <div id="change-number-msg"> want to change phone number currently receiving notifications? </div>
           <button
             id="change-number-button"
             onClick={() => axios.post('/number', { number: null })
@@ -52,12 +57,13 @@ const Notifs = ({ user, setUser }) => {
           >
             change number
           </button>
-          <div id="receive-notifs-message">
+          <div id="all-notif"> All notifications:</div>
+          <div>
             {
               // maping over here
               user.notifs.map((text, i) => (
                 <div key={text + i}>
-                  <h2>{text}</h2>
+                  <h2 id="receive-notifs-message">{text}</h2>
                   <FaTrashAlt
                     title="delete notification"
                     id="trash-icon"
@@ -79,6 +85,7 @@ const Notifs = ({ user, setUser }) => {
       )
     }
         <div>{(testNumber) ? null : <h2>invalid number</h2>}</div>
+        <img id="notif-pic" src={pic} alt="pic" />
       </div>
     );
 };

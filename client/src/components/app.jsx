@@ -6,12 +6,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import HomePage from './HomePage/HomePage.jsx';
 import Nav from './nav.jsx';
-import HomeFeed from './homeFeed.jsx';
-import Sub from './sub.jsx';
+import HomeFeed from './HomeFeed/homeFeed.jsx';
+import Sub from './Subscriptions/sub.jsx';
 import Post from './CreatePost/post.jsx';
 import DMs from './DMs/dms.jsx';
 import Notifs from './Notifications/notifs.jsx';
-import SearchFeed from './searchFeed.jsx';
+import SearchFeed from './SearchBar/searchFeed.jsx';
 
 const App = () => {
   const [posts, setPosts] = useState();

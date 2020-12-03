@@ -20,7 +20,7 @@ li {
   }
 
   li:hover {
-    color: #36b1a1;
+    color: #408ac8;
   }
 
 .navbar {
@@ -49,7 +49,7 @@ li {
 .search-term {
   font-family: 'Work Sans', sans-serif;
   width: 100%;
-  border: 3px solid #36b2a1;
+  border: 3px solid #408ac8;
   border-right: none;
   padding: 5px;
   height: 20px;
@@ -60,7 +60,7 @@ li {
 
 .search-term:focus{
   font-family: 'Work Sans', sans-serif;
-  color:#36b2a1;
+  color:#408ac8;
 }
 
 .search-button {
@@ -68,8 +68,8 @@ li {
   position: absolute;
   width: 21%;
   height: 100%;
-  border: 2px solid ##36b2a1;
-  background: #36b2a1;
+  border: 2px solid ##408ac8;
+  background: #408ac8;
   text-align: center;
   color: #fff;
   border-radius: 0 8px 5px 0;
