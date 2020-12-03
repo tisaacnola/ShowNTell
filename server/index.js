@@ -282,6 +282,12 @@ app.post('/posts', (req, res) => {
     .catch(() => res.status(500).send());
 });
 
+app.get('/post/:id', (req, res) => {
+  Posts.findById(req.params.id)
+    .then((post) => res.status(200).send(post))
+    .catch(() => res.status(500).send());
+});
+
 app.listen(3000, () => {
   console.log('http://localhost:3000');
 });
