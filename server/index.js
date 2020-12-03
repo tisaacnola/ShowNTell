@@ -222,12 +222,11 @@ app.post('/addResponse', (req, res) => {
   )
     .then((post) => {
       Posts.find({ _id: req.body.comment.postId }).then((post) => {
-        console.log('HEER FIRST', post[0].comments);
         res.send(post[0].comments);
       });
     })
     .catch((err) => {
-      console.log('nowowwo');
+      console.log(err);
     });
 });
 
