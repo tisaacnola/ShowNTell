@@ -1,6 +1,7 @@
 /* eslint-disable import/extensions */
 import React, { useState } from 'react';
 import FeedItem from './feedItem.jsx';
+import './homefeed.css';
 
 const HomeFeed = ({ posts }) => (
   <div>

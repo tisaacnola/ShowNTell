@@ -22,14 +22,14 @@ const Messages = (props = {}) => {
       <div className="message-content">
         {
         message
-          ? message.text.map((data) => {
+          ? message.text.map((data, i) => {
             let test = true;
             if (current === data.name) {
               test = false;
             }
             current = data.name;
             return (
-              <div key={data.message}>
+              <div key={data.message + i}>
                 <h2>{test ? data.name : null}</h2>
                 <div>{data.message}</div>
               </div>
