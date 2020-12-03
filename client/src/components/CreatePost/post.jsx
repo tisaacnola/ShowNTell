@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import './post.css';
+import axios from 'axios';
 import pic from './createpost.png';
+import './post.css';
 
 const Post = ({ user, createPost }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [show, setShow] = useState('');
+  const [show, setShow] = useState('none');
   const [error, setError] = useState('');
+  const [subs, setSubs] = useState([]);
+  const [gotSubs, setGotSubs] = useState(false);
 
   const onClick = () => {
     if (show !== 'none' && title !== '') {
@@ -15,6 +18,21 @@ const Post = ({ user, createPost }) => {
       setContent('');
     } else if (title === '') {
       setError('Must have a title.');
+    } else if (show === 'none') {
+      setError('Please choose a show to talk about.');
+    }
+  };
+
+  const getSubs = () => {
+    if (!gotSubs) {
+      const promises = user.subscriptions.map((showId) => axios.get(`/show/${showId}`).catch());
+      Promise.all(promises)
+        .then((results) => results.map((sub) => sub.data))
+        .then((shows) => {
+          setSubs(shows);
+          setGotSubs(true);
+        })
+        .catch();
     }
   };
 
@@ -25,7 +43,8 @@ const Post = ({ user, createPost }) => {
       <div className="create-post-form">
         <select className="choose-show" onChange={(e) => setShow(e.target.value)}>
           <option className="choose-show" value="none">Choose a Show</option>
-          {user.subscriptions.map((sub, i) => <option key={sub + i} value={sub}>{sub}</option>)}
+          {subs.map((sub, i) => <option key={sub + i} value={sub.id}>{sub.name}</option>)}
+          {getSubs()}
         </select>
         <div className="title-container">
           <input id="post-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="title" />
