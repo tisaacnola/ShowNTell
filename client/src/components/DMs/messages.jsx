@@ -7,7 +7,7 @@ import './dms.css';
 
 const Messages = (props = {}) => {
   const [content, setContent] = useState();
-  const { id, messages, setUser } = props;
+  const { id, messages, setUser, user } = props;
   let message;
   if (messages) {
     messages.forEach((data) => {
@@ -47,8 +47,7 @@ const Messages = (props = {}) => {
               axios.get('/user')
                 .then((result) => {
                   setUser(result.data);
-                  const body = 'Receive an message on Show&Tell';
-                  axios.get(`/notifs/${body}/${id}`);
+                  axios.get(`/notifs/${content} By ${user.name}/${id}`);
                 });
             });
         }}
