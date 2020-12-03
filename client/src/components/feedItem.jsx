@@ -43,6 +43,7 @@ const FeedItem = ({ post, handleUserClick }) => {
   const handleRespondClicked = (id) => setRespondId(id);
 
   const handleSubmit = (e) => {
+    setCommentClicked(!commentClicked);
     e.target.previousSibling.value = '';
     axios
       .post('/addComment', {
@@ -136,14 +137,6 @@ const FeedItem = ({ post, handleUserClick }) => {
               <p>{comment.currentComment}</p>
               {comment.childComments.length > 0 ? (
                 <div style={{ marginLeft: '50px' }}>
-                  <button
-                    onClick={handleRespondClicked.bind(
-                      this,
-                      i + comment.currentComment
-                    )}
-                  >
-                    Respond To Comment
-                  </button>
                   <h3>Responses</h3>
                   {comment.childComments.map((childComment, i) => {
                     return (
@@ -154,7 +147,14 @@ const FeedItem = ({ post, handleUserClick }) => {
                   })}{' '}
                 </div>
               ) : null}
-
+              <button
+                onClick={handleRespondClicked.bind(
+                  this,
+                  i + comment.currentComment
+                )}
+              >
+                Respond
+              </button>
               {respondId === i + comment.currentComment ? (
                 <div>
                   <textarea

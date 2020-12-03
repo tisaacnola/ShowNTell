@@ -88,6 +88,11 @@ const App = () => {
     });
   };
 
+  const handleShowFeed = () => {
+    setUsersClicked(!userClicked);
+    getPosts();
+  };
+
   const getView = () => {
     if (view === 'homePage') {
       return <HomePage />;
@@ -130,6 +135,9 @@ const App = () => {
       )}
       {getUser()}
       {!executed ? getPosts() : (executed = !executed)}
+      {userClicked ? (
+        <button onClick={handleShowFeed}>Show Home Feed</button>
+      ) : null}
       {getView()}
     </div>
   );
