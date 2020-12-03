@@ -95,7 +95,7 @@ app.get('/users', (req, res) => {
 });
 
 app.get('/posts', (req, res) => {
-  Posts.find().then((posts) => res.send(posts)).catch();
+  Posts.find().then((posts) => res.status(200).send(posts)).catch();
 });
 
 app.get('/shows', (req, res) => {
@@ -190,23 +190,54 @@ app.get('/search/:query', (req, res) => {
     .catch(() => console.log('error'));
 });
 
-app.get('/show/:id',
-  (req, res) => Shows.find({ id: req.params.id })
+app.get('/show/:id', (req, res) => {
+  Shows.find({ id: req.params.id })
     .then((record) => {
       if (record.length > 0) {
-        console.log(record);
+        console.log('found in db');
+        return record[0];
+      }
+      return axios(`http://api.tvmaze.com/shows/${req.params.id}`)
+        .then(({ data }) => Shows.create({
+          id: data.id,
+          name: data.name,
+          posts: [],
+          subscriberCount: 0,
+        })).then((result) => {
+          console.log('found in api');
+          return result;
+        })
+        .catch();
+    })
+    .then((result) => res.status(200).send(result))
+    .catch(() => res.status(500).send());
+});
+
+app.put('/subscribe/:id', (req, res) => {
+  const { id } = req.params;
+  Users.findById(userInfo._id)
+    .then((user) => {
+      if (!user.subscriptions.includes(id)) {
+        Users.updateOne(
+          { _id: user._id },
+          { subscriptions: [...user.subscriptions, id] },
+        ).then(() => {
+          Shows.findOne({ id })
+            .then((record) => {
+              Shows.updateOne(
+                { id: req.params.id },
+                { subscriberCount: record.subscriberCount + 1 },
+              ).catch();
+            })
+            .catch();
+        }).catch();
       } else {
-        return axios(`http://api.tvmaze.com/shows/${req.params.id}`)
-          .then(({ data }) => Shows.create({
-            id: data.id,
-            name: data.name,
-            posts: [],
-            subscriberCount: 0,
-          })).then((result) => console.log(result))
-          .catch();
+        console.log('already subscribed');
       }
     })
-    .catch());
+    .then(() => res.status(200).send())
+    .catch(() => res.status(500).send());
+});
 
 app.get('/delete', (req, res) => {
   Users.deleteMany()

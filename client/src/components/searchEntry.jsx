@@ -3,7 +3,7 @@
 import React from 'react';
 import axios from 'axios';
 
-const SearchFeedEntry = ({ show }) => {
+const SearchFeedEntry = ({ show, onClick }) => {
   const getSummary = () => {
     let summary = show.summary.replace(/<p>|<\/p>/g, '');
     const output = [];
@@ -37,14 +37,8 @@ const SearchFeedEntry = ({ show }) => {
     }
   };
 
-  const onClick = () => {
-    axios.get(`/show/${show.id}`)
-      .then()
-      .catch();
-  };
-
   return (
-    <div style={{ color: 'white' }} value={show.id} onClick={onClick}>
+    <div style={{ color: 'white' }} value={show.id} onClick={() => onClick(show)}>
       <h3>{show.name}</h3>
       <div>{getSummary()}</div>
       <img src={getImage()} alt="" />
