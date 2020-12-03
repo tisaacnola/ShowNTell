@@ -194,7 +194,6 @@ app.get('/show/:id', (req, res) => {
   Shows.find({ id: req.params.id })
     .then((record) => {
       if (record.length > 0) {
-        console.log('found in db');
         return record[0];
       }
       return axios(`http://api.tvmaze.com/shows/${req.params.id}`)
@@ -203,10 +202,7 @@ app.get('/show/:id', (req, res) => {
           name: data.name,
           posts: [],
           subscriberCount: 0,
-        })).then((result) => {
-          console.log('found in api');
-          return result;
-        })
+        })).then((result) => result)
         .catch();
     })
     .then((result) => res.status(200).send(result))
@@ -218,6 +214,7 @@ app.put('/subscribe/:id', (req, res) => {
   Users.findById(userInfo._id)
     .then((user) => {
       if (!user.subscriptions.includes(id)) {
+        userInfo.subscriptions = [...user.subscriptions, id];
         Users.updateOne(
           { _id: user._id },
           { subscriptions: [...user.subscriptions, id] },
@@ -249,8 +246,7 @@ app.get('/delete', (req, res) => {
 
 app.get('/logout', (req, res) => {
   userInfo = null;
-  res.status(200).json(userInfo)
-    .catch();
+  res.status(200).json(userInfo);
 });
 
 app.post('/posts', (req, res) => {
@@ -266,10 +262,19 @@ app.post('/posts', (req, res) => {
     .then((post) => {
       Users.findById(poster)
         .then((user) => {
+          userInfo.posts = [...user.posts, post._id];
           Users.updateOne(
             { _id: poster },
             { posts: [...user.posts, post._id] },
           ).catch();
+        }).then(() => {
+          Shows.findOne({ id: show })
+            .then((record) => {
+              Shows.updateOne(
+                { id: show },
+                { posts: [...record.posts, post._id] },
+              ).catch();
+            }).catch();
         })
         .catch();
     })
