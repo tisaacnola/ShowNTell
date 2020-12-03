@@ -51,6 +51,8 @@ const App = () => {
     axios
       .post('/posts', post)
       .then(() => setView('home'))
+      .then(() => axios.get('/user').then(({ data }) => setUser(data)))
+      .then(() => axios.get('/posts').then(({ data }) => setPosts(data)))
       .catch();
   };
 
@@ -59,7 +61,6 @@ const App = () => {
       setView('search');
       setSearch('');
       setSearchedShows(data);
-      console.log(data);
     }).catch();
   };
 
@@ -71,7 +72,7 @@ const App = () => {
 
   const subscribe = (showId) => {
     axios.put(`/subscribe/${showId}`)
-      .then()
+      .then(() => axios.get('/user').then(({ data }) => setUser(data)))
       .catch();
   };
 
@@ -80,7 +81,7 @@ const App = () => {
       return <HomePage />;
     }
     if (view === 'sub') {
-      return <Sub user={user} />;
+      return <Sub user={user} setView={setView} />;
     }
     if (view === 'post') {
       return <Post user={user} createPost={createPost} />;
