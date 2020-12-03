@@ -3,11 +3,17 @@ import React, { useState } from 'react';
 import FeedItem from './feedItem.jsx';
 import './homefeed.css';
 
-const HomeFeed = ({ posts }) => (
+const HomeFeed = ({ posts, handleUserClick }) => (
   <div>
-    {posts ? posts.map((post, i) => (
-      <FeedItem post={post} key={post + i} />
-    )) : null}
+    {posts
+      ? posts.map((post, i) => (
+        <FeedItem
+          handleUserClick={handleUserClick}
+          post={post}
+          key={post + i}
+        />
+      ))
+      : null}
   </div>
 );
 
