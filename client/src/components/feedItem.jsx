@@ -2,7 +2,6 @@
 /* eslint-disable guard-for-in */
 import React, { useState } from 'react';
 import axios from 'axios';
-import $ from 'jquery';
 
 const FeedItem = ({ post, handleUserClick }) => {
   const [liked, setLiked] = useState(post.liked);
