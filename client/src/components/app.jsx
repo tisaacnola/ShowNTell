@@ -12,6 +12,7 @@ import Post from './post.jsx';
 import DMs from './dms.jsx';
 import Notifs from './notifs.jsx';
 import SearchFeed from './searchFeed.jsx';
+import ShowFeed from './showFeed.jsx';
 
 const App = () => {
   const [posts, setPosts] = useState();
@@ -62,6 +63,18 @@ const App = () => {
     }).catch();
   };
 
+  const addShow = (show) => {
+    axios.get(`/show/${show.id}`)
+      .then(({ data }) => setView(data.id))
+      .catch();
+  };
+
+  const subscribe = (showId) => {
+    axios.put(`/subscribe/${showId}`)
+      .then()
+      .catch();
+  };
+
   const getView = () => {
     if (view === 'homePage') {
       return <HomePage />;
@@ -82,8 +95,9 @@ const App = () => {
       return <Notifs />;
     }
     if (view === 'search') {
-      return <SearchFeed shows={searchedShows} />;
+      return <SearchFeed shows={searchedShows} onClick={addShow} />;
     }
+    return <ShowFeed showId={view} subscribe={subscribe} />;
   };
 
   return (
