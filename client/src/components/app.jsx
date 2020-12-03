@@ -16,7 +16,6 @@ import Notifs from './Notifications/notifs.jsx';
 import SearchFeed from './SearchBar/searchFeed.jsx';
 import ShowFeed from './showFeed.jsx';
 
-let executed = false;
 const App = () => {
   const [posts, setPosts] = useState();
   const [user, setUser] = useState();
@@ -24,20 +23,29 @@ const App = () => {
   const [search, setSearch] = useState('');
   const [searchedShows, setSearchedShows] = useState([]);
   const [userClicked, setUsersClicked] = useState(false);
+  const [test, setTest] = useState(false);
+
+  const changeView = (newView) => {
+    setView(newView);
+  };
 
   const getUser = () => {
     if (!user) {
       axios
         .get('/user')
         .then(({ data }) => setUser(data))
+        .then(() => setTest(true))
         .catch();
+    } else if (test) {
+      changeView('home');
+      setTest(false);
     }
   };
 
   const getPosts = () => {
-    // if (!posts && user) {
-    if (!userClicked) {
-      executed = !executed;
+    if (!posts && user) {
+    // if (!userClicked) {
+    //   executed = !executed;
       axios
         .get('/posts')
         .then(({ data }) => {
@@ -46,10 +54,6 @@ const App = () => {
         .catch((err) => console.log(err));
     }
     // }
-  };
-
-  const changeView = (newView) => {
-    setView(newView);
   };
 
   const logout = () => {
@@ -81,7 +85,7 @@ const App = () => {
     setUsersClicked(!userClicked);
     const usersName = e.target.innerHTML;
     axios.get(`/user/posts/${usersName}`).then(({ data }) => {
-      console.log('TESTING', data);
+      // console.log('TESTING', data);
       setPosts(data);
     });
   };
@@ -145,13 +149,13 @@ const App = () => {
           <a
             className="login-button"
             href="/auth/google"
-            onClick={(e) => setUser(e)}
+            // onClick={() => axios.get('/auth/google').then(({ data }) => console.log(data))}
           >
             LOGIN WITH GOOGLE
           </a>
         )}
       {getUser()}
-      {!executed ? getPosts() : (executed = !executed)}
+      {getPosts()}
       {userClicked ? (
         <button onClick={handleShowFeed}>Show Home Feed</button>
       ) : null}
