@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import pic from './createpost.png';
+import './post.css';
 
 const Post = ({ user, createPost }) => {
   const [title, setTitle] = useState('');
@@ -36,20 +38,24 @@ const Post = ({ user, createPost }) => {
 
   return (
     <div>
-      <h1>Post</h1>
-      <select onChange={(e) => setShow(e.target.value)}>
-        <option value="none">Choose a Show</option>
-        {subs.map((sub, i) => <option key={sub + i} value={sub.id}>{sub.name}</option>)}
-        {getSubs()}
-      </select>
-      <div className="title-container">
-        <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
+      <h1 id="header">Create a post</h1>
+      <div id="post-sub-header"> share your thoughts with the world!</div>
+      <div className="create-post-form">
+        <select className="choose-show" onChange={(e) => setShow(e.target.value)}>
+          <option className="choose-show" value="none">Choose a Show</option>
+          {subs.map((sub, i) => <option key={sub + i} value={sub.id}>{sub.name}</option>)}
+          {getSubs()}
+        </select>
+        <div className="title-container">
+          <input id="post-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="title" />
+        </div>
+        <div className="content-container">
+          <textarea id="post-text" value={content} onChange={(e) => setContent(e.target.value)} placeholder="what's your message?" />
+        </div>
+        <button id="submit-button" onClick={onClick}>SUBMIT POST</button>
+        <h4 id="error-message">{error}</h4>
       </div>
-      <div className="content-container">
-        <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Text" />
-      </div>
-      <button onClick={onClick}>Submit Post</button>
-      <h4 style={{ color: 'red' }}>{error}</h4>
+      <img id="pic" src={pic} alt="pic" />
     </div>
   );
 };

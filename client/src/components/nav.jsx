@@ -10,11 +10,13 @@
 import React, { useState } from 'react';
 import { FaHome, FaStar, FaPen, FaBell, FaEnvelope, FaSearch, FaDoorOpen } from 'react-icons/fa';
 import axios from 'axios';
-import logo from './HomePage/img/logo.jpg';
+import logo from './HomePage/img/logo1.png';
 
 const Nav = ({ user, onClick, logout, search, setSearch, onSearch }) => (
   <div>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet" />
     <img
       id="homeButton"
       src={logo}

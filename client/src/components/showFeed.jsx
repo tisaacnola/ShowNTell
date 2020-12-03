@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import FeedItem from './feedItem.jsx';
+import FeedItem from './HomeFeed/feedItem.jsx';
 
 const ShowFeed = ({ showId, subscribe }) => {
   const [show, setShow] = useState({});
