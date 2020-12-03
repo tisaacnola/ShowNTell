@@ -63,7 +63,8 @@ const FeedItem = ({ post, handleUserClick }) => {
 
   const handleRespondSubmit = (e) => {
     e.target.previousSibling.value = '';
-    const parentComment = e.target.parentElement.parentElement.firstChild.innerHTML;
+    const parentComment =
+      e.target.parentElement.parentElement.firstChild.innerHTML;
 
     axios
       .post('/addResponse', {
@@ -83,14 +84,11 @@ const FeedItem = ({ post, handleUserClick }) => {
     <div style={mainDiv}>
       <div style={{ border: '3px solid lightgrey' }}>
         <div style={{ display: 'block' }}>
-          Posted By:
-          {' '}
+          Posted By:{' '}
           <h3 style={{ display: 'inline' }} onClick={handleUserClick}>
             {post.name}
-          </h3>
-          {' '}
-          in
-          {' '}
+          </h3>{' '}
+          in{' '}
           <h3 style={{ display: 'inline' }}>
             {post.show || 'insert show here'}
           </h3>
@@ -142,26 +140,22 @@ const FeedItem = ({ post, handleUserClick }) => {
       <div>
         <h3>Comments</h3>
         {commentsList.map((comment, i) => (
-          <div
-            key={i + comment.currentComment}
-            id={i + comment.currentComment}
-          >
+          <div key={i + comment.currentComment} id={i + comment.currentComment}>
             <p>{comment.currentComment}</p>
-            {comment.childComments.length > 0 ? (
+            {comment.childComments && comment.childComments.length > 0 ? (
               <div style={{ marginLeft: '50px' }}>
                 <h3>Responses</h3>
                 {comment.childComments.map((childComment, index) => (
                   <h4 key={index + childComment} style={{ color: 'red' }}>
                     {childComment}
                   </h4>
-                ))}
-                {' '}
+                ))}{' '}
               </div>
             ) : null}
             <button
               onClick={handleRespondClicked.bind(
                 this,
-                i + comment.currentComment,
+                i + comment.currentComment
               )}
             >
               Respond

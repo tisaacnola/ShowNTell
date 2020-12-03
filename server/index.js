@@ -42,7 +42,7 @@ app.use(
     secret: process.env.GOOGLE_CLIENT_SECRET,
     saveUninitialized: false,
     resave: true,
-  }),
+  })
 );
 app.use(passport.initialize());
 app.use(passport.session());
@@ -54,8 +54,8 @@ app.get(
     { scope: ['https://www.googleapis.com/auth/plus.login'] },
     (req, res) => {
       // res.redirect('/');
-    },
-  ),
+    }
+  )
 );
 
 app.get(
@@ -78,7 +78,7 @@ app.get(
         });
       }
     });
-  },
+  }
 );
 
 app.get('/user', (req, res) => {
@@ -137,7 +137,7 @@ app.put('/startMessage/:user/:name', (req, res) => {
         ...userInfo.messages,
         { id: req.params.user, name: req.params.name, text: [] },
       ],
-    },
+    }
   )
     .then((data) => res.json(data))
     .catch();
@@ -169,9 +169,10 @@ app.put('/sendMessage/:id/:text', (req, res) => {
       if (test) {
         Users.updateOne(
           { id: Number(req.params.id) },
-          { messages: replace,
+          {
+            messages: replace,
             notifs: [...data.notifs, `${userInfo.name} messaged you`],
-          },
+          }
         ).then((result) => res.json(result));
       } else {
         // console.log(content, 'here');
@@ -187,7 +188,7 @@ app.put('/sendMessage/:id/:text', (req, res) => {
               },
             ],
             notifs: [...data.notifs, `${userInfo.name} messaged you`],
-          },
+          }
         ).then((result) => res.json(result));
       }
     });
@@ -222,7 +223,7 @@ app.post('/addComment', (req, res) => {
         console.log(post);
         res.send(post[0].comments);
       });
-    },
+    }
   );
 });
 
@@ -236,7 +237,7 @@ app.post('/addResponse', (req, res) => {
       $push: {
         'comments.$.childComments': req.body.comment.currentComment,
       },
-    },
+    }
   )
     .then(() => {
       Posts.find({ _id: req.body.comment.postId }).then((post) => {
@@ -288,7 +289,7 @@ app.post('/posts', (req, res) => {
         .then((user) => {
           Users.updateOne(
             { _id: poster },
-            { posts: [...user.posts, post._id] },
+            { posts: [...user.posts, post._id] }
           ).catch();
         })
         .catch();
@@ -300,11 +301,17 @@ app.post('/posts', (req, res) => {
 app.post('/number', (req, res) => {
   const { number } = req.body;
   if (!number) {
-    Users.updateOne({ id: userInfo.id }, { phone: number })
-      .then((data) => res.json(data));
+    Users.updateOne({ id: userInfo.id }, { phone: number }).then((data) =>
+      res.json(data)
+    );
   } else {
-    Users.updateOne({ id: userInfo.id }, { phone: number, notifs: [`you will now receive notifications @ ${number}   `] })
-      .then((data) => res.json(data));
+    Users.updateOne(
+      { id: userInfo.id },
+      {
+        phone: number,
+        notifs: [`you will now receive notifications @ ${number}   `],
+      }
+    ).then((data) => res.json(data));
   }
 });
 
@@ -320,17 +327,16 @@ app.get('/notifs/:text/:id', (req, res) => {
       .then((message) => res.json(message.sid))
       .catch((err) => console.log(err));
   } else {
-    Users.findOne({ id: req.params.id })
-      .then((data) => {
-        Notifs.messages
-          .create({
-            body: req.params.text,
-            from: '+12678677568',
-            to: data.phone,
-          })
-          .then((message) => res.json(message.sid))
-          .catch((err) => console.log(err));
-      });
+    Users.findOne({ id: req.params.id }).then((data) => {
+      Notifs.messages
+        .create({
+          body: req.params.text,
+          from: '+12678677568',
+          to: data.phone,
+        })
+        .then((message) => res.json(message.sid))
+        .catch((err) => console.log(err));
+    });
   }
 });
 
@@ -341,8 +347,9 @@ app.delete('/notifs/:index', (req, res) => {
       replacementNotif.push(userInfo.notifs[i]);
     }
   }
-  Users.update({ id: userInfo.id }, { notifs: replacementNotif })
-    .then((data) => res.json(data));
+  Users.update({ id: userInfo.id }, { notifs: replacementNotif }).then((data) =>
+    res.json(data)
+  );
 });
 
 app.listen(3000, () => {
