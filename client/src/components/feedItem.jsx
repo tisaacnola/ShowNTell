@@ -21,7 +21,7 @@ const FeedItem = ({ post, handleUserClick }) => {
     border: '3px solid black',
     margin: '10px',
     boxShadow: '5px 5px #888888',
-    width: '50%',
+    width: '100%',
   };
 
   const buttons = {
@@ -77,36 +77,42 @@ const FeedItem = ({ post, handleUserClick }) => {
 
   return (
     <div style={mainDiv}>
-      <div style={{ display: 'block' }}>
-        Posted By:{' '}
-        <h3 style={{ display: 'inline' }} onClick={handleUserClick}>
-          {post.name}
-        </h3>{' '}
-        in{' '}
-        <h3 style={{ display: 'inline' }}>{post.show || 'insert show here'}</h3>
+      <div style={{ border: '3px solid lightgrey' }}>
+        <div style={{ display: 'block' }}>
+          Posted By:{' '}
+          <h3 style={{ display: 'inline' }} onClick={handleUserClick}>
+            {post.name}
+          </h3>{' '}
+          in{' '}
+          <h3 style={{ display: 'inline' }}>
+            {post.show || 'insert show here'}
+          </h3>
+        </div>
+        <h3>POST TITLE: {post.title}</h3>
+        <p>POST CONTENT: {post.content}</p>
       </div>
-      <h3>POST TITLE: {post.title}</h3>
-      <p>POST CONTENT: {post.content}</p>
-      {liked ? (
-        <button
-          onClick={handleLiked}
-          style={{
-            width: '10%',
-            margin: '10px',
-            backgroundColor: 'orange',
-            display: 'inline-block',
-          }}
-        >
-          Liked
+      <div style={{ display: 'block' }}>
+        {liked ? (
+          <button
+            onClick={handleLiked}
+            style={{
+              width: '10%',
+              margin: '10px',
+              backgroundColor: 'orange',
+              display: 'inline-block',
+            }}
+          >
+            Liked
+          </button>
+        ) : (
+          <button onClick={handleLiked} style={buttons}>
+            Like
+          </button>
+        )}
+        <button onClick={handleCommentClicked} style={buttons}>
+          Comment
         </button>
-      ) : (
-        <button onClick={handleLiked} style={buttons}>
-          Like
-        </button>
-      )}
-      <button onClick={handleCommentClicked} style={buttons}>
-        Comment
-      </button>
+      </div>
       {commentClicked ? (
         <div>
           <textarea
@@ -129,7 +135,15 @@ const FeedItem = ({ post, handleUserClick }) => {
             >
               <p>{comment.currentComment}</p>
               {comment.childComments.length > 0 ? (
-                <div>
+                <div style={{ marginLeft: '50px' }}>
+                  <button
+                    onClick={handleRespondClicked.bind(
+                      this,
+                      i + comment.currentComment
+                    )}
+                  >
+                    Respond To Comment
+                  </button>
                   <h3>Responses</h3>
                   {comment.childComments.map((childComment, i) => {
                     return (
@@ -140,14 +154,7 @@ const FeedItem = ({ post, handleUserClick }) => {
                   })}{' '}
                 </div>
               ) : null}
-              <button
-                onClick={handleRespondClicked.bind(
-                  this,
-                  i + comment.currentComment
-                )}
-              >
-                Respond
-              </button>
+
               {respondId === i + comment.currentComment ? (
                 <div>
                   <textarea
