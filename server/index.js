@@ -206,7 +206,7 @@ app.post('/liked', (req, res) => {
           liked: post[0].liked,
           likedCount: post[0].likedCount,
         };
-        console.log('RIGHT HERE', body);
+        // console.log('RIGHT HERE', body);
         res.send(body);
       });
     })
@@ -215,12 +215,12 @@ app.post('/liked', (req, res) => {
 
 app.post('/addComment', (req, res) => {
   const comment = req.body.comment;
-  console.log('----', comment);
+  // console.log('----', comment);
   const postId = req.body.postId;
   Posts.updateOne({ _id: postId }, { $push: { comments: comment } }).then(
     () => {
       Posts.find({ _id: postId }).then((post) => {
-        console.log(post);
+        // console.log(post);
         res.send(post[0].comments);
       });
     }
@@ -257,6 +257,52 @@ app.get('/search/:query', (req, res) => {
     .catch(() => console.log('error'));
 });
 
+app.get('/show/:id', (req, res) => {
+  Shows.find({ id: req.params.id })
+    .then((record) => {
+      if (record.length > 0) {
+        return record[0];
+      }
+      return axios(`http://api.tvmaze.com/shows/${req.params.id}`)
+        .then(({ data }) => Shows.create({
+          id: data.id,
+          name: data.name,
+          posts: [],
+          subscriberCount: 0,
+        })).then((result) => result)
+        .catch();
+    })
+    .then((result) => res.status(200).send(result))
+    .catch(() => res.status(500).send());
+});
+
+app.put('/subscribe/:id', (req, res) => {
+  const { id } = req.params;
+  Users.findById(userInfo._id)
+    .then((user) => {
+      if (!user.subscriptions.includes(id)) {
+        userInfo.subscriptions = [...user.subscriptions, id];
+        Users.updateOne(
+          { _id: user._id },
+          { subscriptions: [...user.subscriptions, id] },
+        ).then(() => {
+          Shows.findOne({ id })
+            .then((record) => {
+              Shows.updateOne(
+                { id: req.params.id },
+                { subscriberCount: record.subscriberCount + 1 },
+              ).catch();
+            })
+            .catch();
+        }).catch();
+      } else {
+        console.log('already subscribed');
+      }
+    })
+    .then(() => res.status(200).send())
+    .catch(() => res.status(500).send());
+});
+
 app.get('/delete', (req, res) => {
   Users.deleteMany()
     .then(() => Posts.deleteMany())
@@ -287,14 +333,29 @@ app.post('/posts', (req, res) => {
     .then((post) => {
       Users.findById(poster)
         .then((user) => {
+          userInfo.posts = [...user.posts, post._id];
           Users.updateOne(
             { _id: poster },
             { posts: [...user.posts, post._id] }
           ).catch();
+        }).then(() => {
+          Shows.findOne({ id: show })
+            .then((record) => {
+              Shows.updateOne(
+                { id: show },
+                { posts: [...record.posts, post._id] },
+              ).catch();
+            }).catch();
         })
         .catch();
     })
     .then(() => res.status(201).send())
+    .catch(() => res.status(500).send());
+});
+
+app.get('/post/:id', (req, res) => {
+  Posts.findById(req.params.id)
+    .then((post) => res.status(200).send(post))
     .catch(() => res.status(500).send());
 });
 
