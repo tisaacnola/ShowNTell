@@ -21,5 +21,6 @@ module.exports = {
     'no-unused-vars': 0,
     'import/extensions': 0,
     'consistent-return': 0,
+    'arrow-body-style': 0,
   },
 };
