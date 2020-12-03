@@ -76,6 +76,14 @@ const App = () => {
       .catch();
   };
 
+  const handleUserClick = (e) => {
+    const usersName = e.target.innerHTML;
+    axios.get(`/user/posts/${usersName}`).then(({ data }) => {
+      console.log('RIGHT HERE', data);
+      setPosts(data);
+    });
+  };
+
   const getView = () => {
     if (view === 'homePage') {
       return <HomePage />;
@@ -87,7 +95,7 @@ const App = () => {
       return <Post user={user} createPost={createPost} />;
     }
     if (view === 'home') {
-      return <HomeFeed posts={posts} />;
+      return <HomeFeed handleUserClick={handleUserClick} posts={posts} />;
     }
     if (view === 'DMs') {
       return <DMs user={user} setUser={setUser} />;

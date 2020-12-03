@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import $ from 'jquery';
 
-const FeedItem = ({ post }) => {
+const FeedItem = ({ post, handleUserClick }) => {
   const [liked, setLiked] = useState(post.liked);
   const [commentClicked, setCommentClicked] = useState(false);
   const [respondClicked, setRespondClicked] = useState(false);
@@ -30,7 +30,7 @@ const FeedItem = ({ post }) => {
     display: 'inline-block',
   };
 
-  const changeLiked = () => {
+  const handleLiked = () => {
     axios
       .post('/liked', { postId: post._id, liked: !liked })
       .then(({ data }) => {
@@ -77,16 +77,19 @@ const FeedItem = ({ post }) => {
 
   return (
     <div style={mainDiv}>
-      <div>
-        <h4>
-          Posted By: {post.name} in {post.show}
-        </h4>
+      <div style={{ display: 'block' }}>
+        Posted By:{' '}
+        <h3 style={{ display: 'inline' }} onClick={handleUserClick}>
+          {post.name}
+        </h3>{' '}
+        in{' '}
+        <h3 style={{ display: 'inline' }}>{post.show || 'insert show here'}</h3>
       </div>
-      <h3>{post.title}</h3>
-      <p>{post.content}</p>
+      <h3>POST TITLE: {post.title}</h3>
+      <p>POST CONTENT: {post.content}</p>
       {liked ? (
         <button
-          onClick={changeLiked}
+          onClick={handleLiked}
           style={{
             width: '10%',
             margin: '10px',
@@ -97,7 +100,7 @@ const FeedItem = ({ post }) => {
           Liked
         </button>
       ) : (
-        <button onClick={changeLiked} style={buttons}>
+        <button onClick={handleLiked} style={buttons}>
           Like
         </button>
       )}
@@ -125,14 +128,18 @@ const FeedItem = ({ post }) => {
               id={i + comment.currentComment}
             >
               <p>{comment.currentComment}</p>
-              <h3>Responses</h3>
-              {comment.childComments.map((childComment, i) => {
-                return (
-                  <h4 key={i + childComment} style={{ color: 'red' }}>
-                    {childComment}
-                  </h4>
-                );
-              })}
+              {comment.childComments.length > 0 ? (
+                <div>
+                  <h3>Responses</h3>
+                  {comment.childComments.map((childComment, i) => {
+                    return (
+                      <h4 key={i + childComment} style={{ color: 'red' }}>
+                        {childComment}
+                      </h4>
+                    );
+                  })}{' '}
+                </div>
+              ) : null}
               <button
                 onClick={handleRespondClicked.bind(
                   this,
