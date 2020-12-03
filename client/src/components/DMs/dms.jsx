@@ -20,7 +20,8 @@ const DMs = ({ user, setUser }) => {
         : (
           <div>
             <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Work+Sans:wght@300&display=swap" rel="stylesheet" />
-            <h1 id="heading">Direct Messages</h1>
+            <h1 id="header">Direct Messages</h1>
+            <div id="dms-sub-header"> connect with another user!</div>
             <div>
               {
               Users ? (

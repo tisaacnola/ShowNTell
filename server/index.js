@@ -240,7 +240,7 @@ app.post('/number', (req, res) => {
     Users.updateOne({ id: userInfo.id }, { phone: number })
       .then((data) => res.json(data));
   } else {
-    Users.updateOne({ id: userInfo.id }, { phone: number, notifs: [`you will now receive notifications @${number}`] })
+    Users.updateOne({ id: userInfo.id }, { phone: number, notifs: [`you will now receive notifications @ ${number}   `] })
       .then((data) => res.json(data));
   }
 });
