@@ -20,6 +20,7 @@ const App = () => {
   const [view, setView] = useState('homePage');
   const [search, setSearch] = useState('');
   const [searchedShows, setSearchedShows] = useState([]);
+  const [userClicked, setUsersClicked] = useState(false);
 
   const getUser = () => {
     if (!user) {
@@ -32,13 +33,15 @@ const App = () => {
 
   const getPosts = () => {
     // if (!posts && user) {
-    executed = !executed;
-    axios
-      .get('/posts')
-      .then(({ data }) => {
-        setPosts(data);
-      })
-      .catch((err) => console.log('----', err));
+    if (!userClicked) {
+      executed = !executed;
+      axios
+        .get('/posts')
+        .then(({ data }) => {
+          setPosts(data);
+        })
+        .catch((err) => console.log(err));
+    }
     // }
   };
 
@@ -77,9 +80,10 @@ const App = () => {
   };
 
   const handleUserClick = (e) => {
+    setUsersClicked(!userClicked);
     const usersName = e.target.innerHTML;
     axios.get(`/user/posts/${usersName}`).then(({ data }) => {
-      console.log('RIGHT HERE', data);
+      console.log('TESTING', data);
       setPosts(data);
     });
   };
