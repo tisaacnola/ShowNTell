@@ -15,7 +15,6 @@ const Reply = ({ id, place, user }) => {
   const [content, setContent] = useState('');
   const [array, setArray] = useState([]);
   const [currentLike, setCurrentLike] = useState();
-  const [likes, setLikes] = useState([]);
   const [number, setNumber] = useState('');
 
   const getFeed = () => {
@@ -26,7 +25,7 @@ const Reply = ({ id, place, user }) => {
           setMessage(data.content);
           setTest(data.user);
           setArray(data.comment);
-          setLikes(data.likes);
+          setCurrentLike(data.likes.includes(user.id));
           setNumber(data.likes.length);
         });
     }
@@ -41,17 +40,10 @@ const Reply = ({ id, place, user }) => {
     }
   };
 
-  const getLike = () => {
-    if (test && currentLike === undefined) {
-      setCurrentLike(likes.includes(user.id));
-    }
-  };
-
   return (
     <div>
       {getFeed()}
       {getName()}
-      {getLike()}
       <div>{name || null}</div>
       <h4>{message || null}</h4>
       <button onClick={() => {
