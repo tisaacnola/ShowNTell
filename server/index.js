@@ -1,3 +1,4 @@
+/* eslint-disable no-continue */
 /* eslint-disable no-param-reassign */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-console */
@@ -16,7 +17,7 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
-const { Users, Posts, Shows } = require('./db/schema.js');
+const { Users, Posts, Shows, Replys } = require('./db/schema.js');
 // const { session } = require('passport');
 
 const app = express();
@@ -194,25 +195,6 @@ app.put('/sendMessage/:id/:text', (req, res) => {
     });
 });
 
-app.post('/liked', (req, res) => {
-  const postId = req.body.postId;
-  const liked = req.body.liked;
-  const addOrMinus = liked === true ? 1 : -1;
-
-  Posts.updateOne({ _id: postId }, { $inc: { likedCount: addOrMinus }, liked })
-    .then((data) => {
-      Posts.find({ _id: postId }).then((post) => {
-        const body = {
-          liked: post[0].liked,
-          likedCount: post[0].likedCount,
-        };
-        // console.log('RIGHT HERE', body);
-        res.send(body);
-      });
-    })
-    .catch((err) => console.log(err));
-});
-
 app.post('/addComment', (req, res) => {
   const comment = req.body.comment;
   // console.log('----', comment);
@@ -307,6 +289,7 @@ app.get('/delete', (req, res) => {
   Users.deleteMany()
     .then(() => Posts.deleteMany())
     .then(() => Shows.deleteMany())
+    .then(() => Replys.deleteMany())
     .then(() => res.status(200).json('done'))
     .catch();
 });
@@ -411,6 +394,104 @@ app.delete('/notifs/:index', (req, res) => {
   Users.update({ id: userInfo.id }, { notifs: replacementNotif }).then((data) =>
     res.json(data)
   );
+});
+
+app.get('/postShow/:id', (req, res) => {
+  Shows.findOne({ id: req.params.id })
+    .then((data) => res.json(data));
+});
+
+app.get('/postUser/:id', (req, res) => {
+  Users.findOne({ _id: req.params.id })
+    .then((data) => res.json(data));
+});
+
+app.get('/liked/:id', (req, res) => {
+  Posts.findOne({ _id: req.params.id })
+    .then((data) => {
+      const newLike = [];
+      let test = true;
+      for (let i = 0; i < data.likes.length; i += 1) {
+        if (data.likes[i] === userInfo.id) {
+          test = false;
+          continue;
+        } else {
+          newLike.push(data.likes[i]);
+        }
+      }
+      if (test) {
+        Posts.updateOne({ _id: req.params.id }, { likes: [...data.likes, userInfo.id] })
+          .then(() => res.json());
+      } else {
+        Posts.updateOne({ _id: req.params.id }, { likes: newLike })
+          .then(() => res.json());
+      }
+    });
+});
+
+app.get('/replys/:id/:content', (req, res) => {
+  Replys.create({
+    user: userInfo._id,
+    content: req.params.content,
+    comment: [],
+    likes: [],
+  }).then(({ _id }) => {
+    Posts.findOne({ _id: req.params.id })
+      .then((data) => {
+        Posts.updateOne({ _id: req.params.id }, { comment: [...data.comment, _id] })
+          .then(() => Posts.findOne({ _id: req.params.id }))
+          .then((result) => res.json(result));
+      });
+  });
+});
+
+app.get('/feeds/:id', (req, res) => {
+  Replys.findOne({ _id: req.params.id })
+    .then((data) => res.json(data));
+});
+
+app.get('/findReplays', (req, res) => {
+  Replys.find()
+    .then((data) => res.json(data));
+});
+
+app.post('/replys/:id/:content', (req, res) => {
+  Replys.create({
+    user: userInfo._id,
+    content: req.params.content,
+    comment: [],
+    likes: [],
+  }).then(({ _id }) => {
+    Replys.findOne({ _id: req.params.id })
+      .then((data) => {
+        Replys.updateOne({ _id: req.params.id }, { comment: [...data.comment, _id] })
+          .then(() => Replys.findOne({ _id: req.params.id }))
+          .then((result) => res.json(result));
+      });
+  });
+});
+
+app.get('/likedPost/:id', (req, res) => {
+  Replys.findOne({ _id: req.params.id })
+    .then((data) => {
+      const newLike = [];
+      let test = true;
+      for (let i = 0; i < data.likes.length; i += 1) {
+        if (data.likes[i] === userInfo.id) {
+          test = false;
+          continue;
+        } else {
+          newLike.push(data.likes[i]);
+        }
+      }
+      if (test) {
+        Replys.updateOne({ _id: req.params.id }, { likes: [...data.likes, userInfo.id] })
+          .then(() => res.json());
+      } else {
+        Replys.updateOne({ _id: req.params.id }, { likes: newLike })
+          .then(() => res.json());
+      }
+    });
 });
 
 app.listen(3000, () => {
