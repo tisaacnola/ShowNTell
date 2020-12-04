@@ -505,6 +505,6 @@ app.get('/likedPost/:id', (req, res) => {
   });
 });
 
-app.listen(3000 || process.env.PORT, () => {
+app.listen(8000, () => {
   console.log('http://localhost:3000');
 });
