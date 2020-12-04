@@ -16,7 +16,6 @@ li {
     color:#5c637b;
     font-size: 28px;
     padding-right: 14px;
-    /* padding-left: 50px; */
   }
 
   li:hover {
@@ -29,11 +28,26 @@ li {
     margin-top: 3%;
 }
 
+/* #home-icon-hover{
+  opacity: 0;
+  color:white;
+  display: block;
+}
+
+#home-icon:hover #home-icon-hover{
+  opacity: 1;
+  color:white;
+  display: block;
+  margin-top:100px;
+  transition: all 0.5s;
+} */
+
 #homeButton {
     width: 20%;
     height: 20%;
     margin-left: 8%;
     margin-top: 1%;
+
 }
 
 #icon {
@@ -41,9 +55,10 @@ li {
 }
 
 .search {
-  width: 100%;
+  width: 90%;
   /* position: relative; */
   display: flex;
+  background-color: #140e3e;
 }
 
 .search-term {
@@ -53,8 +68,9 @@ li {
   border-right: none;
   padding: 5px;
   height: 20px;
-  border-radius: 5px 0 0 5px;
+  border-radius: 25px;
   outline: none;
+  background-color: #140e3e;
   color: #9DBFAF;
 }
 
@@ -64,27 +80,24 @@ li {
 }
 
 .search-button {
-  right: -19%;
+  right: 5%;
   position: absolute;
-  width: 21%;
-  height: 100%;
   border: 2px solid #408ac8;
   background: #408ac8;
   text-align: center;
-  color: #fff;
-  border-radius: 0 8px 5px 0;
+  color: #140e3e;
+  border-radius: 25px;
   cursor: pointer;
-  font-size: 10px;
+  font-size: 10x;
+  height: 90%;
 }
 
 .wrap{
-  width: 18%;
+  width: 17%;
   position: absolute;
   top: 6%;
-  right: 13%;
+  right: 15%;
   transform: translate(-20%);
+
 }
 
-.search-icon {
-  size: 1px;
-}

@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import './search.css';
+import noImgAvail from './no_img_avail.png';
 
 const SearchFeedEntry = ({ show, onClick }) => {
+  const [state, setState] = useState('');
   // const shorten = (text) => {
   //   const maxLength = 5;
   //   if (text.length <= maxLength) return text;
   //   return text.substr(0, text.lastIndexOf(' ', maxLength));
   // };
+
   const getSummary = () => {
     let summary = show.summary.replace(/<p>|<\/p>/g, '');
     const output = [];
@@ -41,16 +44,32 @@ const SearchFeedEntry = ({ show, onClick }) => {
     }
   };
 
+  const getPicUnavail = () => {
+    if (show.image === null) {
+      return noImgAvail;
+    }
+  };
+
   return (
     <div className="show-card">
       <div className="show-name" value={show.id} onClick={() => onClick(show)}>
         <div className="show-name">{show.name}</div>
         <img className="show-img" src={getImage()} alt="" />
+        <img className="unavail-img" src={getPicUnavail()} alt="" />
+        <button
+          className="summary-button"
+          onClick={(event) => {
+            event.stopPropagation();
+            setState(getSummary());
+          }}
+        >
+          show summary
+        </button>
+
         <div className="show-summary">
-          (
-          {getSummary()}
-          )
+          {state}
         </div>
+
       </div>
     </div>
   );
