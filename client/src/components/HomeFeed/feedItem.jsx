@@ -6,158 +6,95 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './homefeed.css';
 import { FaRegHeart, FaRegCommentDots } from 'react-icons/fa';
+import Reply from './reply.jsx';
 
-const FeedItem = ({ post, handleUserClick }) => {
-  const [liked, setLiked] = useState(post.liked);
-  const [commentClicked, setCommentClicked] = useState(false);
-  const [respondClicked, setRespondClicked] = useState(false);
-  const [respondId, setRespondId] = useState('');
-  const [likedCount, setLikedCount] = useState(post.likedCount);
-
-  const [currentComment, setCurrentComment] = useState('');
-  const [commentsList, setCommentsList] = useState(post.comments || []);
-  const [responseList, setResponseList] = useState([]);
-
-  const handleLiked = () => {
-    axios
-      .post('/liked', { postId: post._id, liked: !liked })
-      .then(({ data }) => {
-        console.log('DATA', data);
-        setLiked(data.liked);
-        setLikedCount(data.likedCount);
-      })
-      .catch((err) => console.log(err));
+const FeedItem = ({ post, handleUserClick, user }) => {
+  const [show, setShow] = useState();
+  const [name, setName] = useState();
+  const [like, setLike] = useState();
+  const [currentPost, setPost] = useState(post);
+  const [number, setNumber] = useState(currentPost.likes.length);
+  const [box, setBox] = useState(false);
+  const [content, setContent] = useState('');
+  const getShow = () => {
+    if (!show) {
+      axios(`/postShow/${currentPost.show}`)
+        .then(({ data }) => {
+          setShow(data.name);
+        });
+    }
   };
 
-  const handleCommentClicked = () => setCommentClicked(!commentClicked);
-  const handleRespondClicked = (id) => setRespondId(id);
-
-  const handleSubmit = (e) => {
-    setCommentClicked(!commentClicked);
-    e.target.previousSibling.value = '';
-    axios
-      .post('/addComment', {
-        comment: { currentComment, childComments: [] },
-        postId: post._id,
-      })
-      .then(({ data }) => {
-        console.log('object', data);
-        setCommentsList(data);
-      })
-      .catch((err) => {});
+  const getName = () => {
+    if (!name) {
+      axios.get(`/postUser/${currentPost.user}`)
+        .then(({ data }) => {
+          setName(data.name);
+        });
+    }
   };
 
-  const handleRespondSubmit = (e) => {
-    e.target.previousSibling.value = '';
-    const parentComment = e.target.parentElement.parentElement.firstChild.innerHTML;
-
-    axios
-      .post('/addResponse', {
-        comment: { currentComment, parentComment, postId: post._id },
-      })
-      .then(({ data }) => {
-        setCommentsList(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const getLike = () => {
+    if (like === undefined) {
+      setLike(currentPost.likes.includes(user.id));
+    }
   };
-
-  const handleChange = (event) => setCurrentComment(event.target.value);
 
   return (
     <div className="main-post-container">
+      {getShow()}
+      {getName()}
+      {getLike()}
+      <h2>{`show:${show}`}</h2>
+      <div id="posted-in-show-title">{`title:${currentPost.title}`}</div>
+      <h4>{`by:${name}`}</h4>
+      <div id="feed-post-content">{currentPost.content}</div>
+      <button onClick={() => {
+        axios.get(`/liked/${currentPost._id}`)
+          .then(() => {
+            if (like) {
+              setNumber(number - 1);
+            } else {
+              setNumber(number + 1);
+            }
+            setLike(!like);
+          });
+      }}
+      >
+        {like ? 'unlike' : 'like'}
+      </button>
+      <div>{number}</div>
       <div>
-        <div className="posted-by">
-          Posted By:
-          {' '}
-          <div className="posted-by" onClick={handleUserClick}>
-            {post.name}
-          </div>
-          {' '}
-          in
-          {' '}
-          <div className="posted-in-show-title">
-            {post.show || 'insert show here'}
-          </div>
-        </div>
-        <div className="feed-post-title">
-          POST TITLE:
-          {post.title}
-        </div>
-        <p className="feed-post-content">
-          POST CONTENT:
-          {post.content}
-        </p>
+        {
+          box ? (
+            <div>
+              <input
+                placeholder="say something"
+                value={content}
+                onChange={(e) => {
+                  setContent(e.target.value);
+                }}
+              />
+              <button onClick={() => {
+                setBox(false);
+                axios.get(`/replys/${currentPost._id}/${content}`)
+                  .then(({ data }) => {
+                    setContent('');
+                    // console.log(data);
+                    setPost(data);
+                  });
+              }}
+              >
+                submit
+              </button>
+            </div>
+          ) : <button onClick={() => setBox(true)}>comment</button>
+        }
       </div>
       <div>
-        {liked ? (
-          <div className="like-comment-block">
-            <FaRegHeart
-              className="liked-button"
-              onClick={handleLiked}
-            />
-            <p className="like-count">{likedCount}</p>
-          </div>
-        ) : (
-          <FaRegHeart className="like-button" onClick={handleLiked} />
-        )}
-        <FaRegCommentDots className="insert-comment-button" onClick={handleCommentClicked} />
-      </div>
-      {commentClicked ? (
-        <div>
-          <textarea
-            placeholder="Insert comment here"
-            onChange={handleChange}
-          />
-          <button className="submit-comment-button" onClick={handleSubmit}>
-            Submit
-          </button>
-        </div>
-      ) : null}
-      <div>
-        <div className="comments-header">Comments</div>
-        {commentsList.map((comment, i) => (
-          <div
-            key={i + comment.currentComment}
-            id={i + comment.currentComment}
-          >
-            <p>{comment.currentComment}</p>
-            {comment.childComments.length > 0 ? (
-              <div>
-                <div className="responses-header">Responses</div>
-                {comment.childComments.map((childComment, index) => (
-                  <h4 className="response" key={index + childComment}>
-                    {childComment}
-                  </h4>
-                ))}
-                {' '}
-              </div>
-            ) : null}
-            <button
-              className="response-button"
-              onClick={handleRespondClicked.bind(
-                this,
-                i + comment.currentComment,
-              )}
-            >
-              Respond
-            </button>
-            {respondId === i + comment.currentComment ? (
-              <div>
-                <textarea
-                  className="response-textbox"
-                  placeholder="Respond Here."
-                  cols="50"
-                  onChange={handleChange}
-                />
-                <button className="submit-comment-button" onClick={handleRespondSubmit}>
-                  Submit
-                </button>
-              </div>
-            ) : null}
-          </div>
-        ))}
+        {currentPost.comment.map((value, i) => {
+          return (<Reply key={value + i} id={value} place={75} user={user} />);
+        })}
       </div>
     </div>
   );

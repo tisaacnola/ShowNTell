@@ -24,20 +24,29 @@ const Shows = mongoose.model('Shows', showSchema);
 
 const postSchema = mongoose.Schema({
   user: String,
-  name: String,
   show: String,
   title: String,
   content: String,
-  comments: Object,
+  comment: Array,
   createdAt: Date,
-  liked: Boolean,
-  likedCount: Number,
+  likes: Array,
 });
 
 const Posts = mongoose.model('Posts', postSchema);
+
+const replySchema = mongoose.Schema({
+  user: String,
+  content: String,
+  comment: Array,
+  createdAt: Date,
+  likes: Array,
+});
+
+const Replys = mongoose.model('Replys', replySchema);
 
 module.exports = {
   Users,
   Shows,
   Posts,
+  Replys,
 };
