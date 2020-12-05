@@ -7,7 +7,7 @@ import axios from 'axios';
 import { FaHeart, FaRegCommentDots } from 'react-icons/fa';
 import './homefeed.css';
 
-const Reply = ({ id, place, user }) => {
+const Reply = ({ id, place, user, setPosts }) => {
   const [feed, setFeed] = useState();
   const [message, setMessage] = useState();
   const [name, setName] = useState();
@@ -85,6 +85,11 @@ const Reply = ({ id, place, user }) => {
                     .then(({ data }) => {
                       setContent('');
                       setArray(data.comment);
+                      axios
+                        .get('/posts')
+                        .then((result) => {
+                          setPosts(result.data);
+                        });
                     });
                 }}
               >

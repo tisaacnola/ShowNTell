@@ -8,7 +8,7 @@ import './homefeed.css';
 import { FaHeart, FaRegCommentDots } from 'react-icons/fa';
 import Reply from './reply.jsx';
 
-const FeedItem = ({ post, handleUserClick, user = {} }) => {
+const FeedItem = ({ post, handleUserClick, user = {}, setPosts }) => {
   const [show, setShow] = useState();
   const [name, setName] = useState();
   const [like, setLike] = useState();
@@ -92,6 +92,11 @@ const FeedItem = ({ post, handleUserClick, user = {} }) => {
                       setContent('');
                       // console.log(data);
                       setPost(data);
+                      axios
+                        .get('/posts')
+                        .then((result) => {
+                          setPosts(result.data);
+                        });
                     });
                 }}
               >
@@ -104,7 +109,7 @@ const FeedItem = ({ post, handleUserClick, user = {} }) => {
       </div>
       <div>
         {currentPost.comment.map((value, i) => {
-          return (<Reply className="reply" key={value + i} id={value} place={75} user={user} />);
+          return (<Reply className="reply" key={value + i} id={value} place={75} user={user} setPosts={setPosts} />);
         })}
       </div>
     </div>
