@@ -10,6 +10,7 @@ const passport = require('passport');
 const axios = require('axios');
 const cors = require('cors');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 require('./db/index');
 
@@ -28,6 +29,7 @@ let userInfo = null;
 
 app.use(express.static(client));
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 
 passport.serializeUser((user, done) => {
@@ -67,6 +69,7 @@ app.get(
       id: Number(req.user.id),
       name: req.user.displayName,
     });
+    res.cookie('ShowNTellId', req.user.id);
 
     Users.findOne({ id: Number(req.user.id) }).then((data) => {
       if (data) {
@@ -84,14 +87,19 @@ app.get(
 
 app.get('/user', (req, res) => {
   // res.status(200).json(userInfo);
-  if (userInfo !== null) {
-    Users.findOne({ id: userInfo.id }).then((data) => {
-      userInfo = data;
-      res.json(userInfo);
-    });
-  } else {
+  // console.log(req.cookies.ShowNTellId);
+  Users.findOne({ id: req.cookies.ShowNTellId }).then((data) => {
+    userInfo = data;
     res.json(userInfo);
-  }
+  });
+  // if (userInfo !== null) {
+  //   Users.findOne({ id: userInfo.id }).then((data) => {
+  //     userInfo = data;
+  //     res.json(userInfo);
+  //   });
+  // } else {
+  //   res.json(userInfo);
+  // }
 });
 
 app.get('/users', (req, res) => {
@@ -295,6 +303,7 @@ app.get('/delete', (req, res) => {
 
 app.get('/logout', (req, res) => {
   userInfo = null;
+  res.clearCookie('ShowNTellId');
   res.status(200).json(userInfo);
 });
 
