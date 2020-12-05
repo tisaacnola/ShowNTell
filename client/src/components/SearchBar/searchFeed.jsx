@@ -3,6 +3,7 @@ import SearchFeedEntry from './searchEntry.jsx';
 import './search.css';
 import ScrollMenu from 'react-horizontal-scrolling-menu';
 
+
 const SearchFeed = ({ shows, onClick }) => (
   <div>
     <div className="search-results-header">Search results: </div>

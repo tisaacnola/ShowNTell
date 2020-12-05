@@ -9,7 +9,6 @@
 /* eslint-disable react/button-has-type */
 import React, { useState } from 'react';
 import { FaHome, FaStar, FaPen, FaBell, FaEnvelope, FaSearch, FaDoorOpen } from 'react-icons/fa';
-import axios from 'axios';
 import logo from './HomePage/img/logo1.png';
 
 const Nav = ({ user, onClick, logout, search, setSearch, onSearch }) => (
@@ -56,7 +55,7 @@ const Nav = ({ user, onClick, logout, search, setSearch, onSearch }) => (
             <input
               type="text"
               className="search-term"
-              placeholder=" what are you watching?"
+              placeholder="what are you watching?"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={(e) => {

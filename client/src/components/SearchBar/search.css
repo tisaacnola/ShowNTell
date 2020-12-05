@@ -1,13 +1,10 @@
 .search-results-header{
-  color:white;
-  font-weight: bold;
-  font-size: 24px;
+  color: white;
+  font-size: 22px;
   font-family: 'Work Sans', sans-serif;
-  margin-top: 1%;
-  margin-left: 10%;
-  margin-bottom: 5%;
-  /* overflow: scroll;
-  display: block; */
+  margin-top: 5%;
+  margin-left: 3%;
+  margin-bottom: 1%;
 }
 
  #search-feed-entry {
@@ -35,11 +32,14 @@
 
  .show-name {
   font-family: 'Work Sans', sans-serif;
-  font-size: 18px;
+  font-size: 32px;
   margin-top: 0.5rem;
-  color: white;
+  color: #f0ccb3;
   font-weight: bold;
   text-align: center;
+  margin-bottom: 2%;
+  margin-top: 3%;
+  font-style: oblique;
 }
 
 .show-summary {
@@ -51,8 +51,6 @@
 }
 
 .show-img {
-  /* margin: 1rem;
-  margin-top: 0.5rem; */
   color: white;
   font-family: 'Work Sans', sans-serif;
 }
@@ -67,7 +65,7 @@
   .show-card{
     flex: 0 0 auto;
     margin-right: 5px;
-    width: 30%;
+    width: 20%;
     height: 50%;
     box-shadow: 0px 0px 15px -5px;
     transition: ease-in;
@@ -79,18 +77,50 @@
 
   .summary-button{
     border-radius: 25px;
-    padding: 10px 24px;
-    border-color:  #f0ccb3;
+    padding: 8px 14px;
+    border-color: #f0ccb3;
     background-color: #140e3e;
     color: #f0ccb3;
     display: flex;
     font-size: 14px;
-    justify-content: center;
-    align-items: center;
-    margin-left: 33%
+    margin-left: 35%;
+    margin-top: 3%;
+    border-style: solid;
   }
 
   .summary-button:hover{
     background-color: #f0ccb3;
     color: #dd3e42;
+  }
+
+  .shw-title{
+    font-family: 'Work Sans', sans-serif;
+    color:#f0ccb3;
+    font-weight: bold;
+    font-size: 32px;
+    margin-left: 10%;
+    margin-top: 5%;
+    text-decoration-line: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: #dd3e42;
+  }
+
+  .sub-btn{
+    border-radius: 25px;
+    padding: 8px 12px;
+    background-color: #408ac8;
+    border-color: #140e3e;
+    color: #140e3e;
+    font-size: 14px;
+    margin-left: 14%;
+    border-style: solid;
+  }
+
+  .sub-btn:hover{
+    background-color: #f2d75e;
+    color: #140e3e;
+  }
+
+  .sub-page-feed{
+    margin-left: 20%;
   }

@@ -1,5 +1,6 @@
 /* eslint-disable import/extensions */
 import React, { useState } from 'react';
+import { FaRegHeart, FaRegCommentDots } from 'react-icons/fa';
 import FeedItem from './feedItem.jsx';
 import './homefeed.css';
 
