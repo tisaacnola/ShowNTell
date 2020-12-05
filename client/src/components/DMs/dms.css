@@ -107,6 +107,19 @@ h2:hover {
   margin-left: 20%;
 }
 
+.user-search-form{
+  background-color: #140e3e;
+  color: white;
+  font-family: 'Work Sans', sans-serif;
+  border-radius: 25px;
+  width: 18%;
+  margin-top: 2%;
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 1%;
+  margin-left: -10%;
+}
+
 #searched-users {
   font-family: 'Work Sans', sans-serif;
   margin-top: -5;

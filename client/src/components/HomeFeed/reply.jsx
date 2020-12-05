@@ -4,6 +4,7 @@
 /* eslint-disable guard-for-in */
 import React, { useState } from 'react';
 import axios from 'axios';
+import { FaHeart, FaRegCommentDots } from 'react-icons/fa';
 import './homefeed.css';
 
 const Reply = ({ id, place, user }) => {
@@ -42,50 +43,57 @@ const Reply = ({ id, place, user }) => {
 
   return (
     <div>
-      {getFeed()}
-      {getName()}
-      <div>{name || null}</div>
-      <h4>{message || null}</h4>
-      <button onClick={() => {
-        axios.get(`/likedPost/${id}`)
-          .then(() => {
-            if (currentLike) {
-              setNumber(number - 1);
-            } else {
-              setNumber(number + 1);
-            }
-            setCurrentLike(!currentLike);
-          });
-      }}
-      >
-        {currentLike ? 'unlike' : 'like'}
-      </button>
-      <div>{number}</div>
-      <div>
-        {
+      <div className="comment">
+        {getFeed()}
+        {getName()}
+        <div className="comment-author">{name || null}</div>
+        <h4 id="comment-content">{message || null}</h4>
+        <div className="like-count">{number}</div>
+        <FaHeart
+          className={currentLike ? 'liked-button' : 'post-like-btn'}
+          onClick={() => {
+            axios.get(`/likedPost/${id}`)
+              .then(() => {
+                if (currentLike) {
+                  setNumber(number - 1);
+                } else {
+                  setNumber(number + 1);
+                }
+                setCurrentLike(!currentLike);
+              });
+          }}
+        >
+          {currentLike ? 'unlike' : 'like'}
+        </FaHeart>
+        <div>
+          {
           reply ? (
             <div>
               <input
-                placeholder="say something"
+                className="comment-txt-box"
+                placeholder="what are your thoughts?"
                 value={content}
                 onChange={(e) => {
                   setContent(e.target.value);
                 }}
               />
-              <button onClick={() => {
-                setReply(false);
-                axios.post(`/replys/${feed}/${content}`)
-                  .then(({ data }) => {
-                    setContent('');
-                    setArray(data.comment);
-                  });
-              }}
+              <button
+                className="submit-post-comment-btn"
+                onClick={() => {
+                  setReply(false);
+                  axios.post(`/replys/${feed}/${content}`)
+                    .then(({ data }) => {
+                      setContent('');
+                      setArray(data.comment);
+                    });
+                }}
               >
                 submit
               </button>
             </div>
-          ) : <button onClick={() => setReply(true)}>Reply</button>
+          ) : <FaRegCommentDots className="post-comment-btn" onClick={() => setReply(true)} />
         }
+        </div>
       </div>
       <div style={{ left: `${place}px`, position: 'relative' }}>
         {array.map((value, i) => {

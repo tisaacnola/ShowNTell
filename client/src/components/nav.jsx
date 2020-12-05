@@ -9,7 +9,6 @@
 /* eslint-disable react/button-has-type */
 import React, { useState } from 'react';
 import { FaHome, FaStar, FaPen, FaBell, FaEnvelope, FaSearch, FaDoorOpen } from 'react-icons/fa';
-import axios from 'axios';
 import logo from './HomePage/img/logo1.png';
 
 const Nav = ({ user, onClick, logout, search, setSearch, onSearch }) => (
@@ -26,9 +25,9 @@ const Nav = ({ user, onClick, logout, search, setSearch, onSearch }) => (
       title="home feed"
     />
     <ul className="navbar">
-      <li onClick={() => onClick('home')} className="views" title="home feed">
-        {' '}
+      <li onClick={() => onClick('home')} id="home-icon" className="views" title="home feed">
         <FaHome />
+        {/* <p id="home-icon-hover">home</p> */}
         {' '}
       </li>
       <li onClick={() => onClick('sub')} className="views" title="subscriptions">
@@ -56,7 +55,7 @@ const Nav = ({ user, onClick, logout, search, setSearch, onSearch }) => (
             <input
               type="text"
               className="search-term"
-              placeholder="What are you watching?"
+              placeholder="what are you watching?"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={(e) => {

@@ -62,21 +62,23 @@ const Notifs = ({ user, setUser }) => {
             {
               // maping over here
               user.notifs.map((text, i) => (
-                <div key={text + i}>
-                  <h2 id="receive-notifs-message">{text}</h2>
-                  <FaTrashAlt
-                    title="delete notification"
-                    id="trash-icon"
-                    onClick={() => {
-                      axios.delete(`/notifs/${i}`)
-                        .then(() => {
-                          axios.get('/user')
-                            .then((result) => {
-                              setUser(result.data);
-                            });
-                        });
-                    }}
-                  />
+                <div id="notif-msg-block" key={text + i}>
+                  <h2 id="receive-notifs-message">
+                    {text}
+                    <FaTrashAlt
+                      title="delete notification"
+                      id="trash-icon"
+                      onClick={() => {
+                        axios.delete(`/notifs/${i}`)
+                          .then(() => {
+                            axios.get('/user')
+                              .then((result) => {
+                                setUser(result.data);
+                              });
+                          });
+                      }}
+                    />
+                  </h2>
                 </div>
               ))
             }
