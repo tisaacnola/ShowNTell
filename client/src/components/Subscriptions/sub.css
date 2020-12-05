@@ -1,0 +1,22 @@
+#header{
+  color:white;
+  font-weight: bold;
+  font-size: 32px;
+  font-family: 'Work Sans', sans-serif;
+  margin-top: 1%;
+  margin-left: 20%
+}
+
+.sub{
+  color:#408ac8;
+  font-weight: bold;
+  font-size: 20px;
+  font-family: 'Work Sans', sans-serif;
+  margin-top: 1%;
+  margin-left: 20%;
+  text-decoration: underline;
+}
+
+.sub:hover{
+  color: #f2d75e;
+}
