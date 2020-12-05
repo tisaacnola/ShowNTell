@@ -3,10 +3,11 @@
 .home-feed-container {
   display: flex;
   flex-direction: column;
-  justify-content: normal;
+  justify-content: left;
   align-items: normal;
   min-height: 100vh;
   margin-left: 30%;
+  margin-left: 20%;
 }
 
 .main-post-container{
@@ -17,7 +18,6 @@
   background-color: #6d6ca6;
   margin-bottom: 1%;
   margin-top: 5%;
-  width: 50%;
   color: white;
   margin-left: 2%;
 }
@@ -76,25 +76,24 @@
 .liked-button{
   font-size: 24px;
   display: inline-block;
-  width: 5%;
-  margin-right: 2%;
+  /* width: 5%; */
+  margin-right: 3%;
   color: #dd3e42;
 }
 .comment-btn{
-  width: 5%;
   font-size: 24px;
+  color: #f0ccb3;
 }
 
 .like-count{
+  margin-top: 2%;
   display: inline-block;
   margin-left: 8%;
-  /* position: static; */
-  margin-right: 1%;
-  font-size: 18px;
-  /* margin-bottom: 2%; */
-  /* position: relative;
-  bottom: 7px;
-  right: 2px; */
+  position: relative;
+  margin-right: 2%;
+  font-size: 16px;
+  margin-bottom: 2%;
+  bottom: 6px;
 }
 .post-btn-container{
   display: flex;
@@ -108,8 +107,7 @@
   margin-left: 20%;
   /* margin-bottom: 20%; */
   position: relative;
-  bottom: 50px;
-  /* margin-bottom: -8%; */
+  bottom: 38px;
 }
 
 .comment-box{
@@ -149,7 +147,6 @@
   border-radius: 25px;
   margin-bottom: 1%;
   margin-top: 2%;
-  width: 50%;
   color: white;
   margin-left: 10%;
  }
@@ -169,5 +166,33 @@
   /* margin-top: -2%;
   margin-bottom: 3%; */
  }
+
+ .reply-comment-txt-box{
+  background-color: #6d6ca6;
+  color: white;
+  border-color: white;
+  border-style: solid;
+  border-color: #6d6ca6;
+  background-color: #140e3e;
+  margin-right: 5%;
+  height: 50px;
+  width: 200px;
+  margin-left: 25%;
+  border-radius: 25px;
+  margin-bottom: 3%;
+}
+
+.reply-comment-txt-box::-webkit-input-placeholder {
+  text-align: center;
+}
+
+.submit-reply-comment-btn{
+  position: inline-block;
+  background-color: #6d6ca6;
+  border-color: white;
+  border-radius: 25px;
+  color: white;
+  /* color: red; */
+}
 
 

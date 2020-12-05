@@ -70,7 +70,7 @@ const Reply = ({ id, place, user, setPosts }) => {
           reply ? (
             <div>
               <input
-                className="comment-txt-box"
+                className="reply-comment-txt-box"
                 placeholder="what are your thoughts?"
                 value={content}
                 onChange={(e) => {
@@ -78,7 +78,7 @@ const Reply = ({ id, place, user, setPosts }) => {
                 }}
               />
               <button
-                className="submit-post-comment-btn"
+                className="submit-reply-comment-btn"
                 onClick={() => {
                   setReply(false);
                   axios.post(`/replys/${feed}/${content}`)

@@ -66,7 +66,7 @@ const Nav = ({ user, onClick, logout, search, setSearch, onSearch }) => (
             />
             <FaSearch
               type="submit"
-              className="search-button"
+              className="srch-button"
               onClick={onSearch}
             >
               <i className="search-icon" />
