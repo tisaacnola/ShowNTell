@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Messages from './messages.jsx';
 import './dms.css';
+import { FaSearch } from 'react-icons/fa';
 
 const DMs = ({ user, setUser }) => {
   const [messages, setMessages] = useState();
@@ -27,10 +28,11 @@ const DMs = ({ user, setUser }) => {
               Users ? (
                 <div id="search-for-user-button">
                   <input
+                    className="user-search-form"
                     onChange={(e) => {
                       setfind(e.target.value);
                     }}
-                    placeholder="search for a user"
+                    placeholder="search for user"
                   />
                   <div>
                     {Users.map(({ name, id }) => {
@@ -63,7 +65,6 @@ const DMs = ({ user, setUser }) => {
                       }
                       return (
                         <div>
-                          <h2 id="recents">Recents:</h2>
                           <h4
                             id="searched-users"
                             key={String(id)}
@@ -81,7 +82,7 @@ const DMs = ({ user, setUser }) => {
                                 });
                             }}
                           >
-                            {name}
+                            {/* {name} */}
                           </h4>
                         </div>
                       );

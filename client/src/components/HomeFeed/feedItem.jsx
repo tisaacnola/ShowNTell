@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './homefeed.css';
-import { FaRegHeart, FaRegCommentDots } from 'react-icons/fa';
+import { FaHeart, FaRegCommentDots } from 'react-icons/fa';
 import Reply from './reply.jsx';
 
 const FeedItem = ({ post, handleUserClick, user = {} }) => {
@@ -39,6 +39,7 @@ const FeedItem = ({ post, handleUserClick, user = {} }) => {
   };
 
   return (
+<<<<<<< HEAD
     <div className="main-post-container">
       {getShow()}
       {getName()}
@@ -94,6 +95,72 @@ const FeedItem = ({ post, handleUserClick, user = {} }) => {
       <div>
         {currentPost.comment.map((value, i) => {
           return <Reply key={value + i} id={value} place={75} user={user} />;
+=======
+    <div>
+      <div className="main-post-container">
+        {getShow()}
+        {getName()}
+        {getLike()}
+        <h2 className="post-show">{`${show}`}</h2>
+        <div id="post-show-title">{`${currentPost.title}`}</div>
+        <h4 className="post-author">{`${name}`}</h4>
+        <div id="post-content">{currentPost.content}</div>
+        <div className="post-btn-container">
+          <div className="like-count">{number}</div>
+          <FaHeart
+            className={like ? 'liked-button' : 'post-like-btn'}
+            onClick={() => {
+              axios.get(`/liked/${currentPost._id}`)
+                .then(() => {
+                  if (like) {
+                    setNumber(number - 1);
+                  } else {
+                    setNumber(number + 1);
+                  }
+                  setLike(!like);
+                });
+            }}
+          >
+            {like ? 'unlike' : 'like'}
+          </FaHeart>
+          {!box && <FaRegCommentDots className="comment-btn" onClick={() => setBox(true)} />}
+        </div>
+
+        <div className="post-comment-btn">
+          {
+          box && (
+            <div className="comment-box">
+              <input
+                className="comment-txt-box"
+                placeholder="what are your thoughts?"
+                value={content}
+                onChange={(e) => {
+                  setContent(e.target.value);
+                }}
+              />
+              <button
+                className="submit-post-comment-btn"
+                onClick={() => {
+                  setBox(false);
+                  axios.get(`/replys/${currentPost._id}/${content}`)
+                    .then(({ data }) => {
+                      setContent('');
+                      // console.log(data);
+                      setPost(data);
+                    });
+                }}
+              >
+                submit
+              </button>
+            </div>
+          )
+        }
+        </div>
+      </div>
+      <div>
+        {currentPost.comment.map((value, i) => {
+          return (<Reply className="reply" key={value + i} id={value} place={75} user={user} />);
+>>>>>>> ee4e692a8729b260c9d462e9d5e127eee37f02ee
         })}
       </div>
     </div>

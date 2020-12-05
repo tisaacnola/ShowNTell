@@ -15,8 +15,7 @@ li {
     display: inline;
     color:#5c637b;
     font-size: 28px;
-    padding-right: 14px;
-    /* padding-left: 50px; */
+    padding-right: 16px;
   }
 
   li:hover {
@@ -25,15 +24,30 @@ li {
 
 .navbar {
     float:right;
-    margin-right: 35%;
-    margin-top: 3%;
+    margin-right: 21%;
+    margin-top: 5%;
 }
+
+/* #home-icon-hover{
+  opacity: 0;
+  color:white;
+  display: block;
+}
+
+#home-icon:hover #home-icon-hover{
+  opacity: 1;
+  color:white;
+  display: block;
+  margin-top:100px;
+  transition: all 0.5s;
+} */
 
 #homeButton {
     width: 20%;
     height: 20%;
-    margin-left: 8%;
-    margin-top: 1%;
+    margin-left: 5%;
+    margin-top: 2.3%;
+
 }
 
 #icon {
@@ -41,50 +55,52 @@ li {
 }
 
 .search {
-  width: 100%;
-  /* position: relative; */
-  display: flex;
+  width: 90%;
+  display: inline-flex;
+  background-color: #140e3e;
+  margin-top: 11.5%;
+  margin-left: 80%;
 }
 
 .search-term {
   font-family: 'Work Sans', sans-serif;
   width: 100%;
-  border: 3px solid #408ac8;
+  border: 3px solid #5c637b;
   border-right: none;
   padding: 5px;
   height: 20px;
-  border-radius: 5px 0 0 5px;
+  border-radius: 25px;
   outline: none;
+  background-color: #140e3e;
   color: #9DBFAF;
+  text-indent: 8px;
 }
 
 .search-term:focus{
   font-family: 'Work Sans', sans-serif;
-  color:#408ac8;
+  color:white;
+  text-indent: 8px;
 }
 
 .search-button {
-  right: -19%;
+  right: -70%;
   position: absolute;
-  width: 21%;
-  height: 100%;
-  border: 2px solid #408ac8;
-  background: #408ac8;
+  border: 8px solid #5c637b;
+  background: #5c637b;
   text-align: center;
-  color: #fff;
-  border-radius: 0 8px 5px 0;
+  color: #140e3e;
+  border-radius: 28px;
   cursor: pointer;
-  font-size: 10px;
+  font-size: 22px;
+  height: 30%;
 }
 
 .wrap{
-  width: 18%;
+  width: 17%;
   position: absolute;
   top: 6%;
-  right: 13%;
+  right: 15%;
   transform: translate(-20%);
+
 }
 
-.search-icon {
-  size: 1px;
-}
