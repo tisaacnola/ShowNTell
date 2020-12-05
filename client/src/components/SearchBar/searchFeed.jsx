@@ -1,8 +1,8 @@
+/* eslint-disable import/order */
 import React from 'react';
 import SearchFeedEntry from './searchEntry.jsx';
 import './search.css';
-import ScrollMenu from 'react-horizontal-scrolling-menu';
-
+// import ScrollMenu from 'react-horizontal-scrolling-menu';
 
 const SearchFeed = ({ shows, onClick }) => (
   <div>
