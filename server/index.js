@@ -19,7 +19,6 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
 const { Users, Posts, Shows, Replys } = require('./db/schema.js');
-// const { session } = require('passport');
 
 const app = express();
 
@@ -86,20 +85,10 @@ app.get(
 );
 
 app.get('/user', (req, res) => {
-  // res.status(200).json(userInfo);
-  // console.log(req.cookies.ShowNTellId);
   Users.findOne({ id: req.cookies.ShowNTellId }).then((data) => {
     userInfo = data;
     res.json(userInfo);
   });
-  // if (userInfo !== null) {
-  //   Users.findOne({ id: userInfo.id }).then((data) => {
-  //     userInfo = data;
-  //     res.json(userInfo);
-  //   });
-  // } else {
-  //   res.json(userInfo);
-  // }
 });
 
 app.get('/users', (req, res) => {
@@ -109,11 +98,9 @@ app.get('/users', (req, res) => {
 });
 
 app.get('/posts', (req, res) => {
-  // Posts.remove().then(
   Posts.find()
     .then((posts) => res.send(posts))
     .catch();
-  // );
 });
 
 app.get('/shows', (req, res) => {
@@ -123,15 +110,12 @@ app.get('/shows', (req, res) => {
 });
 
 app.get('/findUser', (req, res) => {
-  // Users.remove().then(
   Users.find()
     .then((data) => res.json(data))
     .catch();
-  // );
 });
 
 app.get('/user/posts/:name', (req, res) => {
-  console.log('PARAMS', req.params.name);
   const user = req.params.name;
   Posts.find({ name: user })
     .then((posts) => res.send(posts))
@@ -184,7 +168,6 @@ app.put('/sendMessage/:id/:text', (req, res) => {
           }
         ).then((result) => res.json(result));
       } else {
-        // console.log(content, 'here');
         Users.updateOne(
           { id: Number(req.params.id) },
           {
@@ -205,12 +188,10 @@ app.put('/sendMessage/:id/:text', (req, res) => {
 
 app.post('/addComment', (req, res) => {
   const comment = req.body.comment;
-  // console.log('----', comment);
   const postId = req.body.postId;
   Posts.updateOne({ _id: postId }, { $push: { comments: comment } }).then(
     () => {
       Posts.find({ _id: postId }).then((post) => {
-        // console.log(post);
         res.send(post[0].comments);
       });
     }
