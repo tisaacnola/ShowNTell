@@ -1,6 +1,3 @@
-/* eslint-disable consistent-return */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/button-has-type */
 import React, { useState } from 'react';
 import axios from 'axios';
 import './dms.css';

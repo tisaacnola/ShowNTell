@@ -1,10 +1,3 @@
-/* eslint-disable no-shadow */
-/* eslint-disable no-continue */
-/* eslint-disable no-param-reassign */
-/* eslint-disable prefer-destructuring */
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
-/* eslint-disable max-len */
 const path = require('path');
 const express = require('express');
 const passport = require('passport');
@@ -45,7 +38,7 @@ app.use(
     secret: process.env.GOOGLE_CLIENT_SECRET,
     saveUninitialized: false,
     resave: true,
-  })
+  }),
 );
 app.use(passport.initialize());
 app.use(passport.session());
@@ -57,8 +50,8 @@ app.get(
     { scope: ['https://www.googleapis.com/auth/plus.login'] },
     (req, res) => {
       // res.redirect('/');
-    }
-  )
+    },
+  ),
 );
 
 app.get(
@@ -82,7 +75,7 @@ app.get(
         });
       }
     });
-  }
+  },
 );
 
 app.get('/user', (req, res) => {
@@ -133,7 +126,7 @@ app.put('/startMessage/:user/:name', (req, res) => {
           ...userInfo.messages,
           { id: req.params.user, name: req.params.name, text: [] },
         ],
-      }
+      },
     )
       .then((result) => res.json(result))
       .catch();
@@ -171,7 +164,7 @@ app.put('/sendMessage/:id/:text', (req, res) => {
             {
               messages: replace,
               notifs: [...data.notifs, `${userInfo.name} messaged you`],
-            }
+            },
           ).then((results) => res.json(results));
         } else {
           Users.updateOne(
@@ -186,7 +179,7 @@ app.put('/sendMessage/:id/:text', (req, res) => {
                 },
               ],
               notifs: [...data.notifs, `${userInfo.name} messaged you`],
-            }
+            },
           ).then((allResult) => res.json(allResult));
         }
       });
@@ -208,14 +201,12 @@ app.get('/show/:id', (req, res) => {
         return record[0];
       }
       return axios(`http://api.tvmaze.com/shows/${req.params.id}`)
-        .then(({ data }) =>
-          Shows.create({
-            id: data.id,
-            name: data.name,
-            posts: [],
-            subscriberCount: 0,
-          })
-        )
+        .then(({ data }) => Shows.create({
+          id: data.id,
+          name: data.name,
+          posts: [],
+          subscriberCount: 0,
+        }))
         .then((result) => result)
         .catch();
     })
@@ -233,21 +224,19 @@ app.put('/subscribe/:id', (req, res) => {
           userInfo.subscriptions = [...user.subscriptions, id];
           Users.updateOne(
             { _id: user._id },
-            { subscriptions: [...user.subscriptions, id] }
+            { subscriptions: [...user.subscriptions, id] },
           )
             .then(() => {
               Shows.findOne({ id })
                 .then((record) => {
                   Shows.updateOne(
                     { id: req.params.id },
-                    { subscriberCount: record.subscriberCount + 1 }
+                    { subscriberCount: record.subscriberCount + 1 },
                   ).catch();
                 })
                 .catch();
             })
             .catch();
-        } else {
-          console.log('already subscribed');
         }
       })
       .then(() => res.status(200).send())
@@ -291,7 +280,7 @@ app.post('/posts', (req, res) => {
             userInfo.posts = [...user.posts, post._id];
             Users.updateOne(
               { _id: poster },
-              { posts: [...user.posts, post._id] }
+              { posts: [...user.posts, post._id] },
             ).catch();
           })
           .then(() => {
@@ -299,7 +288,7 @@ app.post('/posts', (req, res) => {
               .then((record) => {
                 Shows.updateOne(
                   { id: show },
-                  { posts: [...record.posts, post._id] }
+                  { posts: [...record.posts, post._id] },
                 ).catch();
               })
               .catch();
@@ -322,16 +311,14 @@ app.post('/number', (req, res) => {
   Users.findOne({ id: req.cookies.ShowNTellId }).then((data) => {
     userInfo = data;
     if (!number) {
-      Users.updateOne({ id: userInfo.id }, { phone: number }).then((data) =>
-        res.json(data)
-      );
+      Users.updateOne({ id: userInfo.id }, { phone: number }).then((data) => res.json(data));
     } else {
       Users.updateOne(
         { id: userInfo.id },
         {
           phone: number,
           notifs: [`you will now receive notifications @ ${number}   `],
-        }
+        },
       ).then((data) => res.json(data));
     }
   });
@@ -377,7 +364,7 @@ app.delete('/notifs/:index', (req, res) => {
     }
     Users.update(
       { id: userInfo.id },
-      { notifs: replacementNotif }
+      { notifs: replacementNotif },
     ).then((data) => res.json(data));
   });
 });
@@ -408,12 +395,10 @@ app.get('/liked/:id', (req, res) => {
       if (test) {
         Posts.updateOne(
           { _id: req.params.id },
-          { likes: [...data.likes, userInfo.id] }
+          { likes: [...data.likes, userInfo.id] },
         ).then(() => res.json());
       } else {
-        Posts.updateOne({ _id: req.params.id }, { likes: newLike }).then(() =>
-          res.json()
-        );
+        Posts.updateOne({ _id: req.params.id }, { likes: newLike }).then(() => res.json());
       }
     });
   });
@@ -431,7 +416,7 @@ app.get('/replys/:id/:content', (req, res) => {
       Posts.findOne({ _id: req.params.id }).then((data) => {
         Posts.updateOne(
           { _id: req.params.id },
-          { comment: [...data.comment, _id] }
+          { comment: [...data.comment, _id] },
         )
           .then(() => Posts.findOne({ _id: req.params.id }))
           .then((result) => res.json(result));
@@ -460,7 +445,7 @@ app.post('/replys/:id/:content', (req, res) => {
       Replys.findOne({ _id: req.params.id }).then((data) => {
         Replys.updateOne(
           { _id: req.params.id },
-          { comment: [...data.comment, _id] }
+          { comment: [...data.comment, _id] },
         )
           .then(() => Replys.findOne({ _id: req.params.id }))
           .then((result) => res.json(result));
@@ -486,17 +471,16 @@ app.get('/likedPost/:id', (req, res) => {
       if (test) {
         Replys.updateOne(
           { _id: req.params.id },
-          { likes: [...data.likes, userInfo.id] }
+          { likes: [...data.likes, userInfo.id] },
         ).then(() => res.json());
       } else {
-        Replys.updateOne({ _id: req.params.id }, { likes: newLike }).then(() =>
-          res.json()
-        );
+        Replys.updateOne({ _id: req.params.id }, { likes: newLike }).then(() => res.json());
       }
     });
   });
 });
 
 app.listen(3000, () => {
+  // eslint-disable-next-line no-console
   console.log('http://localhost:3000');
 });

@@ -4,11 +4,6 @@ import noImgAvail from './no_img_avail.png';
 
 const SearchFeedEntry = ({ show, onClick }) => {
   const [state, setState] = useState('');
-  // const shorten = (text) => {
-  //   const maxLength = 5;
-  //   if (text.length <= maxLength) return text;
-  //   return text.substr(0, text.lastIndexOf(' ', maxLength));
-  // };
 
   const getSummary = () => {
     let summary = show.summary.replace(/<p>|<\/p>/g, '');

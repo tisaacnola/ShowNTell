@@ -1,7 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable guard-for-in */
 import React, { useState } from 'react';
 import axios from 'axios';
 import './homefeed.css';
@@ -92,7 +88,6 @@ const FeedItem = ({ post, user = {}, setPosts }) => {
                     .get(`/replys/${currentPost._id}/${content}`)
                     .then(({ data }) => {
                       setContent('');
-                      // console.log(data);
                       setPost(data);
                       axios.get('/posts').then((result) => {
                         setPosts(result.data);

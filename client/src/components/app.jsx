@@ -52,7 +52,7 @@ const App = () => {
         .then(({ data }) => {
           setPosts(data);
         })
-        .catch((err) => console.log(err));
+        .catch();
     }
     // }
   };
