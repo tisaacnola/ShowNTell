@@ -1,6 +1,6 @@
 .search-results-header{
   color: white;
-  font-size: 22px;
+  font-size: 20px;
   font-family: 'Work Sans', sans-serif;
   margin-top: 5%;
   margin-left: 3%;
@@ -32,14 +32,13 @@
 
  .show-name {
   font-family: 'Work Sans', sans-serif;
-  font-size: 32px;
+  font-size: 28px;
   margin-top: 0.5rem;
-  color: #f0ccb3;
+  color: #408ac8;
   font-weight: bold;
   text-align: center;
   margin-bottom: 2%;
   margin-top: 3%;
-  font-style: oblique;
 }
 
 .show-summary {
@@ -83,7 +82,7 @@
     color: #f0ccb3;
     display: flex;
     font-size: 14px;
-    margin-left: 35%;
+    margin-left: 25%;
     margin-top: 3%;
     border-style: solid;
   }
@@ -101,17 +100,15 @@
     margin-left: 10%;
     margin-top: 5%;
     text-decoration-line: underline;
-    text-decoration-style: wavy;
     text-decoration-color: #dd3e42;
   }
 
   .sub-btn{
     border-radius: 25px;
-    padding: 8px 12px;
+    padding: 8px 10px;
     background-color: #408ac8;
     border-color: #140e3e;
     color: #140e3e;
-    font-size: 14px;
     margin-left: 14%;
     border-style: solid;
   }

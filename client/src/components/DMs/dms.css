@@ -1,45 +1,49 @@
-
-
-.write-message-box {
+.send-msg-header {
   font-family: 'Work Sans', sans-serif;
   position: fixed;
-  margin-left: 40%;
+  margin-left: 45%;
+  top: 0;
+  z-index: 100;
+  margin-top: 17.5%;
+  color: #f2d75e;
+  font-size: 16px;
+}
+
+.write-message-box {
+    z-index:100;
+    font-family: 'Work Sans', sans-serif;
+    position: fixed;
+    margin-left: 40%;
     top: 0;
     width: 20%;
     height: 10%;
-    z-index:100;
-    margin-top: 15%;
+    margin-top: 20%;
+    color: white;
+    background-color: #140e3e;
+    border-style: solid;
+    border-radius: 25px;
+    text-align: center;
 }
 
 .send-message-button {
-  font-family: 'Work Sans', sans-serif;
-  font-size: 14px;
-  background-color: #6d6ca6;
-  border-radius: 25px;
-  padding: 6px 15px;
-  position:fixed;
+    font-family: 'Work Sans', sans-serif;
+    background-color: #140e3e;
+    color: #6d6ca6;
+    border-color: #6d6ca6;
+    border-radius: 25px;
+    padding: 2px 10px;
+    position: fixed;
     top: 0;
-    z-index:100;
-    margin-top: 22%;
-    margin-left: 40%
+    z-index: 100;
+    margin-top: 27%;
+    margin-left: 48.5%;
+    border-style: solid;
 }
 
 .send-message-button:hover {
-  background-color: #408ac8;
-  color: white;
-}
-
-h3 {
-  font-family: 'Work Sans', sans-serif;
-  position: fixed;
-  margin-left: 40%;
-    top: 0;
-    width: 20%;
-    height: 10%;
-    z-index:100;
-    margin-top: 13%;
-    color: #f2d75e;
-    font-style: italic;
+  background-color: #f2d75e;
+    color: #140e3e;
+    border-color: #f2d75e;
 }
 
 #heading {
@@ -98,6 +102,10 @@ h2 {
   font-size: 18px;
 }
 
+.msg-from:hover{
+  color:white;
+}
+
 h2:hover {
   color:#408ac8;
 }
@@ -122,30 +130,33 @@ h2:hover {
 
 #searched-users {
   font-family: 'Work Sans', sans-serif;
-  margin-top: -5;
-  text-decoration: underline;
   color: lightblue;
-  font-size: 24px;
   margin-left: 5%;
-}
-
-#users1{
-  font-family: 'Work Sans', sans-serif;
-  color: #408ac8;
-  font-style: italic;
-}
-
-#recents {
-  font-family: 'Work Sans', sans-serif;
-  color: lightblue;
-  margin-left: 0%;
-  font-style: normal;
-  text-decoration-color: #140e3e;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .message-content {
   font-family: 'Work Sans', sans-serif;
-  margin-top: 5%;
+  margin-top: 7.3%;
+  margin-left: 22%;
+  color: white;
+}
+
+.msg-text{
+  color: #408ac8;
+  margin-left: 2%;
+}
+
+.send-msg-area {
   margin-left: 15%;
-  color:white;
+}
+
+.invalid-num-text{
+  font-family: 'Work Sans', sans-serif;
+  color: #dd3e42;
+  font-size: 16px;
+  font-style: italic;
+  margin-top: 1%;
+  margin-left: 45%;
 }

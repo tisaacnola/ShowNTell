@@ -15,7 +15,7 @@ import Post from './CreatePost/post.jsx';
 import DMs from './DMs/dms.jsx';
 import Notifs from './Notifications/notifs.jsx';
 import SearchFeed from './SearchBar/searchFeed.jsx';
-import ShowFeed from './showFeed.jsx';
+import ShowFeed from './Subscriptions/showFeed.jsx';
 
 const App = () => {
   const [posts, setPosts] = useState();

@@ -82,7 +82,7 @@ const DMs = ({ user, setUser }) => {
                                 });
                             }}
                           >
-                            {/* {name} */}
+                            {name}
                           </h4>
                         </div>
                       );
