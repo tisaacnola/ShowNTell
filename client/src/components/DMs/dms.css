@@ -111,8 +111,10 @@ h2:hover {
 }
 
 #search-for-user-button {
-  color: red;
+  color: lightblue;
   margin-left: 20%;
+  font-family: 'Work Sans', sans-serif;
+  font-style: italic;
 }
 
 .user-search-form{
