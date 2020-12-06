@@ -132,7 +132,6 @@ app.get('/findUser', (req, res) => {
 });
 
 app.get('/user/posts/:name', (req, res) => {
-  console.log('PARAMS', req.params.name);
   const user = req.params.name;
   Posts.find({ name: user })
     .then((posts) => res.send(posts))
@@ -189,7 +188,6 @@ app.put('/sendMessage/:id/:text', (req, res) => {
             },
           ).then((results) => res.json(results));
         } else {
-          // console.log(content, 'here');
           Users.updateOne(
             { id: Number(req.params.id) },
             {
@@ -209,48 +207,12 @@ app.put('/sendMessage/:id/:text', (req, res) => {
   });
 });
 
-app.post('/addComment', (req, res) => {
-  const comment = req.body.comment;
-  // console.log('----', comment);
-  const postId = req.body.postId;
-  Posts.updateOne({ _id: postId }, { $push: { comments: comment } }).then(
-    () => {
-      Posts.find({ _id: postId }).then((post) => {
-        // console.log(post);
-        res.send(post[0].comments);
-      });
-    },
-  );
-});
-
-app.post('/addResponse', (req, res) => {
-  const update = (comments) => {
-    comments.forEach((comment) => {});
-  };
-  Posts.updateOne(
-    { 'comments.currentComment': req.body.comment.parentComment },
-    {
-      $push: {
-        'comments.$.childComments': req.body.comment.currentComment,
-      },
-    },
-  )
-    .then(() => {
-      Posts.find({ _id: req.body.comment.postId }).then((post) => {
-        res.send(post[0].comments);
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
 app.get('/search/:query', (req, res) => {
   const url = `http://api.tvmaze.com/search/shows?q=${req.params.query}`;
   return axios(url)
     .then(({ data }) => data)
     .then((data) => res.status(200).send(data))
-    .catch(() => console.log('error'));
+    .catch();
 });
 
 app.get('/show/:id', (req, res) => {
@@ -319,7 +281,6 @@ app.get('/logout', (req, res) => {
 
 app.post('/posts', (req, res) => {
   const { title, content, poster, show, name } = req.body;
-
   Users.findOne({ id: req.cookies.ShowNTellId }).then((data) => {
     userInfo = data;
     return Posts.create({
@@ -390,7 +351,7 @@ app.get('/notifs/:text/:id', (req, res) => {
           to: userInfo.phone,
         })
         .then((message) => res.json(message.sid))
-        .catch((err) => console.log(err));
+        .catch();
     } else {
       Users.findOne({ id: req.params.id })
         .then((data) => {
@@ -401,7 +362,7 @@ app.get('/notifs/:text/:id', (req, res) => {
               to: data.phone,
             })
             .then((message) => res.json(message.sid))
-            .catch((err) => console.log(err));
+            .catch();
         });
     }
   });
