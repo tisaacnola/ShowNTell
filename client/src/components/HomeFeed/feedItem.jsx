@@ -8,7 +8,7 @@ import './homefeed.css';
 import { FaHeart, FaRegCommentDots, FaTimes } from 'react-icons/fa';
 import Reply from './reply.jsx';
 
-const FeedItem = ({ post, handleUserClick, user = {}, setPosts }) => {
+const FeedItem = ({ post, user = {}, setPosts }) => {
   const [show, setShow] = useState();
   const [name, setName] = useState();
   const [like, setLike] = useState();

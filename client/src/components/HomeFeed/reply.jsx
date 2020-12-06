@@ -60,6 +60,11 @@ const Reply = ({ id, place, user, setPosts }) => {
                   setNumber(number + 1);
                 }
                 setCurrentLike(!currentLike);
+                axios
+                  .get('/posts')
+                  .then((result) => {
+                    setPosts(result.data);
+                  });
               });
           }}
         >
