@@ -1,12 +1,3 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable react/jsx-no-duplicate-props */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable import/extensions */
-/* eslint-disable consistent-return */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/button-has-type */
 import React, { useState } from 'react';
 import { FaHome, FaStar, FaPen, FaBell, FaEnvelope, FaSearch, FaDoorOpen } from 'react-icons/fa';
 import logo from './HomePage/img/logo1.png';

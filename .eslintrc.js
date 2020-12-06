@@ -26,5 +26,9 @@ module.exports = {
     'jsx-a11y/no-static-element-interactions': 0,
     'import/no-unresolved': 0,
     'no-console': 1,
+    'no-continue': 0,
+    'no-shadow': 0,
+    'jsx-a11y/no-noninteractive-element-interactions': 0,
+    'jsx-a11y/heading-has-content': 0,
   },
 };

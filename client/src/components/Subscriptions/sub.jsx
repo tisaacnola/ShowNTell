@@ -22,17 +22,19 @@ const Sub = ({ user, setView }) => {
   return (
     <div>
       <h1 id="header">Subscriptions:</h1>
-      {getSubs()}
-      {subs.map((sub, i) => (
-        <div
-          className="sub"
-          key={sub + i}
-          data-id={sub.id}
-          onClick={(e) => setView(e.target.dataset.id)}
-        >
-          {sub.name}
-        </div>
-      ))}
+      <div>
+        {getSubs()}
+        {subs.map((sub, i) => (
+          <div
+            className="sub"
+            key={sub + i}
+            data-id={sub.id}
+            onClick={(e) => setView(e.target.dataset.id)}
+          >
+            {sub.name}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

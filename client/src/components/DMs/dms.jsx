@@ -1,15 +1,7 @@
-/* eslint-disable import/extensions */
-/* eslint-disable max-len */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable consistent-return */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/button-has-type */
 import React, { useState } from 'react';
 import axios from 'axios';
 import Messages from './messages.jsx';
 import './dms.css';
-import { FaSearch } from 'react-icons/fa';
 
 const DMs = ({ user, setUser }) => {
   const [messages, setMessages] = useState();
@@ -81,9 +73,7 @@ const DMs = ({ user, setUser }) => {
                                     .then((result) => setUser(result.data));
                                 });
                             }}
-                          >
-                            {/* {name} */}
-                          </h4>
+                          />
                         </div>
                       );
                     })}
@@ -112,7 +102,14 @@ const DMs = ({ user, setUser }) => {
             <div className="inbox">
               <h1>Inbox: </h1>
               {
-              user.messages.map((({ id, name }) => (<h2 key={String(id)} onClick={() => setMessages(String(id))}>{name}</h2>)))
+              user.messages.map((({ id, name }) => (
+                <h2
+                  key={String(id)}
+                  onClick={() => setMessages(String(id))}
+                >
+                  {name}
+                </h2>
+              )))
               }
             </div>
           </div>

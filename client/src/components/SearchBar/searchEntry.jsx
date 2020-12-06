@@ -4,11 +4,6 @@ import noImgAvail from './no_img_avail.png';
 
 const SearchFeedEntry = ({ show, onClick }) => {
   const [state, setState] = useState('');
-  // const shorten = (text) => {
-  //   const maxLength = 5;
-  //   if (text.length <= maxLength) return text;
-  //   return text.substr(0, text.lastIndexOf(' ', maxLength));
-  // };
 
   const getSummary = () => {
     let summary = show.summary.replace(/<p>|<\/p>/g, '');
@@ -48,6 +43,19 @@ const SearchFeedEntry = ({ show, onClick }) => {
       return noImgAvail;
     }
   };
+
+  const Arrow = ({ text, className }) => {
+    return (
+      <div
+        className={className}
+      >
+        {text}
+      </div>
+    );
+  };
+
+  const ArrowLeft = Arrow({ text: '<', className: 'arrow-prev' });
+  const ArrowRight = Arrow({ text: '>', className: 'arrow-next' });
 
   return (
     <div className="show-card">

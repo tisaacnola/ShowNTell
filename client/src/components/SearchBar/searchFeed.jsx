@@ -1,10 +1,8 @@
-/* eslint-disable import/order */
 import React from 'react';
 import SearchFeedEntry from './searchEntry.jsx';
 import './search.css';
-// import ScrollMenu from 'react-horizontal-scrolling-menu';
 
-const SearchFeed = ({ shows, onClick }) => (
+const SearchFeed = ({ shows, onClick, arrow }) => (
   <div>
     <div className="search-results-header">Search results: </div>
     <div className="scrolling-container">

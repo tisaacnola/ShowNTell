@@ -1,11 +1,19 @@
-/* *{outline: 1px dotted white} */
+*:focus {
+  outline: none;
+}
+
+.home-title{
+  color:white;
+  font-weight: bold;
+  font-size: 28px;
+  font-family: 'Work Sans', sans-serif;
+  margin-top: 1%;
+  margin-left: 20%
+}
 
 .home-feed-container {
   display: flex;
   flex-direction: column;
-  justify-content: left;
-  align-items: normal;
-  min-height: 100vh;
   margin-left: 30%;
   margin-left: 20%;
 }
@@ -14,20 +22,19 @@
   font-family: 'Work Sans', sans-serif;
   border-radius: 25px;
   border-style: solid;
-  border-color: #6d6ca6;
-  background-color: #6d6ca6;
-  margin-bottom: 1%;
+  border-color: #1d3b61;
+  background-color: #1d3b61;
   margin-top: 5%;
   color: white;
-  margin-left: 2%;
 }
 
 .post-show{
   font-family: 'Work Sans', sans-serif;
   text-decoration: none;
-  color: black;
-  font-size: 22px;
-  margin-left: 2%;
+  color:  white;
+  font-size: 18px;
+  margin-left: 10%;
+  font-weight: bold;
 }
 
 .post-show:hover {
@@ -36,34 +43,25 @@
 
 #post-show-title{
   margin-top: 1.5%;
-  margin-left: 8%;
-  font-weight: bold;
-  font-size: 18px;
+  margin-left: 15%;
+  font-size: 16px;
   margin-bottom: -2%;
 }
 
 .post-author {
-  margin-left: 8%;
+  margin-left: 15%;
   color: #408ac8;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
  }
 
 
  #post-content{
   color: white;
-  margin-left: 8%;
+  margin-left: 15%;
   margin-bottom: 5%;
+  font-size: 14px;
  }
-
-/* .insert-comment-button{
- width: '10%';
- margin: '10px';
- background-color: 'orange';
- display: 'inline-block';
- border-radius: 25px;
- background-color:
-} */
 
 .post-like-btn{
     font-size: 24px;
@@ -76,8 +74,7 @@
 .liked-button{
   font-size: 24px;
   display: inline-block;
-  /* width: 5%; */
-  margin-right: 3%;
+  margin-right: 2%;
   color: #dd3e42;
 }
 .comment-btn{
@@ -88,7 +85,7 @@
 .like-count{
   margin-top: 2%;
   display: inline-block;
-  margin-left: 8%;
+  margin-left: 15%;
   position: relative;
   margin-right: 2%;
   font-size: 16px;
@@ -99,13 +96,11 @@
   display: flex;
   margin-right: 10px;
   padding-bottom: 10px;
-  /* justify-content: space-around;*/
 }
 .post-comment-btn{
   font-size: 24px;
   color: #f0ccb3;
-  margin-left: 20%;
-  /* margin-bottom: 20%; */
+  margin-left: 26%;
   position: relative;
   bottom: 38px;
 }
@@ -114,17 +109,15 @@
 
 }
 .comment-txt-box{
-  position: inline-block;
-  background-color: #6d6ca6;
+  background-color: #1d3b61;
   color: white;
   border-color: white;
   border-radius: 25px;
   border-style: solid;
-  border-color: #6d6ca6;
-  background-color: #6d6ca6;
-  margin-right: 5%;
+  margin-right: 3%;
   height: 50px;
   width: 200px;
+  text-align: center;
 }
 
 .comment-txt-box::-webkit-input-placeholder {
@@ -133,19 +126,19 @@
 
 .submit-post-comment-btn{
   position: inline-block;
-  background-color: #6d6ca6;
+  background-color: #1d3b61;
   border-color: white;
   border-radius: 25px;
   color: white;
+  border-style: solid;
+  padding: 3px 8px;
 }
 
 .comment {
   font-family: 'Work Sans', sans-serif;
   border-style: solid;
   border-color: white;
-  color: white;
   border-radius: 25px;
-  margin-bottom: 1%;
   margin-top: 2%;
   color: white;
   margin-left: 10%;
@@ -156,43 +149,50 @@
   margin-left: 5%;
   margin-bottom: -2%;
   color: #408ac8;
-  font-size: 1spx;
+  font-size: 14px;
  }
 
  #comment-content{
   color: white;
   margin-left: 10%;
-  /* margin-left: 5%; */
-  /* margin-top: -2%;
-  margin-bottom: 3%; */
  }
 
  .reply-comment-txt-box{
-  background-color: #6d6ca6;
   color: white;
-  border-color: white;
   border-style: solid;
-  border-color: #6d6ca6;
+  border-color: #1d3b61;
   background-color: #140e3e;
-  margin-right: 5%;
+  margin-right: 3%;
   height: 50px;
   width: 200px;
   margin-left: 25%;
   border-radius: 25px;
   margin-bottom: 3%;
+  text-align: center;
 }
 
 .reply-comment-txt-box::-webkit-input-placeholder {
   text-align: center;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .submit-reply-comment-btn{
-  position: inline-block;
-  background-color: #6d6ca6;
+  background-color: #140e3e;
   border-color: white;
   border-radius: 25px;
   color: white;
-  /* color: red; */
+  border-style: solid;
+  padding: 3px 8px;
 }
 
+.x-btn{
+  position: relative;
+  color: white;
+  font-size: 16px;
+  margin-left: 2%;
+  top: 4px;
+}
 
+.x-btn:hover{
+  color:#dd3e42;
+}

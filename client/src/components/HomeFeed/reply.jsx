@@ -1,10 +1,6 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable guard-for-in */
 import React, { useState } from 'react';
 import axios from 'axios';
-import { FaHeart, FaRegCommentDots } from 'react-icons/fa';
+import { FaHeart, FaRegCommentDots, FaTimes } from 'react-icons/fa';
 import './homefeed.css';
 
 const Reply = ({ id, place, user, setPosts }) => {
@@ -37,7 +33,7 @@ const Reply = ({ id, place, user, setPosts }) => {
       axios.get(`/postUser/${test}`)
         .then(({ data }) => {
           setName(data.name);
-        }).catch((err) => console.log(err));
+        }).catch();
     }
   };
 
@@ -73,7 +69,7 @@ const Reply = ({ id, place, user, setPosts }) => {
         <div>
           {
           reply ? (
-            <div>
+            <div className="comment-box">
               <input
                 className="reply-comment-txt-box"
                 placeholder="what are your thoughts?"
@@ -100,6 +96,12 @@ const Reply = ({ id, place, user, setPosts }) => {
               >
                 submit
               </button>
+              <FaTimes
+                className="x-btn"
+                onClick={() => {
+                  setReply(false);
+                }}
+              />
             </div>
           ) : <FaRegCommentDots className="post-comment-btn" onClick={() => setReply(true)} />
         }

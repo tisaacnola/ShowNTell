@@ -1,13 +1,3 @@
-/* eslint-disable no-use-before-define */
-/* eslint-disable prefer-const */
-/* eslint-disable no-shadow */
-/* eslint-disable no-alert */
-/* eslint-disable use-isnan */
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
-/* eslint-disable consistent-return */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/button-has-type */
 import React, { useState } from 'react';
 import axios from 'axios';
 import './notifs.css';
@@ -60,7 +50,6 @@ const Notifs = ({ user, setUser }) => {
           <div id="all-notif"> All notifications:</div>
           <div>
             {
-              // maping over here
               user.notifs.map((text, i) => (
                 <div id="notif-msg-block" key={text + i}>
                   <h2 id="receive-notifs-message">
@@ -86,7 +75,7 @@ const Notifs = ({ user, setUser }) => {
         </div>
       )
     }
-        <div>{(testNumber) ? null : <h2>invalid number</h2>}</div>
+        <div>{(testNumber) ? null : <p className="invalid-num-text">sorry, invalid number</p>}</div>
         <img id="notif-pic" src={pic} alt="pic" />
       </div>
     );

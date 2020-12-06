@@ -1,8 +1,7 @@
 import React from 'react';
 import './Card.css';
-import { FaGithub } from 'react-icons/fa';
 
-function Card({ icon, imageUrl, body }) {
+function Card({ icon, body }) {
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&family=Nunito&display=swap" rel="stylesheet" />;
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet" />;
     return (
