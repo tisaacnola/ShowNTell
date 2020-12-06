@@ -68,7 +68,8 @@
   margin-right: auto;
   border-radius: 12px;
   background-color: white;
-  padding: 10px 24px;
+  padding: 8px 12px;
+  color: #6d6ca6;
 }
 
 #submit-button:hover {

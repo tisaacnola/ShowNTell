@@ -49,6 +49,19 @@ const SearchFeedEntry = ({ show, onClick }) => {
     }
   };
 
+  const Arrow = ({ text, className }) => {
+    return (
+      <div
+        className={className}
+      >
+        {text}
+      </div>
+    );
+  };
+
+  const ArrowLeft = Arrow({ text: '<', className: 'arrow-prev' });
+  const ArrowRight = Arrow({ text: '>', className: 'arrow-next' });
+
   return (
     <div className="show-card">
       <div className="show-name" value={show.id} onClick={() => onClick(show)}>

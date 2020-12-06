@@ -86,7 +86,7 @@ const Notifs = ({ user, setUser }) => {
         </div>
       )
     }
-        <div>{(testNumber) ? null : <h2>invalid number</h2>}</div>
+        <div>{(testNumber) ? null : <p className="invalid-num-text">sorry, invalid number</p>}</div>
         <img id="notif-pic" src={pic} alt="pic" />
       </div>
     );

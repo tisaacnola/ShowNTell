@@ -52,7 +52,7 @@ const Post = ({ user, createPost }) => {
         <div className="content-container">
           <textarea id="post-text" value={content} onChange={(e) => setContent(e.target.value)} placeholder="what's your message?" />
         </div>
-        <button id="submit-button" onClick={onClick}>SUBMIT POST</button>
+        <button id="submit-button" onClick={onClick}>submit post</button>
         <h4 id="error-message">{error}</h4>
       </div>
       <img id="pic" src={pic} alt="pic" />

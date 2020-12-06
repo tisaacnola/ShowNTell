@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './homefeed.css';
-import { FaHeart, FaRegCommentDots } from 'react-icons/fa';
+import { FaHeart, FaRegCommentDots, FaTimes } from 'react-icons/fa';
 import Reply from './reply.jsx';
 
 const FeedItem = ({ post, user = {}, setPosts }) => {
@@ -102,6 +102,12 @@ const FeedItem = ({ post, user = {}, setPosts }) => {
               >
                 submit
               </button>
+              <FaTimes
+                className="x-btn"
+                onClick={() => {
+                  setBox(false);
+                }}
+              />
             </div>
           )}
         </div>

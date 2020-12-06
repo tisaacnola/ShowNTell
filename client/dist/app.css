@@ -71,7 +71,7 @@ li {
 
 .search-term {
   font-family: 'Work Sans', sans-serif;
-  width: 80%;
+  width: 75%;
   border: 3px solid #5c637b;
   border-right: none;
   padding: 5px;
@@ -82,6 +82,7 @@ li {
   color: #9DBFAF;
   text-indent: 8px;
   display: inline-block;
+  margin-left: 5%;
 }
 
 .search-term:focus{
