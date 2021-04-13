@@ -16,6 +16,7 @@ import DMs from './DMs/dms.jsx';
 import Notifs from './Notifications/notifs.jsx';
 import SearchFeed from './SearchBar/searchFeed.jsx';
 import ShowFeed from './Subscriptions/showFeed.jsx';
+import FriendList from './FriendList/friendList.jsx';
 
 const App = () => {
   const [posts, setPosts] = useState();
@@ -130,8 +131,11 @@ const App = () => {
     if (view === 'search') {
       return <SearchFeed shows={searchedShows} onClick={addShow} />;
     }
-    return <ShowFeed showId={view} subscribe={subscribe} />;
     // To Do: Add Following View
+    if (view === 'friends') {
+      return <FriendList />;
+    }
+    return <ShowFeed showId={view} subscribe={subscribe} />;
   };
 
   return (
