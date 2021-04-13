@@ -131,6 +131,7 @@ const App = () => {
       return <SearchFeed shows={searchedShows} onClick={addShow} />;
     }
     return <ShowFeed showId={view} subscribe={subscribe} />;
+    // To Do: Add Following View
   };
 
   return (
