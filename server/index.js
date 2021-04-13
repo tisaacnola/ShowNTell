@@ -480,6 +480,15 @@ app.get('/likedPost/:id', (req, res) => {
   });
 });
 
+app.put('/follow', (req, res) => {
+  const { follower, followed } = req.body;
+  // res.json(follower + ' ' + followed); // works
+  Users.updateOne(
+    { id: follower },
+    { following: followed },
+  ).then(() => res.send('following list updated'));
+});
+
 app.listen(3000, () => {
   // eslint-disable-next-line no-console
   console.log('http://localhost:3000');
