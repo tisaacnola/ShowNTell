@@ -479,14 +479,36 @@ app.get('/likedPost/:id', (req, res) => {
     });
   });
 });
-
+/**
+ * FRIEND LIST FEATURES
+ */
 app.put('/follow', (req, res) => {
   const { follower, followed } = req.body;
-  // res.json(follower + ' ' + followed); // works
+  // find user to be followed
+  Users.findOne({ id: followed })
+    .then((data) => {
+      // update user that will follow
+      Users.updateOne(
+        { id: follower },
+        { $push: { following: data } },
+      ).then(() => res.send('following list updated'));
+    })
+    .catch((err) => res.send(err));
+});
+
+app.delete('/unfollow', (req, res) => {
+  const { follower, followed } = req.body;
   Users.updateOne(
     { id: follower },
-    { following: followed },
+    { $pull: { following: { id: followed } } },
   ).then(() => res.send('following list updated'));
+});
+
+// test changes in users props
+app.get('/users/:id/', (req, res) => {
+  Users.findOne({ id: req.params.id })
+    .then((data) => res.json(data))
+    .catch((err) => res.send(err));
 });
 
 app.listen(3000, () => {

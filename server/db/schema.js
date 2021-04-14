@@ -10,6 +10,7 @@ const userSchema = mongoose.Schema({
   follows: Array,
   subscriptions: Array,
   following: Array,
+  followers: Array,
 });
 
 const Users = mongoose.model('Users', userSchema);
