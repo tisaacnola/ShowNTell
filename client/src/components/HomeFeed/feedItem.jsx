@@ -35,6 +35,19 @@ const FeedItem = ({ post, user = {}, setPosts }) => {
     }
   };
 
+  const toggleFollow = () => {
+    if (follow) {
+      axios.delete('/unfollow', { follower: user.id, followed: currentPost.user.id })
+        .then(setFollow(false));
+    } else {
+      console.log(user._id);
+      console.log(post._id);
+      axios.put('/follow', { follower: user._id, followed: post.user }) // not working for some reason
+        .then(console.log(user))
+        .then(setFollow(true));
+    }
+  };
+
   return (
     <div>
       <div className="main-post-container">
@@ -65,7 +78,7 @@ const FeedItem = ({ post, user = {}, setPosts }) => {
           <FaHandshake
             className={follow ? 'unfollow-button' : 'follow-button'}
             onClick={() => {
-              setFollow(!follow);
+              toggleFollow();
             }}
           />
           {!box && (

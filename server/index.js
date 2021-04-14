@@ -485,11 +485,11 @@ app.get('/likedPost/:id', (req, res) => {
 app.put('/follow', (req, res) => {
   const { follower, followed } = req.body;
   // find user to be followed
-  Users.findOne({ id: followed })
+  Users.findOne({ _id: followed })
     .then((data) => {
       // update user that will follow
       Users.updateOne(
-        { id: follower },
+        { _id: follower },
         { $push: { following: data } },
       ).then(() => res.send('following list updated'));
     })
@@ -499,8 +499,8 @@ app.put('/follow', (req, res) => {
 app.delete('/unfollow', (req, res) => {
   const { follower, followed } = req.body;
   Users.updateOne(
-    { id: follower },
-    { $pull: { following: { id: followed } } },
+    { _id: follower },
+    { $pull: { following: { id: followed } } }, // not working with _id for some reason
   ).then(() => res.send('following list updated'));
 });
 
