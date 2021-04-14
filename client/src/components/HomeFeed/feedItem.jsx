@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './homefeed.css';
-import { FaHeart, FaRegCommentDots, FaTimes } from 'react-icons/fa';
+import { FaHeart, FaRegCommentDots, FaTimes, FaHandshake } from 'react-icons/fa';
 import Reply from './reply.jsx';
 
 const FeedItem = ({ post, user = {}, setPosts }) => {
@@ -12,6 +12,7 @@ const FeedItem = ({ post, user = {}, setPosts }) => {
   const [number, setNumber] = useState(currentPost.likes.length);
   const [box, setBox] = useState(false);
   const [content, setContent] = useState('');
+  const [follow, setFollow] = useState(false);
   const getShow = () => {
     if (!show) {
       axios(`/postShow/${currentPost.show}`).then(({ data }) => {
@@ -61,6 +62,12 @@ const FeedItem = ({ post, user = {}, setPosts }) => {
           >
             {like ? 'unlike' : 'like'}
           </FaHeart>
+          <FaHandshake
+            className={follow ? 'unfollow-button' : 'follow-button'}
+            onClick={() => {
+              setFollow(!follow);
+            }}
+          />
           {!box && (
             <FaRegCommentDots
               className="comment-btn"
@@ -68,7 +75,6 @@ const FeedItem = ({ post, user = {}, setPosts }) => {
             />
           )}
         </div>
-
         <div className="post-comment-btn">
           {box && (
             <div className="comment-box">

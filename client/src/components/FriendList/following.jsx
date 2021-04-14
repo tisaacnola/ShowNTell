@@ -5,7 +5,7 @@ const Following = (props = {}) => {
   const { followingList } = props;
   return (
     <div>
-      {followingList.map((friend) => <h3 id="dms-sub-header">{friend.name}</h3>)}
+      {followingList.map((friend) => <h3 id="dms-sub-header" key={friend.id}>{friend.name}</h3>)}
     </div>
   );
 };
