@@ -23,6 +23,7 @@ const App = () => {
   const [view, setView] = useState('homePage');
   const [search, setSearch] = useState('');
   const [searchedShows, setSearchedShows] = useState([]);
+  const [searchedMovies, setSearchedMovies] = useState([]);
   const [userClicked, setUsersClicked] = useState(false);
   const [test, setTest] = useState(false);
 
@@ -81,6 +82,13 @@ const App = () => {
       setSearchedShows(data);
     }).catch();
   };
+  const searchMovies = () => {
+    axios.get(`/search/movies/${search}`).then(({ data }) => {
+      setView('search');
+      setSearch('');
+      setSearchedMovies(data.results);
+    }).catch();
+  };
 
   const handleUserClick = (e) => {
     setUsersClicked(!userClicked);
@@ -98,6 +106,11 @@ const App = () => {
 
   const addShow = (show) => {
     axios.get(`/show/${show.id}`)
+      .then(({ data }) => setView(data.id))
+      .catch();
+  };
+  const addMovie = (movie) => {
+    axios.get(`/movie/${movie.id}`)
       .then(({ data }) => setView(data.id))
       .catch();
   };
@@ -128,7 +141,16 @@ const App = () => {
       return <Notifs user={user} setUser={setUser} />;
     }
     if (view === 'search') {
-      return <SearchFeed shows={searchedShows} onClick={addShow} />;
+      return (
+        <SearchFeed
+          shows={searchedShows}
+          movies={searchedMovies}
+          onClick={() => {
+            addShow();
+            addMovie();
+          }}
+        />
+      );
     }
     return <ShowFeed showId={view} subscribe={subscribe} />;
   };
@@ -144,6 +166,7 @@ const App = () => {
             logout={logout}
             setSearch={setSearch}
             onSearch={searchShows}
+            onSearchTwo={searchMovies}
           />
         )
         : (

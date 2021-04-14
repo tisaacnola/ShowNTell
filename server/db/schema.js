@@ -22,6 +22,15 @@ const showSchema = mongoose.Schema({
 
 const Shows = mongoose.model('Shows', showSchema);
 
+const showMovie = mongoose.Schema({
+  name: String,
+  id: Number,
+  posts: Array,
+  subscriberCount: Number,
+});
+
+const Movies = mongoose.model('Movies', showMovie);
+
 const postSchema = mongoose.Schema({
   user: String,
   show: String,
@@ -49,4 +58,5 @@ module.exports = {
   Shows,
   Posts,
   Replys,
+  Movies,
 };

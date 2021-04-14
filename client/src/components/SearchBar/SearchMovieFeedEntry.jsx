@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './search.css';
+import { ConversationPage } from 'twilio/lib/rest/conversations/v1/service/conversation';
 import noImgAvail from './no_img_avail.png';
 
-const SearchFeedEntry = ({ show, onClick }) => {
+let img = null;
+
+const SearchMovieFeedEntry = ({ movie, onClick }) => {
   const [state, setState] = useState('');
 
   const getSummary = () => {
-    let summary = show.summary.replace(/<p>|<\/p>/g, '');
+    // console.log(movie);
+    let summary = movie.overview.replace(/<p>|<\/p>/g, '');
     const output = [];
     while (summary.length > 0) {
       if (summary.search(/<i>/) !== -1) {
@@ -33,34 +38,27 @@ const SearchFeedEntry = ({ show, onClick }) => {
   };
 
   const getImage = () => {
-    if (show.image !== null) {
-      return show.image.medium;
+    axios.get(`/search/movies/extra/${movie}`).then(({ data }) => {
+      img = data.poster;
+    }).catch();
+
+    if (movie.backdrop_path !== null) {
+      console.log(img);
+      return img;
     }
   };
 
   const getPicUnavail = () => {
-    if (show.image === null) {
+    if (img === null) {
+      console.log(img);
       return noImgAvail;
     }
   };
 
-  // const Arrow = ({ text, className }) => {
-  //   return (
-  //     <div
-  //       className={className}
-  //     >
-  //       {text}
-  //     </div>
-  //   );
-  // };
-
-  // const ArrowLeft = Arrow({ text: '<', className: 'arrow-prev' });
-  // const ArrowRight = Arrow({ text: '>', className: 'arrow-next' });
-
   return (
     <div className="show-card">
-      <div className="show-name" value={show.id} onClick={() => onClick(show)}>
-        <div className="show-name">{show.name}</div>
+      <div className="show-name" value={movie.id} onClick={() => onClick(movie)}>
+        <div className="show-name">{movie.title}</div>
         <img className="show-img" src={getImage()} alt="" />
         <img className="unavail-img" src={getPicUnavail()} alt="" />
         <button
@@ -82,4 +80,4 @@ const SearchFeedEntry = ({ show, onClick }) => {
   );
 };
 
-export default SearchFeedEntry;
+export default SearchMovieFeedEntry;

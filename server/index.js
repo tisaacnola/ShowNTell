@@ -10,9 +10,11 @@ require('./db/index');
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
+const movieKey = process.env.MOVIE_DATABASE_KEY;
+const omdbKey = process.env.OMDB_KEY;
 const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
-const { Users, Posts, Shows, Replys } = require('./db/schema.js');
+const { Users, Posts, Shows, Replys, Movies } = require('./db/schema.js');
 
 const app = express();
 
@@ -194,6 +196,23 @@ app.get('/search/:query', (req, res) => {
     .catch();
 });
 
+// warning: arin made this
+app.get('/search/movies/:query', (req, res) => {
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=${movieKey}&language=en-US&query=${req.params.query}&page=1&include_adult=false`;
+  return axios(url)
+    .then(({ data }) => data)
+    .then((data) => res.status(200).send(data))
+    .catch();
+});
+
+app.get('/search/movies/extra/:query', (req, res) => {
+  const url = `http://www.omdbapi.com/?apikey=${omdbKey}=${req.params.query.title}`;
+  return axios(url)
+    .then(({ data }) => data)
+    .then((data) => res.status(200).send(data))
+    .catch();
+});
+
 app.get('/show/:id', (req, res) => {
   Shows.find({ id: req.params.id })
     .then((record) => {
@@ -204,6 +223,27 @@ app.get('/show/:id', (req, res) => {
         .then(({ data }) => Shows.create({
           id: data.id,
           name: data.name,
+          posts: [],
+          subscriberCount: 0,
+        }))
+        .then((result) => result)
+        .catch();
+    })
+    .then((result) => res.status(200).send(result))
+    .catch(() => res.status(500).send());
+});
+
+// warning:arin made this
+app.get('/movie/:id', (req, res) => {
+  Movies.find({ id: req.params.id })
+    .then((record) => {
+      if (record.length > 0) {
+        return record[0];
+      }
+      return axios(`https://api.themoviedb.org/3/movie/${req.params.id}?api_key=${movieKey}&language=en-US`)
+        .then(({ data }) => Movies.create({
+          id: data.id,
+          name: data.title,
           posts: [],
           subscriberCount: 0,
         }))
