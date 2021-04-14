@@ -491,7 +491,12 @@ app.put('/follow', (req, res) => {
       Users.updateOne(
         { _id: follower },
         { $push: { following: data } },
-      ).then(() => res.send('following list updated'));
+      ).then(() => {
+        Users.findOne({ _id: follower })
+          .then((data) => {
+            res.send(data);
+          });
+      });
     })
     .catch((err) => res.send(err));
 });

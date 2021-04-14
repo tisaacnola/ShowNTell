@@ -4,7 +4,7 @@ import './homefeed.css';
 import { FaHeart, FaRegCommentDots, FaTimes, FaHandshake } from 'react-icons/fa';
 import Reply from './reply.jsx';
 
-const FeedItem = ({ post, user = {}, setPosts }) => {
+const FeedItem = ({ post, user = {}, setPosts, setUser }) => {
   const [show, setShow] = useState();
   const [name, setName] = useState();
   const [like, setLike] = useState();
@@ -43,7 +43,9 @@ const FeedItem = ({ post, user = {}, setPosts }) => {
       console.log(user._id);
       console.log(post._id);
       axios.put('/follow', { follower: user._id, followed: post.user }) // not working for some reason
-        .then(console.log(user))
+        .then((data) => {
+          setUser(data.data);
+        })
         .then(setFollow(true));
     }
   };
