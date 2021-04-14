@@ -501,12 +501,17 @@ app.put('/follow', (req, res) => {
     .catch((err) => res.send(err));
 });
 
-app.delete('/unfollow', (req, res) => {
+app.put('/unfollow', (req, res) => {
   const { follower, followed } = req.body;
   Users.updateOne(
     { _id: follower },
     { $pull: { following: { id: followed } } }, // not working with _id for some reason
-  ).then(() => res.send('following list updated'));
+  ).then(() => {
+    Users.findOne({ _id: follower })
+      .then((data) => {
+        res.send(data);
+      });
+  });
 });
 
 // test changes in users props

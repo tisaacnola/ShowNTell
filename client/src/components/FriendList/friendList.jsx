@@ -4,7 +4,6 @@ import Following from './following.jsx';
 
 const FriendList = (props = {}) => {
   const { user } = props;
-  console.log(user.following);
   return (
     <div>
       <h1 id="header">Following</h1>
