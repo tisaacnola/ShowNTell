@@ -9,6 +9,8 @@ const userSchema = mongoose.Schema({
   notifs: Array,
   follows: Array,
   subscriptions: Array,
+  following: Array,
+  followers: Array,
 });
 
 const Users = mongoose.model('Users', userSchema);

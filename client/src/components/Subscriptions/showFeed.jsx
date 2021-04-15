@@ -29,7 +29,7 @@ const ShowFeed = ({ showId, subscribe }) => {
 
   return (
     <div>
-      <h1 className="shw-title">{show.title}</h1>
+      <h1 className="shw-title">{show.name}</h1>
       <button className="sub-btn" onClick={() => subscribe(showId)}>subscribe</button>
       <div className="sub-page-feed">
         {posts ? posts.map((post, i) => <FeedItem key={post + i} post={post} />) : null}
