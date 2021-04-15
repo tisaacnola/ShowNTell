@@ -16,6 +16,7 @@ import DMs from './DMs/dms.jsx';
 import Notifs from './Notifications/notifs.jsx';
 import SearchFeed from './SearchBar/searchFeed.jsx';
 import ShowFeed from './Subscriptions/showFeed.jsx';
+import FriendList from './FriendList/friendList.jsx';
 
 const App = () => {
   const [posts, setPosts] = useState();
@@ -119,7 +120,7 @@ const App = () => {
       return <Post user={user} createPost={createPost} />;
     }
     if (view === 'home') {
-      return <HomeFeed handleUserClick={handleUserClick} user={user} posts={posts} setPosts={setPosts} />;
+      return <HomeFeed handleUserClick={handleUserClick} user={user} setUser={setUser} posts={posts} setPosts={setPosts} />;
     }
     if (view === 'DMs') {
       return <DMs user={user} setUser={setUser} />;
@@ -129,6 +130,10 @@ const App = () => {
     }
     if (view === 'search') {
       return <SearchFeed shows={searchedShows} onClick={addShow} />;
+    }
+    // To Do: Add Following View
+    if (view === 'friends') {
+      return <FriendList user={user} />;
     }
     return <ShowFeed showId={view} subscribe={subscribe} />;
   };
