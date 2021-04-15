@@ -21,6 +21,7 @@ const App = () => {
   const [posts, setPosts] = useState();
   const [user, setUser] = useState();
   const [view, setView] = useState('homePage');
+  // Sim. to this.setState= {...}
   const [search, setSearch] = useState('');
   const [searchedShows, setSearchedShows] = useState([]);
   const [userClicked, setUsersClicked] = useState(false);
@@ -75,9 +76,13 @@ const App = () => {
   };
 
   const searchShows = () => {
+    // Telling the server to run this API call with the /search/value passed in.
     axios.get(`/search/${search}`).then(({ data }) => {
+      // console log data array. I probably need a separate get req.
       setView('search');
+      // Resets search to ''.
       setSearch('');
+      // Sets searchedShows to [] of being mapped over in searchFeed.
       setSearchedShows(data);
     }).catch();
   };

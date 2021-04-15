@@ -186,6 +186,7 @@ app.put('/sendMessage/:id/:text', (req, res) => {
   });
 });
 
+// API call to search endpoint with query parameter, using url.
 app.get('/search/:query', (req, res) => {
   const url = `http://api.tvmaze.com/search/shows?q=${req.params.query}`;
   return axios(url)
