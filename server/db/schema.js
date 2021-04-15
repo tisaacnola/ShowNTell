@@ -23,7 +23,7 @@ const showSchema = mongoose.Schema({
 const Shows = mongoose.model('Shows', showSchema);
 
 const showMovie = mongoose.Schema({
-  name: String,
+  title: String,
   id: Number,
   posts: Array,
   subscriberCount: Number,

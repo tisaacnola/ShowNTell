@@ -145,10 +145,12 @@ const App = () => {
         <SearchFeed
           shows={searchedShows}
           movies={searchedMovies}
-          onClick={() => {
-            addShow();
-            addMovie();
-          }}
+          addShow={addShow}
+          addMovie={addMovie}
+          // onClick={() => {
+          //   addShow();
+          //   addMovie();
+          // }}
         />
       );
     }

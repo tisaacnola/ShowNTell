@@ -197,6 +197,7 @@ app.get('/search/:query', (req, res) => {
 });
 
 // warning: arin made this
+// search for a list of multiple movies
 app.get('/search/movies/:query', (req, res) => {
   const url = `https://api.themoviedb.org/3/search/movie?api_key=${movieKey}&language=en-US&query=${req.params.query}&page=1&include_adult=false`;
   return axios(url)
@@ -204,13 +205,13 @@ app.get('/search/movies/:query', (req, res) => {
     .then((data) => res.status(200).send(data))
     .catch();
 });
-
-app.get('/search/movies/extra/:query', (req, res) => {
-  const url = `http://www.omdbapi.com/?apikey=${omdbKey}=${req.params.query.title}`;
+// get info on an individual movie : omdb
+app.get('/search/movie/:query', (req, res) => {
+  const url = `http://www.omdbapi.com/?apikey=${omdbKey}&t=${req.params.query}`;
   return axios(url)
     .then(({ data }) => data)
     .then((data) => res.status(200).send(data))
-    .catch();
+    .catch((err) => { console.log(err); });
 });
 
 app.get('/show/:id', (req, res) => {
