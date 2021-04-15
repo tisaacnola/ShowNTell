@@ -44,9 +44,33 @@ const replySchema = mongoose.Schema({
 
 const Replys = mongoose.model('Replys', replySchema);
 
+// ?? //
+// ** //
+// !! //
+// !! //
+// ** //
+// ?? //
+
+const recommendedSchema = mongoose.Schema({
+  // user: String,
+  // subscriptions: Array,
+  shows: Array,
+  content: Array,
+});
+
+const Recommended = mongoose.model('Recommended', recommendedSchema);
+
+// ?? //
+// ** //
+// !! //
+// !! //
+// ** //
+// ?? //
+
 module.exports = {
   Users,
   Shows,
   Posts,
   Replys,
+  Recommended,
 };

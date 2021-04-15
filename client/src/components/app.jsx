@@ -10,6 +10,9 @@ import axios from 'axios';
 import HomePage from './HomePage/HomePage.jsx';
 import Nav from './nav.jsx';
 import HomeFeed from './HomeFeed/homeFeed.jsx';
+
+import Recommended from './Subscriptions/Recommended.jsx';
+
 import Sub from './Subscriptions/sub.jsx';
 import Post from './CreatePost/post.jsx';
 import DMs from './DMs/dms.jsx';
@@ -26,9 +29,33 @@ const App = () => {
   const [userClicked, setUsersClicked] = useState(false);
   const [test, setTest] = useState(false);
 
+  const [recommended, setRecommended] = useState([]);
+
   const changeView = (newView) => {
     setView(newView);
   };
+
+  // ?? //
+  // ** //
+  // !! //
+  // !! //
+  // ** //
+  // ?? //
+  // const getRecommended = () => {
+  //   const mappedSearched = searchedShows.map((show) => {
+  //     return axios.get(`/recommended/${searchedShows.shows.name}`)
+  //       .then(({ data }) => setRecommended(data))
+  //       .then(() => changeView('recommended'))
+  //       .catch((err) => console.log(`Error: ${err.message}`));
+  //   });
+  //   return mappedSearched;
+  // };
+  // ?? //
+  // ** //
+  // !! //
+  // !! //
+  // ** //
+  // ?? //
 
   const getUser = () => {
     if (!user) {
@@ -115,6 +142,9 @@ const App = () => {
     if (view === 'sub') {
       return <Sub user={user} setView={setView} />;
     }
+    if (view === 'recommended') {
+      return <Recommended />;
+    }
     if (view === 'post') {
       return <Post user={user} createPost={createPost} />;
     }
@@ -157,9 +187,6 @@ const App = () => {
         )}
       {getUser()}
       {getPosts()}
-      {userClicked ? (
-        <button onClick={handleShowFeed}>Show Home Feed</button>
-      ) : null}
       {getView()}
     </div>
   );

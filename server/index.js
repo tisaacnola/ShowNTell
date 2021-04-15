@@ -12,7 +12,7 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
-const { Users, Posts, Shows, Replys } = require('./db/schema.js');
+const { Users, Posts, Shows, Replys, Recommended } = require('./db/schema.js');
 
 const app = express();
 
@@ -96,6 +96,33 @@ app.get('/posts', (req, res) => {
     .then((posts) => res.send(posts))
     .catch();
 });
+
+// ?? //
+// ** //
+// !! //
+// !! //
+// ** //
+// ?? //
+// app.get('/recommended', (req, res) => {
+//   const url = 'https://tastedive.com/api/similar?q=rick+and+morty&k=408889-ShowNTel-8LPXOSOC';
+//   axios.get(url)
+//     .then((response) => {
+//       Recommended.create({
+//         show: req.params.show,
+//         content: response.data.Similar.Results,
+//       });
+//       res.status(200).send(response);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// });
+// ?? //
+// ** //
+// !! //
+// !! //
+// ** //
+// ?? //
 
 app.get('/shows', (req, res) => {
   Shows.find()
