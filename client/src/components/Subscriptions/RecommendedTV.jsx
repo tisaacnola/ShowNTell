@@ -57,6 +57,11 @@ const RecResultStyle = styled.div`
     width: 100%;
     height: auto;
   }
+  p{
+    color: ghostwhite;
+    font-size: 0.6vw;
+    margin: 2%;
+  }
 `;
 
 const options = [
@@ -65,13 +70,12 @@ const options = [
   { value: 586, label: 'Wag the Dog', key: 2 },
 ];
 
-const Recommended = ({ user }) => {
-  const [recommended, setRecommended] = useState([]);
+const RecommendedTV = ({ user }) => {
+  const [recommendedTV, setRecommendedTV] = useState([]);
   const [clicked, setClicked] = useState(false);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(true);
   const [selectOption, setSelectOption] = useState(0);
-
   // const [subs, setSubs] = useState([]);
   // const [gotSubs, setGotSubs] = useState(false);
 
@@ -88,51 +92,18 @@ const Recommended = ({ user }) => {
   //   }
   // };
 
-  const getRecommends = () => {
-    setIsLoaded(false);
-    axios.get(`https://api.themoviedb.org/3/tv/${selectOption}/recommendations?api_key=bde28fb08435e87e8ee72260cc57ce13&language=en-US&page=1`)
-      // .then((response) => setRecommended(response.data.results))
-      .then((response) => {
-      //   setApiResponse(response.data.results);
-      //   console.log('API_RESPONSE:', apiResponse);
-      // }).then(() => {
-        return setRecommended(response.data.results.map((show) => {
-          return (
-            <RecResultStyle>
-              <div
-                key={show.id}
-                id="rec-item-container"
-              >
-                <div>
-                  <img src={noImgAvail} alt="" />
-                </div>
-                <div>
-                  <h1>{show.name}</h1>
-                </div>
-              </div>
-            </RecResultStyle>
-          );
-        }));
-      })
-      .then(() => console.log('RECOMMENDED:', recommended))
-      .catch((err) => {
-        setIsLoaded(true);
-        setError(err);
-      });
+  const getTvImage = (show) => {
+    let result;
+    if (!show.poster_path) {
+      result = (<img src={`https://image.tmdb.org/t/p/original/${show.backdrop_path}`} alt="" />);
+    } else if (!show.poster_path && !show.backdrop_path) {
+      result = (<img src={noImgAvail} alt="" />);
+    } else {
+      result = (<img src={`https://image.tmdb.org/t/p/original/${show.poster_path}`} alt="" />);
+    }
+    return result;
   };
 
-  // const apiResponseMap = apiResponse.map((show) => {
-  //   return (
-  //     <div key={show.id}>
-  //       <div>
-  //         <img src={show.poster_path} alt="" />
-  //       </div>
-  //       <div>
-  //         <h2>{show.name}</h2>
-  //       </div>
-  //     </div>
-  //   );
-  // });
   const conditionalRender = () => {
     let result;
     if (error) {
@@ -146,16 +117,10 @@ const Recommended = ({ user }) => {
       result = (<h1 style={{ color: 'ghostwhite' }}>Loading...</h1>);
     } else {
       result = (
-        <div>{recommended}</div>
+        <div>{recommendedTV}</div>
       );
     }
     return result;
-  };
-
-  const handleClick = () => {
-    setClicked(!clicked);
-    console.log(`CLICKED: ${clicked}`);
-    getRecommends();
   };
 
   const handleOptionChange = (e) => {
@@ -163,54 +128,95 @@ const Recommended = ({ user }) => {
     setSelectOption(value);
   };
 
+  const getRecommends = () => {
+    setIsLoaded(false);
+    axios.get(`https://api.themoviedb.org/3/tv/${selectOption}/recommendations?api_key=bde28fb08435e87e8ee72260cc57ce13&language=en-US&page=1`)
+      .then((response) => {
+        return setRecommendedTV(response.data.results.map((show) => {
+          return (
+            <RecResultStyle>
+              <div
+                key={show.id}
+                id="rec-item-container"
+              >
+                <div>
+                  {getTvImage(show)}
+                </div>
+                <div>
+                  <div>
+                    <h1>{show.name}</h1>
+                  </div>
+                  <div>
+                    <p>
+                      {show.overview}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </RecResultStyle>
+          );
+        }));
+      })
+      .then(() => console.log('RECOMMENDEDTV:', recommendedTV))
+      .catch((err) => {
+        setIsLoaded(true);
+        setError(err);
+      });
+  };
+
+  const handleClick = () => {
+    setClicked(!clicked);
+    getRecommends();
+  };
+
   useEffect(() => {
     conditionalRender();
-  }, [recommended, isLoaded, error]);
-
-  // useEffect();
+  }, [recommendedTV, isLoaded, error]);
 
   return (
-    <RecommendStyle>
-      <div className="outer-container">
-        <div className="car-container">
-          <div id="rec-container">
-            <div>
-              <button
-                onClick={handleClick}
-                id="rec-btn"
-              >
-                Recommended
-              </button>
-            </div>
-            <div>
-              <select
-                onChange={handleOptionChange}
-                id="rec-select"
-              >
-                {
-                  options.map((option) => {
-                    return (
-                      <option
-                        key={option.key}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </option>
-                    );
-                  })
-                }
-              </select>
-            </div>
-            <div>
-              <Carousel recommended={recommended}>
-                {recommended}
-              </Carousel>
+    <div>
+      <RecommendStyle>
+        <div className="outer-container">
+          <div className="car-container">
+            <div id="rec-container">
+              <div>
+                <button
+                  onClick={handleClick}
+                  id="rec-btn"
+                >
+                  Recommended
+                </button>
+              </div>
+              <div>
+                <select
+                  onChange={handleOptionChange}
+                  id="rec-select"
+                >
+                  {
+                    options.map((option) => {
+                      return (
+                        <option
+                          key={option.key}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      );
+                    })
+                  }
+                </select>
+              </div>
+              <div>
+                <Carousel recommendedTV={recommendedTV}>
+                  {recommendedTV}
+                </Carousel>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </RecommendStyle>
+      </RecommendStyle>
+    </div>
   );
 };
 
-export default Recommended;
+export default RecommendedTV;

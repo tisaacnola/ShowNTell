@@ -11,7 +11,7 @@ const CarouselStyle = styled.div`
   overflow: hidden;
 `;
 
-const Carousel = ({ recommended }) => {
+const Carousel = ({ recommendedTV }) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -26,7 +26,7 @@ const Carousel = ({ recommended }) => {
         <Slider
           {...settings}
         >
-          {recommended}
+          {recommendedTV}
         </Slider>
       </div>
     </CarouselStyle>

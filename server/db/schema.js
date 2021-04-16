@@ -9,6 +9,9 @@ const userSchema = mongoose.Schema({
   notifs: Array,
   follows: Array,
   subscriptions: Array,
+  movieSubscriptions: Array,
+  following: Array,
+  followers: Array,
 });
 
 const Users = mongoose.model('Users', userSchema);
@@ -21,6 +24,15 @@ const showSchema = mongoose.Schema({
 });
 
 const Shows = mongoose.model('Shows', showSchema);
+
+const showMovie = mongoose.Schema({
+  title: String,
+  id: Number,
+  posts: Array,
+  subscriberCount: Number,
+});
+
+const Movies = mongoose.model('Movies', showMovie);
 
 const postSchema = mongoose.Schema({
   user: String,
@@ -51,14 +63,15 @@ const Replys = mongoose.model('Replys', replySchema);
 // ** //
 // ?? //
 
-const recommendedSchema = mongoose.Schema({
-  // user: String,
-  // subscriptions: Array,
+const recommendedTVSchema = mongoose.Schema({
+  user: String,
+  subscriptions: Array,
+  movieSubscriptions: Array,
   shows: Array,
   content: Array,
 });
 
-const Recommended = mongoose.model('Recommended', recommendedSchema);
+const RecommendedTV = mongoose.model('RecommendedTV', recommendedTVSchema);
 
 // ?? //
 // ** //
@@ -72,5 +85,6 @@ module.exports = {
   Shows,
   Posts,
   Replys,
-  Recommended,
+  Movies,
+  RecommendedTV,
 };

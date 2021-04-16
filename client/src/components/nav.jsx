@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { FaHome, FaStar, FaPen, FaBell, FaEnvelope, FaSearch, FaDoorOpen, FaFingerprint } from 'react-icons/fa';
+import { FaHome, FaStar, FaPen, FaBell, FaEnvelope, FaSearch, FaDoorOpen, FaLinkedin, FaUnity, FaHandshake, FaFingerprint } from 'react-icons/fa';
 import logo from './HomePage/img/logo1.png';
 
-const Nav = ({ user, onClick, logout, search, setSearch, onSearch }) => (
+const Nav = ({ user, onClick, logout, search, setSearch, onSearch, onSearchTwo }) => (
   <div>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
@@ -26,7 +26,7 @@ const Nav = ({ user, onClick, logout, search, setSearch, onSearch }) => (
         <FaStar />
       </li>
 
-      <li onClick={() => onClick('recommended')} className="views" title="recommended">
+      <li onClick={() => onClick('recommendedBoth')} className="views" title="recommendedBoth">
         <FaFingerprint />
         {' '}
       </li>
@@ -44,6 +44,10 @@ const Nav = ({ user, onClick, logout, search, setSearch, onSearch }) => (
         <FaEnvelope />
         {' '}
       </li>
+      <li onClick={() => onClick('friends')} className="views" title="friends">
+        <FaHandshake />
+        {' '}
+      </li>
       <li onClick={logout} title="log out"><FaDoorOpen /></li>
       <li>
         {' '}
@@ -58,13 +62,17 @@ const Nav = ({ user, onClick, logout, search, setSearch, onSearch }) => (
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   onSearch();
+                  onSearchTwo();
                 }
               }}
             />
             <FaSearch
               type="submit"
               className="srch-button"
-              onClick={onSearch}
+              onClick={() => {
+                onSearch();
+                onSearchTwo();
+              }}
             >
               <i className="search-icon" />
             </FaSearch>

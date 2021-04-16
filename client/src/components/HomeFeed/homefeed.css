@@ -77,8 +77,25 @@
   margin-right: 2%;
   color: #dd3e42;
 }
+
+.follow-button{
+font-size: 24px;
+display: inline-block;
+margin-right: 2%;
+color: #f0ccb3;
+}
+
+.unfollow-button{
+  font-size: 24px;
+  display: inline-block;
+  margin-right: 2%;
+  color: #dd3e42;
+  }
+
 .comment-btn{
   font-size: 24px;
+  display: inline-block;
+  margin-right: 2%;
   color: #f0ccb3;
 }
 
@@ -94,7 +111,7 @@
 }
 .post-btn-container{
   display: flex;
-  margin-right: 10px;
+  margin-right: px;
   padding-bottom: 10px;
 }
 .post-comment-btn{
