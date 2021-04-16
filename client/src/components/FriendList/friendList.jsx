@@ -5,35 +5,44 @@ import Followers from './followers.jsx';
 
 const FriendList = (props = {}) => {
   const { user, users } = props;
-  // console.log(users);
-  // const getFollowers = () => {
-  //   const buildFollowers = [];
-  //   axios.get('/users')
-  //     .then((result) => {
-  //       const people = result.data;
-  //       people.forEach((person) => {
-  //         if (person.following) {
-  //           person.following.forEach((follow) => {
-  //             if (follow._id === user._id) {
-  //               buildFollowers.push(person);
-  //             }
-  //           });
-  //         }
-  //       });
-  //       console.log('hello from app');
-  //       console.log(buildFollowers);
-  //       return buildFollowers;
-  //     });
-  // };
-  // const [followers, setFollowers] = useState(getFollowers());
+  const friends = [];
+  const following = [];
+  const followers = [];
+  let isFollower;
+  let isFriend;
+  user.following.forEach((person) => {
+    isFollower = false;
+    users.forEach((follower) => {
+      if (person._id === follower._id) {
+        isFollower = true;
+        friends.push(person);
+      }
+    });
+    if (!isFollower) {
+      following.push(person);
+    }
+  });
+
+  users.forEach((follower) => {
+    isFriend = false;
+    user.following.forEach((followed) => {
+      if (follower._id === followed._id) {
+        isFriend = true;
+      }
+    });
+    if (!isFriend) {
+      followers.push(follower);
+    }
+  });
 
   return (
     <div>
       <h1 id="header">Following</h1>
-      <Following followingList={user.following} />
+      <Following followingList={following} />
       <h1 id="header">Followers</h1>
-      <Following followingList={users} />
+      <Following followingList={followers} />
       <h1 id="header">Friends</h1>
+      <Following followingList={friends} />
     </div>
   );
 };
