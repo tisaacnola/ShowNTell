@@ -7,9 +7,11 @@ const SearchCastAndCrew = ({ show }) => {
   // Generate hooks for cast, crew.
   const [cast, setCast] = useState([]);
   const [crew, setCrew] = useState([]);
-
+  // Create variable to be used for conditional rendering.
+  const [conditional, setConditional] = useState(false);
   // Create id variable from show object.
   const showId = show.id;
+  console.log('ShowID:', showId);
 
   // Function which makes call to API endpoint using showId, retrieving cast.
   const getCast = () => {
@@ -18,15 +20,17 @@ const SearchCastAndCrew = ({ show }) => {
         // Extract data from response.
         const { data } = response;
         // Map over data, generating an array of cast and character names.
-        const castNames = data.map((element) => {
-          return element.person.name;
-        });
-        // Now set state of cast to be the above array. ***note: change to hooks!
-        // this.setState({
-        //   cast: castNames,
-        // });
+        const castNames = data.map((element) => (
+          <div>
+            <div>
+              {`${element.person.name} as ${element.character.name}`}
+            </div>
+            <br />
+          </div>
+        ));
+        // Now set state of cast to be the above array.
+        setCast(castNames);
       });
-    // Use hooks here and return the created array.
   };
 
   // Function which makes call to API endpoint using showId, retrieving crew.
@@ -36,28 +40,44 @@ const SearchCastAndCrew = ({ show }) => {
         // Extract data from response.
         const { data } = response;
         // Map over data, generating an array of crew names and titles.
-        const crewNames = data.map((element) => {
-          return element.person.name;
-        });
-        // Now set state of cast to be the above array. ***note: change to hooks!
-        // this.setState({
-        //   crew: crewNames,
-        // });
+        const crewNames = data.map((element) => (
+          <div>
+            <div>
+              {`${element.type}:
+            ${element.person.name}`}
+            </div>
+            <br />
+          </div>
+        ));
+        // Now set state of crew to be the above array.
+        setCrew(crewNames);
       });
-    // Use hooks here and return the created array.
   };
 
   return (
-    <button
-      className="summary-button"
-      onClick={(event) => {
-        // Change here - getCast, getCrew functions.
-        event.stopPropagation();
-        // setState(getSummary());
-      }}
-    >
-      show cast & crew
-    </button>
+    <div>
+      <button
+        className="summary-button"
+        onClick={(event) => {
+          // Change here - getCast, getCrew functions.
+          event.stopPropagation();
+          setConditional(!conditional);
+          getCast();
+          getCrew();
+        }}
+      >
+        show cast & crew
+      </button>
+      {(conditional === true) ? (
+        <div className="show-summary">
+          <div className="show-name">Cast</div>
+          <div>{cast}</div>
+          <div className="show-name">Crew</div>
+          <div>{crew}</div>
+        </div>
+      )
+        : null}
+    </div>
   );
 };
 

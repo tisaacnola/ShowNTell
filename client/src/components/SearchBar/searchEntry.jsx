@@ -5,7 +5,7 @@ import SearchCastAndCrew from './SearchCastAndCrew.jsx';
 
 const SearchFeedEntry = ({ show, onClick }) => {
   const [state, setState] = useState('');
-  console.log(show);
+  // console.log(show);
   // All this is doing is parsing show.summary object.
   const getSummary = () => {
     let summary = show.summary.replace(/<p>|<\/p>/g, '');
@@ -74,13 +74,12 @@ const SearchFeedEntry = ({ show, onClick }) => {
         >
           show summary
         </button>
-        <SearchCastAndCrew
-          show={show}
-        />
         <div className="show-summary">
           {state}
         </div>
-
+        <SearchCastAndCrew
+          show={show}
+        />
       </div>
     </div>
   );
