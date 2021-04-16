@@ -29,7 +29,7 @@ const App = () => {
   const [userClicked, setUsersClicked] = useState(false);
   const [test, setTest] = useState(false);
 
-  const [recommended, setRecommended] = useState([]);
+  // const [recommended, setRecommended] = useState([]);
 
   const changeView = (newView) => {
     setView(newView);
@@ -143,7 +143,7 @@ const App = () => {
       return <Sub user={user} setView={setView} />;
     }
     if (view === 'recommended') {
-      return <Recommended />;
+      return <Recommended user={user} />;
     }
     if (view === 'post') {
       return <Post user={user} createPost={createPost} />;

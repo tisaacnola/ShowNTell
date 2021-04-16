@@ -8,6 +8,8 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 require('./db/index');
 
+const movieDbKey = process.env.MOVIE_DATABASE_KEY;
+
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const Notifs = require('twilio')(accountSid, authToken);
@@ -103,19 +105,12 @@ app.get('/posts', (req, res) => {
 // !! //
 // ** //
 // ?? //
-// app.get('/recommended', (req, res) => {
-//   const url = 'https://tastedive.com/api/similar?q=rick+and+morty&k=408889-ShowNTel-8LPXOSOC';
-//   axios.get(url)
-//     .then((response) => {
-//       Recommended.create({
-//         show: req.params.show,
-//         content: response.data.Similar.Results,
-//       });
-//       res.status(200).send(response);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
+// app.get('/recommended/:id', (req, res) => {
+//   // const url = `https://api.themoviedb.org/3/tv/${req.params.id}/recommendations?api_key=bde28fb08435e87e8ee72260cc57ce13&language=en-US&page=1`;
+//   const url = `https://api.themoviedb.org/3/tv/${req.params.id}/recommendations?api_key=${movieDbKey}&language=en-US&page=1`;
+//   return axios(url)
+//     .then((data) => data)
+//     .then((data) => res.status(200).send(data))
 // });
 // ?? //
 // ** //
