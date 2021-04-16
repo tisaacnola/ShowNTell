@@ -7,6 +7,7 @@ class FollowItem extends Component {
     super(props);
     this.state = {
       subs: [],
+      showSubs: [],
     };
     this.getSubs = this.getSubs.bind(this);
   }
@@ -23,16 +24,18 @@ class FollowItem extends Component {
       .then((results) => results.map((show) => show.data))
       .then((shows) => {
         console.log(shows);
+        this.setState({ showSubs: shows });
       })
       .catch();
   }
 
   render() {
     const { friend } = this.props;
+    const { showSubs } = this.state;
     return (
       <div>
-
         <h3 id="dms-sub-header">{ friend.name }</h3>
+        { showSubs.map((show) => <span id={show.id} className="show-summary">{show.name}</span>) }
       </div>
     );
   }
