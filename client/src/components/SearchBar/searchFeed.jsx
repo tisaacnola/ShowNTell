@@ -28,9 +28,11 @@ const viewSwitch = (view, shows, movies, addShow, addMovie) => {
 
 const SearchFeed = ({ shows, movies, addShow, addMovie, view, searchViewSwitcher }) => (
   <div>
-    <button onClick={() => {
-      searchViewSwitcher();
-    }}
+    <button
+      className="switcher"
+      onClick={() => {
+        searchViewSwitcher();
+      }}
     >
       {view}
     </button>

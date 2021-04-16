@@ -11,6 +11,8 @@ const Post = ({ user, createPost }) => {
   const [error, setError] = useState('');
   const [subs, setSubs] = useState([]);
   const [gotSubs, setGotSubs] = useState(false);
+  const [movieSubs, setMovieSubs] = useState([]);
+  const [gotMovieSubs, setGotMovieSubs] = useState(false);
 
   const onClick = () => {
     if (show !== 'none' && title !== '') {
@@ -32,21 +34,21 @@ const Post = ({ user, createPost }) => {
         .then((shows) => {
           setSubs(shows);
           setGotSubs(true);
-          console.log(`heres some info from get subs: ${shows}`);
+          // console.log(`heres some info from get subs: ${shows}`);
         })
         .catch();
     }
   };
   const getMovieSubs = () => {
-    if (!gotSubs) {
-      const promises = user.subscriptions.map((movieId) => axios.get(`/movie/${movieId}`)
+    if (!gotMovieSubs) {
+      const promises = user.movieSubscriptions.map((movieId) => axios.get(`/movie/${movieId}`)
         .catch((err) => console.log(err)));
       Promise.all(promises)
         .then((results) => results.map((sub) => sub.data))
         .then((movies) => {
-          setSubs(movies);
-          setGotSubs(true);
-          console.log(`heres some info from get movie subs: ${movies}`);
+          setMovieSubs(movies);
+          setGotMovieSubs(true);
+          // console.log(`heres some info from get movie subs: ${movies}`);
         })
         .catch((err) => {
           console.log(err);
@@ -61,7 +63,20 @@ const Post = ({ user, createPost }) => {
       <div className="create-post-form">
         <select className="choose-show" onChange={(e) => setShow(e.target.value)}>
           <option className="choose-show" value="none">What do you want to talk about?</option>
-          {subs.map((sub, i) => <option key={sub + i} value={sub.id}>{sub.name}</option>)}
+          {movieSubs.map((sub, i) => (
+            <option key={sub + i} value={sub.id}>
+              {
+          sub.name || sub.title
+          }
+            </option>
+          ))}
+          {subs.map((sub, i) => (
+            <option key={sub + i} value={sub.id}>
+              {
+          sub.name || sub.title
+          }
+            </option>
+          ))}
           {getSubs()}
           {getMovieSubs()}
         </select>

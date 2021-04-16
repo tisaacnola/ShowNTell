@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema({
   notifs: Array,
   follows: Array,
   subscriptions: Array,
+  movieSubscriptions: Array,
   following: Array,
   followers: Array,
 });

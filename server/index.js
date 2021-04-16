@@ -244,7 +244,7 @@ app.get('/movie/:id', (req, res) => {
       return axios(`https://api.themoviedb.org/3/movie/${req.params.id}?api_key=${movieKey}&language=en-US`)
         .then(({ data }) => Movies.create({
           id: data.id,
-          name: data.title,
+          title: data.title,
           posts: [],
           subscriberCount: 0,
         }))
@@ -252,7 +252,7 @@ app.get('/movie/:id', (req, res) => {
         .catch();
     })
     .then((result) => res.status(200).send(result))
-    .catch(() => res.status(500).send());
+    .catch((err) => res.status(500).send(err));
 });
 
 app.put('/subscribe/:id', (req, res) => {
@@ -291,11 +291,11 @@ app.put('/subscribeMovie/:id', (req, res) => {
     userInfo = data;
     Users.findById(userInfo._id)
       .then((user) => {
-        if (!user.subscriptions.includes(id)) {
-          userInfo.subscriptions = [...user.subscriptions, id];
+        if (!user.movieSubscriptions.includes(id)) {
+          userInfo.movieSubscriptions = [...user.movieSubscriptions, id];
           Users.updateOne(
             { _id: user._id },
-            { subscriptions: [...user.subscriptions, id] },
+            { movieSubscriptions: [...user.movieSubscriptions, id] },
           )
             .then(() => {
               Movies.findOne({ id })

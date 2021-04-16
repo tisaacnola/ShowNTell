@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable no-console */
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import FeedItem from '../HomeFeed/feedItem.jsx';
 
@@ -6,6 +7,10 @@ const MovieFeed = ({ movieId, subscribe }) => {
   const [movie, setMovie] = useState({});
   const [gotMovie, setGotMovie] = useState(false);
   const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+
+  }, [gotMovie]);
 
   const getMovieInfo = () => {
     if (!gotMovie) {
@@ -29,7 +34,8 @@ const MovieFeed = ({ movieId, subscribe }) => {
 
   return (
     <div>
-      <h1 className="shw-title">{movie.title}</h1>
+      {console.log(movie.data)}
+      <h1 className="shw-title">{movie.name || movie.title}</h1>
       <button className="sub-btn" onClick={() => subscribe(movieId)}>subscribe</button>
       <div className="sub-page-feed">
         {posts ? posts.map((post, i) => <FeedItem key={post + i} post={post} />) : null}
