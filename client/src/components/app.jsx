@@ -76,7 +76,6 @@ const App = () => {
               });
             }
           });
-          console.log('hello from app');
           setUsers(buildFollowers);
         });
     }

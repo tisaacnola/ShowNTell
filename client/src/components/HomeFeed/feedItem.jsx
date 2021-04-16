@@ -5,8 +5,6 @@ import { FaHeart, FaRegCommentDots, FaTimes, FaHandshake } from 'react-icons/fa'
 import Reply from './reply.jsx';
 
 const FeedItem = ({ post, user = {}, setPosts, setUser }) => {
-  console.log(user);
-  console.log(post);
   const [show, setShow] = useState();
   const [name, setName] = useState();
   const [like, setLike] = useState();
