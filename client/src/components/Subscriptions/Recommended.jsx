@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 import noImgAvail from './no_img_avail.png';
+import Carousel from './Carousel.jsx';
 
 const RecommendStyle = styled.div`
   display: flex;
@@ -45,7 +46,7 @@ const RecResultStyle = styled.div`
     margin-bottom: 5%;
     display: inline-block;
   };
-  p{
+  h1{
     color: #408ac8;
     font-size: 28px;
     font-weight: bold;
@@ -106,7 +107,7 @@ const Recommended = ({ user }) => {
                   <img src={noImgAvail} alt="" />
                 </div>
                 <div>
-                  <p>{show.name}</p>
+                  <h1>{show.name}</h1>
                 </div>
               </div>
             </RecResultStyle>
@@ -201,7 +202,9 @@ const Recommended = ({ user }) => {
               </select>
             </div>
             <div>
-              {recommended}
+              <Carousel recommended={recommended}>
+                {recommended}
+              </Carousel>
             </div>
           </div>
         </div>
