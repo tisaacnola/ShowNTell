@@ -5,6 +5,8 @@ import { FaHeart, FaRegCommentDots, FaTimes, FaHandshake } from 'react-icons/fa'
 import Reply from './reply.jsx';
 
 const FeedItem = ({ post, user = {}, setPosts, setUser }) => {
+  console.log(user);
+  console.log(post);
   const [show, setShow] = useState();
   const [name, setName] = useState();
   const [like, setLike] = useState();
@@ -96,12 +98,16 @@ const FeedItem = ({ post, user = {}, setPosts, setUser }) => {
           >
             {like ? 'unlike' : 'like'}
           </FaHeart>
-          <FaHandshake
-            className={follow ? 'unfollow-button' : 'follow-button'}
-            onClick={() => {
-              toggleFollow();
-            }}
-          />
+          {user._id !== post.user
+            ? (
+              <FaHandshake
+                className={follow ? 'unfollow-button' : 'follow-button'}
+                onClick={() => {
+                  toggleFollow();
+                }}
+              />
+            )
+            : null}
           {!box && (
             <FaRegCommentDots
               className="comment-btn"
