@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useState } from 'react';
 import axios from 'axios';
 import pic from './createpost.png';
@@ -10,6 +11,8 @@ const Post = ({ user, createPost }) => {
   const [error, setError] = useState('');
   const [subs, setSubs] = useState([]);
   const [gotSubs, setGotSubs] = useState(false);
+  const [movieSubs, setMovieSubs] = useState([]);
+  const [gotMovieSubs, setGotMovieSubs] = useState(false);
 
   const onClick = () => {
     if (show !== 'none' && title !== '') {
@@ -31,8 +34,25 @@ const Post = ({ user, createPost }) => {
         .then((shows) => {
           setSubs(shows);
           setGotSubs(true);
+          // console.log(`heres some info from get subs: ${shows}`);
         })
         .catch();
+    }
+  };
+  const getMovieSubs = () => {
+    if (!gotMovieSubs) {
+      const promises = user.movieSubscriptions.map((movieId) => axios.get(`/movie/${movieId}`)
+        .catch((err) => console.log(err)));
+      Promise.all(promises)
+        .then((results) => results.map((sub) => sub.data))
+        .then((movies) => {
+          setMovieSubs(movies);
+          setGotMovieSubs(true);
+          // console.log(`heres some info from get movie subs: ${movies}`);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -42,9 +62,23 @@ const Post = ({ user, createPost }) => {
       <div id="post-sub-header"> share your thoughts with the world!</div>
       <div className="create-post-form">
         <select className="choose-show" onChange={(e) => setShow(e.target.value)}>
-          <option className="choose-show" value="none">Choose a Show</option>
-          {subs.map((sub, i) => <option key={sub + i} value={sub.id}>{sub.name}</option>)}
+          <option className="choose-show" value="none">What do you want to talk about?</option>
+          {movieSubs.map((sub, i) => (
+            <option key={sub + i} value={sub.id}>
+              {
+          sub.name || sub.title
+          }
+            </option>
+          ))}
+          {subs.map((sub, i) => (
+            <option key={sub + i} value={sub.id}>
+              {
+          sub.name || sub.title
+          }
+            </option>
+          ))}
           {getSubs()}
+          {getMovieSubs()}
         </select>
         <div className="title-container">
           <input id="post-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="title" />
