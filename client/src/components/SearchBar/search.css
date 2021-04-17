@@ -40,7 +40,22 @@
   margin-bottom: 2%;
   margin-top: 3%;
 }
-
+.switcher{
+  border-radius: 50px;
+  padding: 8px 14px;
+  border-color: #f0ccb3;
+  background-color: #140e3e;
+  color: #cbcbfc;
+  display: flex;
+  font-size: 40px;
+  margin-left: 25%;
+  margin-top: 3%;
+  border-style: solid;
+}
+.switcher:hover{
+  background-color: #f0ccb3;
+  color: #dd3e42;
+}
 .show-summary {
   margin: 1rem;
   margin-top: 0.5rem;
@@ -52,6 +67,8 @@
 .show-img {
   color: white;
   font-family: 'Work Sans', sans-serif;
+  height: 300px;
+  max-width: 200px;
 }
 
 .unavail-img {

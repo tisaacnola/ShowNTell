@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-return-assign */
@@ -16,14 +17,18 @@ import DMs from './DMs/dms.jsx';
 import Notifs from './Notifications/notifs.jsx';
 import SearchFeed from './SearchBar/searchFeed.jsx';
 import ShowFeed from './Subscriptions/showFeed.jsx';
+import MovieFeed from './Subscriptions/MovieFeed.jsx';
+import FriendList from './FriendList/friendList.jsx';
 
 const App = () => {
   const [posts, setPosts] = useState();
   const [user, setUser] = useState();
   const [view, setView] = useState('homePage');
-  // Sim. to this.setState= {...}
+  const [movieId, setMovieId] = useState('');
+  const [showId, setShowId] = useState('');
   const [search, setSearch] = useState('');
   const [searchedShows, setSearchedShows] = useState([]);
+  const [searchedMovies, setSearchedMovies] = useState([]);
   const [userClicked, setUsersClicked] = useState(false);
   const [test, setTest] = useState(false);
 
@@ -78,13 +83,18 @@ const App = () => {
   const searchShows = () => {
     // Telling the server to run this API call with the /search/value passed in.
     axios.get(`/search/${search}`).then(({ data }) => {
-      // console log data array. I probably need a separate get req.
-      setView('search');
-      // Resets search to ''.
+      setView('Shows');
       setSearch('');
       // Sets searchedShows to [] of being mapped over in searchFeed.
       setSearchedShows(data);
     }).catch();
+  };
+  const searchMovies = () => {
+    axios.get(`/search/movies/${search}`).then(({ data }) => {
+      setView('Movies');
+      setSearch('');
+      setSearchedMovies(data.results);
+    }).catch((err) => { console.log(err); });
   };
 
   const handleUserClick = (e) => {
@@ -103,7 +113,12 @@ const App = () => {
 
   const addShow = (show) => {
     axios.get(`/show/${show.id}`)
-      .then(({ data }) => setView(data.id))
+      .then(({ data }) => { setView('showFeed'); setShowId(data.id); })
+      .catch();
+  };
+  const addMovie = (movie) => {
+    axios.get(`/movie/${movie.id}`)
+      .then(({ data }) => { setView('movieFeed'); setMovieId(data.id); })
       .catch();
   };
 
@@ -112,7 +127,20 @@ const App = () => {
       .then(() => axios.get('/user').then(({ data }) => setUser(data)))
       .catch();
   };
+  const subscribeMovie = (movieId) => {
+    // make a new endpoint in index.js for subscriptions, line 287
+    axios.put(`/subscribeMovie/${movieId}`)
+      .then(() => axios.get('/user').then(({ data }) => setUser(data)))
+      .catch();
+  };
 
+  const searchViewSwitcher = () => {
+    if (view === 'Shows') {
+      changeView('Movies');
+    } else if (view === 'Movies') {
+      changeView('Shows');
+    }
+  };
   const getView = () => {
     if (view === 'homePage') {
       return <HomePage />;
@@ -124,7 +152,7 @@ const App = () => {
       return <Post user={user} createPost={createPost} />;
     }
     if (view === 'home') {
-      return <HomeFeed handleUserClick={handleUserClick} user={user} posts={posts} setPosts={setPosts} />;
+      return <HomeFeed handleUserClick={handleUserClick} user={user} setUser={setUser} posts={posts} setPosts={setPosts} />;
     }
     if (view === 'DMs') {
       return <DMs user={user} setUser={setUser} />;
@@ -132,10 +160,32 @@ const App = () => {
     if (view === 'notifs') {
       return <Notifs user={user} setUser={setUser} />;
     }
-    if (view === 'search') {
-      return <SearchFeed shows={searchedShows} onClick={addShow} />;
+    if (view === 'search' || view === 'Shows' || view === 'Movies') {
+      return (
+        <SearchFeed
+          shows={searchedShows}
+          movies={searchedMovies}
+          addShow={addShow}
+          addMovie={addMovie}
+          view={view}
+          searchViewSwitcher={searchViewSwitcher}
+          // onClick={() => {
+          //   addShow();
+          //   addMovie();
+          // }}
+        />
+      );
     }
-    return <ShowFeed showId={view} subscribe={subscribe} />;
+    // To Do: Add Following View
+    if (view === 'friends') {
+      return <FriendList user={user} />;
+    }
+    if (view === 'showFeed') {
+      return <ShowFeed showId={showId} subscribe={subscribe} />;
+    }
+    if (view === 'movieFeed') {
+      return <MovieFeed movieId={movieId} subscribe={subscribeMovie} />;
+    }
   };
 
   return (
@@ -149,6 +199,7 @@ const App = () => {
             logout={logout}
             setSearch={setSearch}
             onSearch={searchShows}
+            onSearchTwo={searchMovies}
           />
         )
         : (

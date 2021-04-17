@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './homefeed.css';
-import { FaHeart, FaRegCommentDots, FaTimes } from 'react-icons/fa';
+import { FaHeart, FaRegCommentDots, FaTimes, FaHandshake } from 'react-icons/fa';
 import Reply from './reply.jsx';
 
-const FeedItem = ({ post, user = {}, setPosts }) => {
+const FeedItem = ({ post, user = {}, setPosts, setUser }) => {
   const [show, setShow] = useState();
   const [name, setName] = useState();
   const [like, setLike] = useState();
@@ -12,6 +12,19 @@ const FeedItem = ({ post, user = {}, setPosts }) => {
   const [number, setNumber] = useState(currentPost.likes.length);
   const [box, setBox] = useState(false);
   const [content, setContent] = useState('');
+  const isFollowing = () => {
+    let following = false;
+    if (user.following) {
+      user.following.forEach((follow) => {
+        if (follow._id === post.user) {
+          following = true;
+        }
+      });
+    }
+    return following;
+  };
+
+  const [follow, setFollow] = useState(isFollowing());
   const getShow = () => {
     if (!show) {
       axios(`/postShow/${currentPost.show}`).then(({ data }) => {
@@ -31,6 +44,28 @@ const FeedItem = ({ post, user = {}, setPosts }) => {
   const getLike = () => {
     if (like === undefined) {
       setLike(currentPost.likes.includes(user.id));
+    }
+  };
+
+  const toggleFollow = () => {
+    let deleteMe;
+    if (follow) {
+      user.following.forEach((follow) => {
+        if (follow._id === post.user) {
+          deleteMe = follow.id;
+        }
+        axios.put('/unfollow', { follower: user._id, followed: deleteMe })
+          .then((data) => {
+            setUser(data.data);
+          })
+          .then(setFollow(false));
+      });
+    } else {
+      axios.put('/follow', { follower: user._id, followed: post.user }) // not working for some reason
+        .then((data) => {
+          setUser(data.data);
+        })
+        .then(setFollow(true));
     }
   };
 
@@ -61,6 +96,12 @@ const FeedItem = ({ post, user = {}, setPosts }) => {
           >
             {like ? 'unlike' : 'like'}
           </FaHeart>
+          <FaHandshake
+            className={follow ? 'unfollow-button' : 'follow-button'}
+            onClick={() => {
+              toggleFollow();
+            }}
+          />
           {!box && (
             <FaRegCommentDots
               className="comment-btn"
@@ -68,7 +109,6 @@ const FeedItem = ({ post, user = {}, setPosts }) => {
             />
           )}
         </div>
-
         <div className="post-comment-btn">
           {box && (
             <div className="comment-box">

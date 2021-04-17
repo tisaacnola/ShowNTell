@@ -46,18 +46,18 @@ const SearchFeedEntry = ({ show, onClick }) => {
     }
   };
 
-  const Arrow = ({ text, className }) => {
-    return (
-      <div
-        className={className}
-      >
-        {text}
-      </div>
-    );
-  };
+  // const Arrow = ({ text, className }) => {
+  //   return (
+  //     <div
+  //       className={className}
+  //     >
+  //       {text}
+  //     </div>
+  //   );
+  // };
 
-  const ArrowLeft = Arrow({ text: '<', className: 'arrow-prev' });
-  const ArrowRight = Arrow({ text: '>', className: 'arrow-next' });
+  // const ArrowLeft = Arrow({ text: '<', className: 'arrow-prev' });
+  // const ArrowRight = Arrow({ text: '>', className: 'arrow-next' });
 
   return (
     <div className="show-card">
@@ -72,7 +72,7 @@ const SearchFeedEntry = ({ show, onClick }) => {
             setState(getSummary());
           }}
         >
-          show summary
+          Summary
         </button>
         <div className="show-summary">
           {state}

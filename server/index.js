@@ -10,9 +10,11 @@ require('./db/index');
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
+const movieKey = process.env.MOVIE_DATABASE_KEY;
+const omdbKey = process.env.OMDB_KEY;
 const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
-const { Users, Posts, Shows, Replys } = require('./db/schema.js');
+const { Users, Posts, Shows, Replys, Movies } = require('./db/schema.js');
 
 const app = express();
 
@@ -195,6 +197,24 @@ app.get('/search/:query', (req, res) => {
     .catch();
 });
 
+// warning: arin made this
+// search for a list of multiple movies
+app.get('/search/movies/:query', (req, res) => {
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=${movieKey}&language=en-US&query=${req.params.query}&page=1&include_adult=false`;
+  return axios(url)
+    .then(({ data }) => data)
+    .then((data) => res.status(200).send(data))
+    .catch();
+});
+// get info on an individual movie : omdb
+app.get('/search/movie/:query', (req, res) => {
+  const url = `http://www.omdbapi.com/?apikey=${omdbKey}&t=${req.params.query}`;
+  return axios(url)
+    .then(({ data }) => data)
+    .then((data) => res.status(200).send(data))
+    .catch((err) => { console.log(err); });
+});
+
 app.get('/show/:id', (req, res) => {
   Shows.find({ id: req.params.id })
     .then((record) => {
@@ -213,6 +233,27 @@ app.get('/show/:id', (req, res) => {
     })
     .then((result) => res.status(200).send(result))
     .catch(() => res.status(500).send());
+});
+
+// warning:arin made this
+app.get('/movie/:id', (req, res) => {
+  Movies.find({ id: req.params.id })
+    .then((record) => {
+      if (record.length > 0) {
+        return record[0];
+      }
+      return axios(`https://api.themoviedb.org/3/movie/${req.params.id}?api_key=${movieKey}&language=en-US`)
+        .then(({ data }) => Movies.create({
+          id: data.id,
+          title: data.title,
+          posts: [],
+          subscriberCount: 0,
+        }))
+        .then((result) => result)
+        .catch();
+    })
+    .then((result) => res.status(200).send(result))
+    .catch((err) => res.status(500).send(err));
 });
 
 app.put('/subscribe/:id', (req, res) => {
@@ -238,6 +279,36 @@ app.put('/subscribe/:id', (req, res) => {
                 .catch();
             })
             .catch();
+        }
+      })
+      .then(() => res.status(200).send())
+      .catch(() => res.status(500).send());
+  });
+});
+// make a new movie subscriptions end point here
+app.put('/subscribeMovie/:id', (req, res) => {
+  const { id } = req.params;
+  Users.findOne({ id: req.cookies.ShowNTellId }).then((data) => {
+    userInfo = data;
+    Users.findById(userInfo._id)
+      .then((user) => {
+        if (!user.movieSubscriptions.includes(id)) {
+          userInfo.movieSubscriptions = [...user.movieSubscriptions, id];
+          Users.updateOne(
+            { _id: user._id },
+            { movieSubscriptions: [...user.movieSubscriptions, id] },
+          )
+            .then(() => {
+              Movies.findOne({ id })
+                .then((record) => {
+                  Movies.updateOne(
+                    { id: req.params.id },
+                    { subscriberCount: record.subscriberCount + 1 },
+                  ).catch((err) => console.log(err));
+                })
+                .catch((err) => console.log(err));
+            })
+            .catch((err) => console.log(err));
         }
       })
       .then(() => res.status(200).send())
@@ -479,6 +550,47 @@ app.get('/likedPost/:id', (req, res) => {
       }
     });
   });
+});
+/**
+ * FRIEND LIST FEATURES
+ */
+app.put('/follow', (req, res) => {
+  const { follower, followed } = req.body;
+  // find user to be followed
+  Users.findOne({ _id: followed })
+    .then((data) => {
+      // update user that will follow
+      Users.updateOne(
+        { _id: follower },
+        { $push: { following: data } },
+      ).then(() => {
+        Users.findOne({ _id: follower })
+          .then((data) => {
+            res.send(data);
+          });
+      });
+    })
+    .catch((err) => res.send(err));
+});
+
+app.put('/unfollow', (req, res) => {
+  const { follower, followed } = req.body;
+  Users.updateOne(
+    { _id: follower },
+    { $pull: { following: { id: followed } } }, // not working with _id for some reason
+  ).then(() => {
+    Users.findOne({ _id: follower })
+      .then((data) => {
+        res.send(data);
+      });
+  });
+});
+
+// test changes in users props
+app.get('/users/:id/', (req, res) => {
+  Users.findOne({ id: req.params.id })
+    .then((data) => res.json(data))
+    .catch((err) => res.send(err));
 });
 
 app.listen(3000, () => {

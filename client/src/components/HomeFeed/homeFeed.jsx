@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import FeedItem from './feedItem.jsx';
 import './homefeed.css';
 
-const HomeFeed = ({ posts, handleUserClick, user, setPosts }) => (
+const HomeFeed = ({ posts, handleUserClick, user, setPosts, setUser }) => (
   <div>
     <div className="home-title"> Home feed</div>
     <div className="home-feed-container">
@@ -14,6 +14,7 @@ const HomeFeed = ({ posts, handleUserClick, user, setPosts }) => (
             setPosts={setPosts}
             key={post + i}
             user={user}
+            setUser={setUser}
           />
         ))
         : null}
