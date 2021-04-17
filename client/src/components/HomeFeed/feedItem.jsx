@@ -96,12 +96,16 @@ const FeedItem = ({ post, user = {}, setPosts, setUser }) => {
           >
             {like ? 'unlike' : 'like'}
           </FaHeart>
-          <FaHandshake
-            className={follow ? 'unfollow-button' : 'follow-button'}
-            onClick={() => {
-              toggleFollow();
-            }}
-          />
+          {user._id !== post.user
+            ? (
+              <FaHandshake
+                className={follow ? 'unfollow-button' : 'follow-button'}
+                onClick={() => {
+                  toggleFollow();
+                }}
+              />
+            )
+            : null}
           {!box && (
             <FaRegCommentDots
               className="comment-btn"
