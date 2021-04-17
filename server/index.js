@@ -593,6 +593,52 @@ app.get('/users/:id/', (req, res) => {
     .catch((err) => res.send(err));
 });
 
+// Randolph's Tight Back End API Calls
+
+// 1a. TV show cast.
+app.get('/cast/:id', (req, res) => {
+  axios.get(`http://api.tvmaze.com/shows/${req.params.id}/cast`)
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
+// 1b. TV show crew.
+app.get('/crew/:id', (req, res) => {
+  axios.get(`http://api.tvmaze.com/shows/${req.params.id}/crew`)
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
+// 2a. Movie cast.
+// app.get('/cast/:id', (req, res) => {
+//   axios.get(`(Movie API)`)
+//     .then((response) => {
+//       res.send(response.data);
+//     })
+//     .catch((err) => {
+//       res.send(err);
+//     });
+// });
+
+// 2b. Movie crew.
+// app.get('/crew/:id', (req, res) => {
+//   axios.get(`(Movie API)`)
+//     .then((response) => {
+//       res.send(response.data);
+//     })
+//     .catch((err) => {
+//       res.send(err);
+//     });
+// });
+
 app.listen(3000, () => {
   // eslint-disable-next-line no-console
   console.log('http://localhost:3000');

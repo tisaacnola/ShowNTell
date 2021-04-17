@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './search.css';
 import noImgAvail from './no_img_avail.png';
+import SearchCastAndCrew from './SearchCastAndCrew.jsx';
 
 const SearchMovieFeedEntry = ({ movie, onClick }) => {
   const [state, setState] = useState('');
@@ -52,7 +53,9 @@ const SearchMovieFeedEntry = ({ movie, onClick }) => {
         <div className="show-summary">
           {state}
         </div>
-
+        {/* <SearchCastAndCrew
+          show={show}
+        /> */}
       </div>
     </div>
   );

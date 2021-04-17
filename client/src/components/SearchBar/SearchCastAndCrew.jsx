@@ -14,8 +14,9 @@ const SearchCastAndCrew = ({ show }) => {
   console.log('ShowID:', showId);
 
   // Function which makes call to API endpoint using showId, retrieving cast.
-  const getCast = () => {
-    axios.get(`http://api.tvmaze.com/shows/${showId}/cast`)
+  const getCastTV = () => {
+    // axios.get(`http://api.tvmaze.com/shows/${showId}/cast`)
+    axios.get(`/cast/${showId}`)
       .then((response) => {
         // Extract data from response.
         const { data } = response;
@@ -34,8 +35,9 @@ const SearchCastAndCrew = ({ show }) => {
   };
 
   // Function which makes call to API endpoint using showId, retrieving crew.
-  const getCrew = () => {
-    axios.get(`http://api.tvmaze.com/shows/${showId}/crew`)
+  const getCrewTV = () => {
+    // axios.get(`http://api.tvmaze.com/shows/${showId}/crew`)
+    axios.get(`/crew/${showId}`)
       .then((response) => {
         // Extract data from response.
         const { data } = response;
@@ -59,11 +61,10 @@ const SearchCastAndCrew = ({ show }) => {
       <button
         className="summary-button"
         onClick={(event) => {
-          // Change here - getCast, getCrew functions.
           event.stopPropagation();
           setConditional(!conditional);
-          getCast();
-          getCrew();
+          getCastTV();
+          getCrewTV();
         }}
       >
         show cast & crew
