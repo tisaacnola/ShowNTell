@@ -108,13 +108,35 @@ app.get('/posts', (req, res) => {
 // !! //
 // ** //
 // ?? //
-// app.get('/recommended/:id', (req, res) => {
-//   // const url = `https://api.themoviedb.org/3/tv/${req.params.id}/recommendations?api_key=bde28fb08435e87e8ee72260cc57ce13&language=en-US&page=1`;
-//   const url = `https://api.themoviedb.org/3/tv/${req.params.id}/recommendations?api_key=${movieDbKey}&language=en-US&page=1`;
-//   return axios(url)
-//     .then((data) => data)
-//     .then((data) => res.status(200).send(data))
-// });
+
+app.get('/getrectv/:id', (req, res) => {
+  axios.get(`https://api.themoviedb.org/3/tv/${req.params.id}/recommendations?api_key=${movieDbKey}&language=en-US&page=1`)
+    .then((response) => {
+      console.log(response.data);
+      res.send(response.data);
+    })
+    .catch((err) => res.send(err));
+});
+
+app.get('/getrecmovie/:id', (req, res) => {
+  axios.get(`https://api.themoviedb.org/3/movie/${req.params.id}/recommendations?api_key=${movieDbKey}&language=en-US&page=1`)
+    .then((response) => {
+      console.log(response.data);
+      res.send(response.data);
+    })
+    .catch((err) => res.send(err));
+});
+
+app.get('/gettvid/:name', (req, res) => {
+  // axios.get(`https://api.themoviedb.org/3/search/tv?api_key=${movieDbKey}&query=${req.params.name}`)
+  axios.get(`https://api.themoviedb.org/3/search/tv?api_key=${movieDbKey}&query=${req.params.name}`)
+    .then((response) => {
+      res.send(response.data);
+      console.log(response.data);
+    })
+    .catch((err) => res.send(err));
+});
+
 // ?? //
 // ** //
 // !! //

@@ -4,14 +4,13 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import styled from 'styled-components';
-// import './_slick.scss';
-// import './_slickTheme.scss';
+
 const CarouselStyle = styled.div`
   padding: 5%;
   overflow: hidden;
 `;
 
-const Carousel = ({ recommendedTV }) => {
+const Carousel = ({ recommendedTV, recommendedMovie, current }) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -26,7 +25,11 @@ const Carousel = ({ recommendedTV }) => {
         <Slider
           {...settings}
         >
-          {recommendedTV}
+          {
+            current === 'Shows'
+              ? recommendedTV
+              : recommendedMovie
+          }
         </Slider>
       </div>
     </CarouselStyle>
