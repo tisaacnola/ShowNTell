@@ -140,6 +140,11 @@ const App = () => {
       changeView('Shows');
     }
   };
+
+  const viewSwitcher = (inputView) => {
+    setView(inputView);
+  };
+
   const getView = () => {
     if (view === 'homePage') {
       return <HomePage />;
@@ -180,10 +185,10 @@ const App = () => {
       return <FriendList user={user} />;
     }
     if (view === 'showFeed') {
-      return <ShowFeed showId={showId} subscribe={subscribe} />;
+      return <ShowFeed showId={showId} subscribe={subscribe} viewSwitcher={viewSwitcher} />;
     }
     if (view === 'movieFeed') {
-      return <MovieFeed movieId={movieId} subscribe={subscribeMovie} />;
+      return <MovieFeed movieId={movieId} subscribe={subscribeMovie} viewSwitcher={viewSwitcher} />;
     }
   };
 
