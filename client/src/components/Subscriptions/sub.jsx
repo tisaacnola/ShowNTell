@@ -1,8 +1,9 @@
+/* eslint-disable no-alert */
 import React, { useState } from 'react';
 import axios from 'axios';
 import './sub.css';
 
-const Sub = ({ user, setView }) => {
+const Sub = ({ user, setView, deleteMovie, deleteShow }) => {
   const [subs, setSubs] = useState([]);
   const [movieSubs, setMovieSubs] = useState([]);
   const [gotMovieSubs, setGotMovieSubs] = useState(false);
@@ -44,7 +45,10 @@ const Sub = ({ user, setView }) => {
             className="sub"
             key={sub + i}
             data-id={sub.id}
-            onClick={(e) => setView(e.target.dataset.id)}
+            onClick={() => {
+              deleteShow(sub.id);
+              alert(`You've unsubscribed from ${sub.name}`);
+            }}
           >
             {sub.name}
           </div>
@@ -56,7 +60,10 @@ const Sub = ({ user, setView }) => {
             className="sub"
             key={sub + i}
             data-id={sub.id}
-            onClick={(e) => setView(e.target.dataset.id)}
+            onClick={() => {
+              deleteMovie(sub.id);
+              alert(`You've unsubscribed from ${sub.name || sub.title}`);
+            }}
           >
             {sub.name || sub.title}
           </div>

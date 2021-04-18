@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-console */
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
@@ -93,6 +94,10 @@ const App = () => {
       setSearch('');
       setSearchedMovies(data.results);
     }).catch((err) => { console.log(err); });
+    if (search === 'Space Jam' || search === 'come on and JAM!') {
+      console.log('heyya from redirect');
+      window.location.assign('https://www.spacejam.com/1996/');
+    }
   };
 
   const handleUserClick = (e) => {
@@ -143,13 +148,25 @@ const App = () => {
   const viewSwitcher = (inputView) => {
     setView(inputView);
   };
+    // call to back end to delete show from database
+  const deleteShow = (show) => {
+    axios.put('/unsubscribe', { userId: user.id, showId: `${show}` })
+      .then((data) => { console.log(data.data); setUser(data.data); })
+      .catch((err) => console.log(err));
+  };
+    // call to back end to delete movie from database
+  const deleteMovie = (movie) => {
+    axios.put('/unsubscribeMovie', { userId: user.id, movieId: `${movie}` })
+      .then((data) => { console.log(data.data); setUser(data.data); })
+      .catch((err) => console.log(err));
+  };
 
   const getView = () => {
     if (view === 'homePage') {
       return <HomePage />;
     }
     if (view === 'sub') {
-      return <Sub user={user} setView={setView} />;
+      return <Sub user={user} setView={setView} deleteMovie={deleteMovie} deleteShow={deleteShow} />;
     }
     if (view === 'post') {
       return <Post user={user} createPost={createPost} />;
