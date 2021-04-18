@@ -6,7 +6,7 @@ import Carousel from './Carousel.jsx';
 import RecommendStyle from './RecommendStyle.js';
 import RecResultStyle from './RecResultStyle.js';
 
-const RecommendedMovie = ({ current, movieOptions }) => {
+const RecommendedMovie = ({ current, movieOptions, getMovieSubs }) => {
   const [recommendedMovie, setRecommendedMovie] = useState([]);
   const [clicked, setClicked] = useState(false);
   const [error, setError] = useState(null);
@@ -51,7 +51,6 @@ const RecommendedMovie = ({ current, movieOptions }) => {
 
   const getRecommends = () => {
     setIsLoaded(false);
-    // axios.get(`https://api.themoviedb.org/3/movie/${selectOption}/recommendations?api_key=bde28fb08435e87e8ee72260cc57ce13&language=en-US&page=1`)
     axios.get(`/getrecmovie/${selectOption}`)
       .then((response) => {
         return setRecommendedMovie(response.data.results.map((movie) => {
@@ -62,14 +61,12 @@ const RecommendedMovie = ({ current, movieOptions }) => {
                 id="rec-item-container"
               >
                 <div>
-                  {getMovieImage(movie)}
-                </div>
-                <div>
-                  <div>
-                    <h1>{movie.name}</h1>
+                  <div style={{ height: 'auto', width: '100%' }}>
+                    {getMovieImage(movie)}
                   </div>
                   <div>
-                    <p className="show-overview">
+                    <h1>{movie.title}</h1>
+                    <p className="overview">
                       {movie.overview}
                     </p>
                   </div>
@@ -90,53 +87,45 @@ const RecommendedMovie = ({ current, movieOptions }) => {
     getRecommends();
   };
 
+  const optionsMap = () => {
+    getMovieSubs();
+    return movieOptions.map((option) => {
+      return (
+        <option
+          key={option.key}
+          value={option.value}
+        >
+          {option.label}
+        </option>
+      );
+    });
+  };
+
   useEffect(() => {
     conditionalRender();
   }, [recommendedMovie, isLoaded, error]);
 
   return (
-    <div>
-      <RecommendStyle>
-        <div className="outer-container">
-          <div className="car-container">
-            <div className="rec-container">
-              <div>
-                <button
-                  onClick={handleClick}
-                  className="rec-btn"
-                >
-                  Recommended
-                </button>
-              </div>
-              <div>
-                <select
-                  onChange={handleOptionChange}
-                  id="rec-select"
-                >
-                  {
-                    movieOptions.map((option) => {
-                      return (
-                        <option
-                          key={option.key}
-                          value={option.value}
-                        >
-                          {option.label}
-                        </option>
-                      );
-                    })
-                  }
-                </select>
-              </div>
-              <div>
-                <Carousel recommendedMovie={recommendedMovie} current={current}>
-                  {recommendedMovie}
-                </Carousel>
-              </div>
-            </div>
-          </div>
-        </div>
-      </RecommendStyle>
-    </div>
+    <RecommendStyle>
+      <div className="rec-container">
+        <select
+          onChange={handleOptionChange}
+          id="rec-select"
+        >
+          {/* {getMovieSubs()} */}
+          {optionsMap()}
+        </select>
+        <button
+          onClick={handleClick}
+          className="rec-btn"
+        >
+          Recommended
+        </button>
+        <Carousel recommendedMovie={recommendedMovie} current={current}>
+          {recommendedMovie}
+        </Carousel>
+      </div>
+    </RecommendStyle>
   );
 };
 

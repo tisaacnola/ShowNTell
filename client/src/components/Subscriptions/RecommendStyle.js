@@ -3,8 +3,8 @@ import styled from 'styled-components';
 const RecommendStyle = styled.div`
   display: flex;
   flex-flow: column;
-  padding-left: 33%;
   button.rec-btn, select{
+    margin-left: 41%;
     background: rgb(35, 35, 35);
     color: ghostwhite;
     font-size: 14px;

@@ -3,36 +3,46 @@ import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import styled from 'styled-components';
 
-const CarouselStyle = styled.div`
-  padding: 5%;
-  overflow: hidden;
-`;
-const one = 2;
 const Carousel = ({ recommendedTV, recommendedMovie, current }) => {
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
+    slidesToShow: 3,
+    slidesToScroll: 3,
     arrows: true,
+    accessibility: true,
   };
+
+  // const next = () => {
+  //   Slider.slickNext();
+  // };
+
+  // const previous = () => {
+  //   Slider.slickPrev();
+  // };
+
+  // const handleKeyPress = (e) => {
+  //   if (e.keyCode === 37) {
+  //     previous();
+  //   } else if (e.keyCode === 39) {
+  //     next();
+  //   }
+  // };
+
   return (
-    <CarouselStyle>
-      <div>
-        <Slider
-          {...settings}
-        >
-          {
-            current === 'Shows'
-              ? recommendedTV
-              : recommendedMovie
-          }
-        </Slider>
-      </div>
-    </CarouselStyle>
+    <div>
+      <Slider
+        {...settings}
+      >
+        {
+          current === 'Shows'
+            ? recommendedTV
+            : recommendedMovie
+        }
+      </Slider>
+    </div>
   );
 };
 

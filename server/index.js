@@ -17,7 +17,7 @@ const omdbKey = process.env.OMDB_KEY;
 const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
 
-const { Users, Posts, Shows, Replys, Movies, Recommended } = require('./db/schema.js');
+const { Users, Posts, Shows, Replys, Movies } = require('./db/schema.js');
 
 const app = express();
 
@@ -54,7 +54,6 @@ app.get(
     'google',
     { scope: ['https://www.googleapis.com/auth/plus.login'] },
     (req, res) => {
-      // res.redirect('/');
     },
   ),
 );
@@ -102,9 +101,6 @@ app.get('/posts', (req, res) => {
     .catch();
 });
 
-// ?? //
-// ** //
-// !! //
 // !! //
 // ** //
 // ?? //
@@ -112,7 +108,6 @@ app.get('/posts', (req, res) => {
 app.get('/getrectv/:id', (req, res) => {
   axios.get(`https://api.themoviedb.org/3/tv/${req.params.id}/recommendations?api_key=${movieDbKey}&language=en-US&page=1`)
     .then((response) => {
-      // console.log(response.data);
       res.send(response.data);
     })
     .catch((err) => res.send(err));
@@ -121,27 +116,40 @@ app.get('/getrectv/:id', (req, res) => {
 app.get('/getrecmovie/:id', (req, res) => {
   axios.get(`https://api.themoviedb.org/3/movie/${req.params.id}/recommendations?api_key=${movieDbKey}&language=en-US&page=1`)
     .then((response) => {
-      // console.log(response.data);
       res.send(response.data);
     })
     .catch((err) => res.send(err));
 });
 
 app.get('/gettvdata/:name', (req, res) => {
-  // axios.get(`https://api.themoviedb.org/3/search/tv?api_key=${movieDbKey}&query=${req.params.name}`)
   axios.get(`https://api.themoviedb.org/3/search/tv?api_key=${movieDbKey}&query=${req.params.name}`)
     .then((response) => {
       const subName = response.data.results[0].name;
       const subID = response.data.results[0].id;
       const subOverview = response.data.results[0].overview;
-      // res.send(response.data.results[0]);
-      // console.log('NAME:', subName, 'ID:', subID, 'OVERVIEW:', subOverview);
+
       const optionsObject = {
         name: subName,
         id: subID,
         overview: subOverview,
       };
-      console.log('OPTIONS_OBJECT:', optionsObject);
+      res.status(200).send(optionsObject);
+    })
+    .catch((err) => res.send(err));
+});
+
+app.get('/getmoviedata/:name', (req, res) => {
+  axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${movieDbKey}&query=${req.params.name}`)
+    .then((response) => {
+      const subName = response.data.results[0].title;
+      const subID = response.data.results[0].id;
+      const subOverview = response.data.results[0].overview;
+
+      const optionsObject = {
+        name: subName,
+        id: subID,
+        overview: subOverview,
+      };
       res.status(200).send(optionsObject);
     })
     .catch((err) => res.send(err));
@@ -150,9 +158,6 @@ app.get('/gettvdata/:name', (req, res) => {
 // ?? //
 // ** //
 // !! //
-// !! //
-// ** //
-// ?? //
 
 app.get('/shows', (req, res) => {
   Shows.find()

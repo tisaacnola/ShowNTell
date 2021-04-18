@@ -34,6 +34,8 @@ const App = () => {
   const [searchedMovies, setSearchedMovies] = useState([]);
   const [userClicked, setUsersClicked] = useState(false);
   const [test, setTest] = useState(false);
+  // const [subs, setSubs] = useState([]);
+  // const [movieSubs, setMovieSubs] = useState([]);
 
   // const [recommendedTV, setRecommendedTV] = useState([]);
 
@@ -47,15 +49,13 @@ const App = () => {
   // !! //
   // ** //
   // ?? //
-  // const getRecommendedTV = () => {
-  //   const mappedSearched = searchedShows.map((show) => {
-  //     return axios.get(`/recommendedTV/${searchedShows.shows.name}`)
-  //       .then(({ data }) => setRecommendedTV(data))
-  //       .then(() => changeView('recommendedTV'))
-  //       .catch((err) => console.log(`Error: ${err.message}`));
-  //   });
-  //   return mappedSearched;
+
+  // const passSubs = (userSubs, userMovieSubs) => {
+  //   setSubs(userSubs);
+  //   setMovieSubs(userMovieSubs);
+  //   console.log(userSubs, movieSubs);
   // };
+
   // ?? //
   // ** //
   // !! //

@@ -6,12 +6,13 @@ import Carousel from './Carousel.jsx';
 import RecommendStyle from './RecommendStyle.js';
 import RecResultStyle from './RecResultStyle.js';
 
-const RecommendedTV = ({ current, tvOptions }) => {
+const RecommendedTV = ({ current, tvOptions, getTvSubs }) => {
   const [recommendedTV, setRecommendedTV] = useState([]);
   const [clicked, setClicked] = useState(false);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(true);
   const [selectOption, setSelectOption] = useState(0);
+  const [gotNewTvSub, setGotNewTvSub] = useState(false);
 
   const getTvImage = (show) => {
     let result;
@@ -61,13 +62,11 @@ const RecommendedTV = ({ current, tvOptions }) => {
                 id="rec-item-container"
               >
                 <div>
-                  {getTvImage(show)}
-                </div>
-                <div>
-                  <div>
-                    <h1>{show.name}</h1>
+                  <div style={{ height: '100%', width: 'auto' }}>
+                    {getTvImage(show)}
                   </div>
                   <div>
+                    <h1>{show.name}</h1>
                     <p className="overview">
                       {show.overview}
                     </p>
@@ -85,8 +84,22 @@ const RecommendedTV = ({ current, tvOptions }) => {
   };
 
   const handleClick = () => {
-    setClicked(!clicked);
     getRecommends();
+    setClicked(!clicked);
+  };
+
+  const optionsMap = () => {
+    getTvSubs();
+    return tvOptions.map((option) => {
+      return (
+        <option
+          key={option.key}
+          value={option.value}
+        >
+          {option.label}
+        </option>
+      );
+    });
   };
 
   useEffect(() => {
@@ -94,48 +107,26 @@ const RecommendedTV = ({ current, tvOptions }) => {
   }, [recommendedTV, isLoaded, error]);
 
   return (
-    <div>
-      <RecommendStyle>
-        <div className="outer-container">
-          <div className="car-container">
-            <div className="rec-container">
-              <div>
-                <button
-                  onClick={handleClick}
-                  className="rec-btn"
-                >
-                  Recommended
-                </button>
-              </div>
-              <div>
-                <select
-                  onChange={handleOptionChange}
-                  id="rec-select"
-                >
-                  {
-                    tvOptions.map((option) => {
-                      return (
-                        <option
-                          key={option.key}
-                          value={option.value}
-                        >
-                          {option.label}
-                        </option>
-                      );
-                    })
-                  }
-                </select>
-              </div>
-              <div>
-                <Carousel recommendedTV={recommendedTV} current={current}>
-                  {recommendedTV}
-                </Carousel>
-              </div>
-            </div>
-          </div>
-        </div>
-      </RecommendStyle>
-    </div>
+    <RecommendStyle>
+      <div className="rec-container">
+        <select
+          onChange={handleOptionChange}
+          id="rec-select"
+        >
+          {/* {getTvSubs()} */}
+          {optionsMap()}
+        </select>
+        <button
+          onClick={handleClick}
+          className="rec-btn"
+        >
+          Recommended
+        </button>
+        <Carousel recommendedTV={recommendedTV} current={current}>
+          {recommendedTV}
+        </Carousel>
+      </div>
+    </RecommendStyle>
   );
 };
 
