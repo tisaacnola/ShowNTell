@@ -199,7 +199,7 @@ const App = () => {
     }
     // To Do: Add Following View
     if (view === 'friends') {
-      return <FriendList user={user} users={users} />;
+      return <FriendList user={user} users={users} setUser={setUser} />;
     }
     if (view === 'showFeed') {
       return <ShowFeed showId={showId} subscribe={subscribe} />;
