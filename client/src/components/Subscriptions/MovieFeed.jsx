@@ -35,7 +35,6 @@ const MovieFeed = ({ movieId, subscribe, viewSwitcher }) => {
 
   return (
     <div>
-      {console.log(movie.data)}
       <h1 className="shw-title">{movie.name || movie.title}</h1>
       <button
         className="sub-btn"

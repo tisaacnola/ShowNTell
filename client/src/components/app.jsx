@@ -11,6 +11,9 @@ import axios from 'axios';
 import HomePage from './HomePage/HomePage.jsx';
 import Nav from './nav.jsx';
 import HomeFeed from './HomeFeed/homeFeed.jsx';
+
+import RecommendedBoth from './Subscriptions/RecommendedBoth.jsx';
+
 import Sub from './Subscriptions/sub.jsx';
 import Post from './CreatePost/post.jsx';
 import DMs from './DMs/dms.jsx';
@@ -31,6 +34,7 @@ const App = () => {
   const [searchedMovies, setSearchedMovies] = useState([]);
   const [userClicked, setUsersClicked] = useState(false);
   const [test, setTest] = useState(false);
+  const [users, setUsers] = useState([]);
 
   const changeView = (newView) => {
     setView(newView);
@@ -41,6 +45,8 @@ const App = () => {
       axios
         .get('/user')
         .then(({ data }) => setUser(data))
+        .then(() => {
+        })
         .then(() => setTest(true))
         .catch();
     } else if (test) {
@@ -61,6 +67,26 @@ const App = () => {
         .catch();
     }
     // }
+  };
+
+  const getUsers = () => {
+    const buildFollowers = [];
+    if (!users.length) {
+      axios.get('/users')
+        .then((result) => {
+          const people = result.data;
+          people.forEach((person) => {
+            if (person.following) {
+              person.following.forEach((follow) => {
+                if (follow._id === user._id) {
+                  buildFollowers.push(person);
+                }
+              });
+            }
+          });
+          setUsers(buildFollowers);
+        });
+    }
   };
 
   const logout = () => {
@@ -151,6 +177,9 @@ const App = () => {
     if (view === 'sub') {
       return <Sub user={user} setView={setView} />;
     }
+    if (view === 'recommendedBoth') {
+      return <RecommendedBoth user={user} />;
+    }
     if (view === 'post') {
       return <Post user={user} createPost={createPost} />;
     }
@@ -181,7 +210,7 @@ const App = () => {
     }
     // To Do: Add Following View
     if (view === 'friends') {
-      return <FriendList user={user} />;
+      return <FriendList user={user} users={users} setUser={setUser} />;
     }
     if (view === 'showFeed') {
       return <ShowFeed showId={showId} subscribe={subscribe} viewSwitcher={viewSwitcher} />;
@@ -216,6 +245,7 @@ const App = () => {
         )}
       {getUser()}
       {getPosts()}
+      {getUsers()}
       {userClicked ? (
         <button onClick={handleShowFeed}>Show Home Feed</button>
       ) : null}
