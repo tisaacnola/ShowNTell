@@ -9,7 +9,33 @@ const RecommendedBoth = ({ user }) => {
   const [movieSubs, setMovieSubs] = useState([]);
   const [gotMovieSubs, setGotMovieSubs] = useState(false);
   const [gotTvSubs, setGotTvSubs] = useState(false);
-  // const [tvOptionsId, setTvOptionsId] = useState(null);
+  const [tvOption, setTvOptions] = useState([]);
+  const [gotTvOptions, setGotTvOptions] = useState(false);
+  // const getTvSubs = () => {
+  //   if (!gotTvSubs) {
+  //     const promises = user.subscriptions.map((showId) => axios.get(`/show/${showId}`).catch());
+  //     Promise.all(promises)
+  //       .then((results) => results.map((show) => show.data))
+  //       .then((shows) => {
+  //         setTvSubs(shows);
+  //         setGotTvSubs(true);
+  //       })
+  //       .catch();
+  //   }
+  // };
+
+  // const getTvId = (name) => {
+  //   if (!gotTvId) {
+  //     const promise = axios.get(`/gettvid/${name}`).catch();
+  //     Promise.all(promise)
+  //       // .then((response) => response.data.results[0].id)
+  //       .then((response) => {
+  //         setTvOptionsId(response.data);
+  //         setGotTvId(true);
+  //       })
+  //       .catch();
+  //   }
+  // };
 
   const getTvSubs = () => {
     if (!gotTvSubs) {
@@ -24,20 +50,24 @@ const RecommendedBoth = ({ user }) => {
     }
   };
 
-  // const getTvId = (name) => {
-  //   axios.get(`/gettvid/${name}`)
-  //     .then((response) => {
-  //       setTvOptionsId(response.data.results.id);
-  //       console.log(tvOptionsId);
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
+  const getTvOptionsObjects = () => {
+    if (gotTvSubs) {
+      const promises = tvSubs.map(({ name }) => axios.get(`/gettvdata/${name}`).catch());
+      Promise.all(promises)
+        .then((results) => results.map((showObj) => showObj.data))
+        .then((showObjs) => {
+          setTvOptions(showObjs);
+          setGotTvOptions(true);
+        })
+        .catch();
+    }
+  };
 
   const getMovieSubs = () => {
     if (!gotMovieSubs) {
       const promisesTwo = user.movieSubscriptions.map((movieId) => axios.get(`/movie/${movieId}`).catch());
       Promise.all(promisesTwo)
-        .then((results) => results.map((show) => show.data))
+        .then((results) => results.map((movie) => movie.data))
         .then((movies) => {
           setMovieSubs(movies);
           setGotMovieSubs(true);
@@ -62,11 +92,21 @@ const RecommendedBoth = ({ user }) => {
     getMovieSubs();
   }, []);
 
+  useEffect(() => {
+    getTvOptionsObjects();
+  }, [gotTvSubs]);
+
+  // useEffect(() => {
+  //   getTvId();
+  // }, [tvSubs]);
+
   // const tvTVOptions = tvSubs.map((showObj) => {
   //   return { [showObj.name]: getTvId(showObj.name) };
   // });
   // console.log(tvTVOptions);
-  const tvOptions = tvSubs.map((showObj) => {
+
+  const tvOptions = tvOption.map((showObj) => {
+    // console.log(getTvId(showObj.name));
     return {
       value: showObj.id,
       label: showObj.name,

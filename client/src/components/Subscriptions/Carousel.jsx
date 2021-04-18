@@ -9,7 +9,7 @@ const CarouselStyle = styled.div`
   padding: 5%;
   overflow: hidden;
 `;
-
+const one = 2;
 const Carousel = ({ recommendedTV, recommendedMovie, current }) => {
   const settings = {
     dots: true,

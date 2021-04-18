@@ -112,7 +112,7 @@ app.get('/posts', (req, res) => {
 app.get('/getrectv/:id', (req, res) => {
   axios.get(`https://api.themoviedb.org/3/tv/${req.params.id}/recommendations?api_key=${movieDbKey}&language=en-US&page=1`)
     .then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       res.send(response.data);
     })
     .catch((err) => res.send(err));
@@ -121,18 +121,28 @@ app.get('/getrectv/:id', (req, res) => {
 app.get('/getrecmovie/:id', (req, res) => {
   axios.get(`https://api.themoviedb.org/3/movie/${req.params.id}/recommendations?api_key=${movieDbKey}&language=en-US&page=1`)
     .then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       res.send(response.data);
     })
     .catch((err) => res.send(err));
 });
 
-app.get('/gettvid/:name', (req, res) => {
+app.get('/gettvdata/:name', (req, res) => {
   // axios.get(`https://api.themoviedb.org/3/search/tv?api_key=${movieDbKey}&query=${req.params.name}`)
   axios.get(`https://api.themoviedb.org/3/search/tv?api_key=${movieDbKey}&query=${req.params.name}`)
     .then((response) => {
-      res.send(response.data);
-      console.log(response.data);
+      const subName = response.data.results[0].name;
+      const subID = response.data.results[0].id;
+      const subOverview = response.data.results[0].overview;
+      // res.send(response.data.results[0]);
+      // console.log('NAME:', subName, 'ID:', subID, 'OVERVIEW:', subOverview);
+      const optionsObject = {
+        name: subName,
+        id: subID,
+        overview: subOverview,
+      };
+      console.log('OPTIONS_OBJECT:', optionsObject);
+      res.status(200).send(optionsObject);
     })
     .catch((err) => res.send(err));
 });
