@@ -1,9 +1,10 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import FeedItem from '../HomeFeed/feedItem.jsx';
 
-const MovieFeed = ({ movieId, subscribe }) => {
+const MovieFeed = ({ movieId, subscribe, viewSwitcher }) => {
   const [movie, setMovie] = useState({});
   const [gotMovie, setGotMovie] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -35,7 +36,16 @@ const MovieFeed = ({ movieId, subscribe }) => {
   return (
     <div>
       <h1 className="shw-title">{movie.name || movie.title}</h1>
-      <button className="sub-btn" onClick={() => subscribe(movieId)}>subscribe</button>
+      <button
+        className="sub-btn"
+        onClick={() => {
+          subscribe(movieId);
+          alert(`You've added ${movie.name || movie.title} to your subscriptions!`);
+          viewSwitcher('sub');
+        }}
+      >
+        subscribe
+      </button>
       <div className="sub-page-feed">
         {posts ? posts.map((post, i) => <FeedItem key={post + i} post={post} />) : null}
         {getMovieInfo()}
