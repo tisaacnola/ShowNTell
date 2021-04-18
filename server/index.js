@@ -375,6 +375,32 @@ app.put('/subscribeMovie/:id', (req, res) => {
   });
 });
 
+app.put('/unsubscribe', (req, res) => {
+  Users.updateOne(
+    { id: req.body.userId },
+    { $pull: { subscriptions: req.body.showId } },
+  ).then(() => {
+    Users.findOne({ id: req.body.userId })
+      .then((data) => {
+        res.send(data);
+      });
+  })
+    .catch((err) => console.log(err));
+});
+
+app.put('/unsubscribeMovie', (req, res) => {
+  Users.updateOne(
+    { id: req.body.userId },
+    { $pull: { movieSubscriptions: req.body.movieId } },
+  ).then(() => {
+    Users.findOne({ id: req.body.userId })
+      .then((data) => {
+        res.send(data);
+      });
+  })
+    .catch((err) => console.log(err));
+});
+
 app.get('/delete', (req, res) => {
   Users.deleteMany()
     .then(() => Posts.deleteMany())

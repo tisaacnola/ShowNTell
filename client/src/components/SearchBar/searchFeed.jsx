@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-console */
 import React from 'react';
 import SearchFeedEntry from './searchEntry.jsx';
