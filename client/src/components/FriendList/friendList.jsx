@@ -4,7 +4,7 @@ import Following from './following.jsx';
 import './friendlist.css';
 
 const FriendList = (props = {}) => {
-  const { user, users } = props;
+  const { user, users, setUser } = props;
   const friends = [];
   const following = [];
   const followers = [];
@@ -39,15 +39,15 @@ const FriendList = (props = {}) => {
     <div className="row">
       <div className="column">
         <h1 id="header">Friends</h1>
-        <Following followingList={friends} />
+        <Following followingList={friends} user={user} setUser={setUser} />
       </div>
       <div className="column">
         <h1 id="header">Following</h1>
-        <Following followingList={following} />
+        <Following followingList={following} user={user} setUser={setUser} />
       </div>
       <div className="column">
         <h1 id="header">Followers</h1>
-        <Following followingList={followers} />
+        <Following followingList={followers} user={user} setUser={setUser} />
       </div>
     </div>
   );

@@ -14,6 +14,8 @@ class FollowItem extends Component {
     };
     this.getSubs = this.getSubs.bind(this);
     this.getMovies = this.getMovies.bind(this);
+    this.subscribeShow = this.subscribeShow.bind(this);
+    this.subscribeMovie = this.subscribeMovie.bind(this);
   }
 
   componentDidMount() {
@@ -47,14 +49,28 @@ class FollowItem extends Component {
       .catch();
   }
 
+  subscribeShow(id) {
+    console.log(id);
+    axios.put(`/subscribe/${id}`)
+      .then(() => axios.get('/user').then(({ data }) => this.props.setUser(data)))
+      .catch();
+  }
+
+  subscribeMovie(id) {
+    console.log(id);
+    axios.put(`/subscribeMovie/${id}`)
+      .then(() => axios.get('/user').then(({ data }) => this.props.setUser(data)))
+      .catch();
+  }
+
   render() {
     const { friend } = this.props;
     const { showSubs, showMovies } = this.state;
     return (
       <div>
         <h3 id="dms-sub-header">{ friend.name }</h3>
-        { showSubs.map((show) => <span id={show.id} className="show-summary">{show.name}</span>) }
-        { showMovies.map((show) => <span id={show._id} className="show-summary">{show.title}</span>) }
+        { showSubs.map((show) => <span id={show.id} className="show" title="subscribe" onClick={() => { this.subscribeShow(show.id); }}><small><i>{show.name}</i></small></span>) }
+        { showMovies.map((show) => <span id={show._id} className="show" title="subscribe" onClick={() => { this.subscribeMovie(show.id); }}><small><i>{show.title}</i></small></span>) }
       </div>
     );
   }
