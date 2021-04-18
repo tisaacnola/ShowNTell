@@ -12,7 +12,6 @@ const RecommendedMovie = ({ current, movieOptions }) => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(true);
   const [selectOption, setSelectOption] = useState(0);
-  const [overview, setOverview] = useState('');
 
   const getMovieImage = (movie) => {
     let result;
@@ -69,18 +68,6 @@ const RecommendedMovie = ({ current, movieOptions }) => {
                   <div>
                     <h1>{movie.name}</h1>
                   </div>
-                  {/* <button
-                    className="summary-button"
-                    onClick={(e) => {
-                      // e.stopPropagation();
-                      setOverview(movie.overview);
-                    }}
-                  >
-                    Summary
-                  </button>
-                  <div className="show-summary">
-                    {overview}
-                  </div> */}
                   <div>
                     <p className="show-overview">
                       {movie.overview}
@@ -92,7 +79,6 @@ const RecommendedMovie = ({ current, movieOptions }) => {
           );
         }));
       })
-      .then(() => console.log('RECOMMENDEDMovie:', recommendedMovie))
       .catch((err) => {
         setIsLoaded(true);
         setError(err);

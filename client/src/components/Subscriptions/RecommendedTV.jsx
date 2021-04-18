@@ -6,7 +6,7 @@ import Carousel from './Carousel.jsx';
 import RecommendStyle from './RecommendStyle.js';
 import RecResultStyle from './RecResultStyle.js';
 
-const RecommendedTV = ({ user, current, tvOptions }) => {
+const RecommendedTV = ({ current, tvOptions }) => {
   const [recommendedTV, setRecommendedTV] = useState([]);
   const [clicked, setClicked] = useState(false);
   const [error, setError] = useState(null);
@@ -67,20 +67,6 @@ const RecommendedTV = ({ user, current, tvOptions }) => {
                   <div>
                     <h1>{show.name}</h1>
                   </div>
-                  {/* <button
-                    className="summary-button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setOverview(show.overview);
-                    }}
-                  >
-                    Summary
-                  </button>
-                  <div className="show-overview">
-                    <p>
-                      {overview}
-                    </p>
-                  </div> */}
                   <div>
                     <p className="overview">
                       {show.overview}
@@ -92,7 +78,6 @@ const RecommendedTV = ({ user, current, tvOptions }) => {
           );
         }));
       })
-      .then(() => console.log('RECOMMENDEDTV:', recommendedTV))
       .catch((err) => {
         setIsLoaded(true);
         setError(err);
