@@ -11,6 +11,9 @@ import axios from 'axios';
 import HomePage from './HomePage/HomePage.jsx';
 import Nav from './nav.jsx';
 import HomeFeed from './HomeFeed/homeFeed.jsx';
+
+import RecommendedBoth from './Subscriptions/RecommendedBoth.jsx';
+
 import Sub from './Subscriptions/sub.jsx';
 import Post from './CreatePost/post.jsx';
 import DMs from './DMs/dms.jsx';
@@ -168,6 +171,9 @@ const App = () => {
     }
     if (view === 'sub') {
       return <Sub user={user} setView={setView} />;
+    }
+    if (view === 'recommendedBoth') {
+      return <RecommendedBoth user={user} />;
     }
     if (view === 'post') {
       return <Post user={user} createPost={createPost} />;
