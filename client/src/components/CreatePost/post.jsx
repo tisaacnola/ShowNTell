@@ -34,7 +34,6 @@ const Post = ({ user, createPost }) => {
         .then((shows) => {
           setSubs(shows);
           setGotSubs(true);
-          // console.log(`heres some info from get subs: ${shows}`);
         })
         .catch();
     }
@@ -48,7 +47,6 @@ const Post = ({ user, createPost }) => {
         .then((movies) => {
           setMovieSubs(movies);
           setGotMovieSubs(true);
-          // console.log(`heres some info from get movie subs: ${movies}`);
         })
         .catch((err) => {
           console.log(err);
