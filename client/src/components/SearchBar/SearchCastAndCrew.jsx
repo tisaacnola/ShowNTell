@@ -5,14 +5,13 @@ import axios from 'axios';
 // Create functional component, receiving show id.
 const SearchCastAndCrew = ({ show }) => {
   // Generate hooks for cast, crew.
-  const [cast, setCast] = useState([]);
-  const [crew, setCrew] = useState([]);
+  const [castTV, setCastTV] = useState([]);
+  const [crewTV, setCrewTV] = useState([]);
   // Create variable to be used for conditional rendering.
   const [conditional, setConditional] = useState(false);
   // Create id variable from show object.
   const showId = show.id;
-  console.log('ShowID:', showId);
-
+  // console.log(showId);
   // Function which makes call to API endpoint using showId, retrieving cast.
   const getCastTV = () => {
     // axios.get(`http://api.tvmaze.com/shows/${showId}/cast`)
@@ -30,7 +29,7 @@ const SearchCastAndCrew = ({ show }) => {
           </div>
         ));
         // Now set state of cast to be the above array.
-        setCast(castNames);
+        setCastTV(castNames);
       });
   };
 
@@ -52,7 +51,7 @@ const SearchCastAndCrew = ({ show }) => {
           </div>
         ));
         // Now set state of crew to be the above array.
-        setCrew(crewNames);
+        setCrewTV(crewNames);
       });
   };
 
@@ -72,9 +71,9 @@ const SearchCastAndCrew = ({ show }) => {
       {(conditional === true) ? (
         <div className="show-summary">
           <div className="show-name">Cast</div>
-          <div>{cast.length ? cast : 'No cast information'}</div>
+          <div>{castTV.length ? castTV : 'No cast information'}</div>
           <div className="show-name">Crew</div>
-          <div>{crew.length ? crew : 'No crew information'}</div>
+          <div>{crewTV.length ? crewTV : 'No crew information'}</div>
         </div>
       )
         : null}

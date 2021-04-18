@@ -78,6 +78,7 @@ const SearchFeedEntry = ({ show, onClick }) => {
           {state}
         </div>
         <SearchCastAndCrew
+          key={show.id}
           show={show}
         />
       </div>
