@@ -71,9 +71,9 @@ const SearchCastAndCrew = ({ show }) => {
       {(conditional === true) ? (
         <div className="show-summary">
           <div className="show-name">Cast</div>
-          <div>{castTV.length ? castTV : 'No cast information'}</div>
+          <div>{castTV.length ? castTV : '---'}</div>
           <div className="show-name">Crew</div>
-          <div>{crewTV.length ? crewTV : 'No crew information'}</div>
+          <div>{crewTV.length ? crewTV : '---'}</div>
         </div>
       )
         : null}

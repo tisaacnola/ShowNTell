@@ -8,12 +8,15 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 require('./db/index');
 
+const movieDbKey = process.env.MOVIE_DATABASE_KEY;
+
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const movieKey = process.env.MOVIE_DATABASE_KEY;
 const omdbKey = process.env.OMDB_KEY;
 const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
+
 const { Users, Posts, Shows, Replys, Movies } = require('./db/schema.js');
 
 const app = express();
@@ -51,7 +54,6 @@ app.get(
     'google',
     { scope: ['https://www.googleapis.com/auth/plus.login'] },
     (req, res) => {
-      // res.redirect('/');
     },
   ),
 );
@@ -98,6 +100,64 @@ app.get('/posts', (req, res) => {
     .then((posts) => res.send(posts))
     .catch();
 });
+
+// !! //
+// ** //
+// ?? //
+
+app.get('/getrectv/:id', (req, res) => {
+  axios.get(`https://api.themoviedb.org/3/tv/${req.params.id}/recommendations?api_key=${movieDbKey}&language=en-US&page=1`)
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch((err) => res.send(err));
+});
+
+app.get('/getrecmovie/:id', (req, res) => {
+  axios.get(`https://api.themoviedb.org/3/movie/${req.params.id}/recommendations?api_key=${movieDbKey}&language=en-US&page=1`)
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch((err) => res.send(err));
+});
+
+app.get('/gettvdata/:name', (req, res) => {
+  axios.get(`https://api.themoviedb.org/3/search/tv?api_key=${movieDbKey}&query=${req.params.name}`)
+    .then((response) => {
+      const subName = response.data.results[0].name;
+      const subID = response.data.results[0].id;
+      const subOverview = response.data.results[0].overview;
+
+      const optionsObject = {
+        name: subName,
+        id: subID,
+        overview: subOverview,
+      };
+      res.status(200).send(optionsObject);
+    })
+    .catch((err) => res.send(err));
+});
+
+app.get('/getmoviedata/:name', (req, res) => {
+  axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${movieDbKey}&query=${req.params.name}`)
+    .then((response) => {
+      const subName = response.data.results[0].title;
+      const subID = response.data.results[0].id;
+      const subOverview = response.data.results[0].overview;
+
+      const optionsObject = {
+        name: subName,
+        id: subID,
+        overview: subOverview,
+      };
+      res.status(200).send(optionsObject);
+    })
+    .catch((err) => res.send(err));
+});
+
+// ?? //
+// ** //
+// !! //
 
 app.get('/shows', (req, res) => {
   Shows.find()
@@ -314,6 +374,32 @@ app.put('/subscribeMovie/:id', (req, res) => {
       .then(() => res.status(200).send())
       .catch(() => res.status(500).send());
   });
+});
+
+app.put('/unsubscribe', (req, res) => {
+  Users.updateOne(
+    { id: req.body.userId },
+    { $pull: { subscriptions: req.body.showId } },
+  ).then(() => {
+    Users.findOne({ id: req.body.userId })
+      .then((data) => {
+        res.send(data);
+      });
+  })
+    .catch((err) => console.log(err));
+});
+
+app.put('/unsubscribeMovie', (req, res) => {
+  Users.updateOne(
+    { id: req.body.userId },
+    { $pull: { movieSubscriptions: req.body.movieId } },
+  ).then(() => {
+    Users.findOne({ id: req.body.userId })
+      .then((data) => {
+        res.send(data);
+      });
+  })
+    .catch((err) => console.log(err));
 });
 
 app.get('/delete', (req, res) => {

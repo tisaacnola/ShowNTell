@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaHome, FaStar, FaPen, FaBell, FaEnvelope, FaSearch, FaDoorOpen, FaLinkedin, FaUnity, FaHandshake } from 'react-icons/fa';
+import { FaHome, FaStar, FaPen, FaBell, FaEnvelope, FaSearch, FaDoorOpen, FaLinkedin, FaUnity, FaHandshake, FaFingerprint } from 'react-icons/fa';
 import logo from './HomePage/img/logo1.png';
 
 const Nav = ({ user, onClick, logout, search, setSearch, onSearch, onSearchTwo }) => (
@@ -25,6 +25,12 @@ const Nav = ({ user, onClick, logout, search, setSearch, onSearch, onSearchTwo }
         {' '}
         <FaStar />
       </li>
+
+      <li onClick={() => onClick('recommendedBoth')} className="views" title="recommendedBoth">
+        <FaFingerprint />
+        {' '}
+      </li>
+
       <li onClick={() => onClick('post')} className="views" title="create a post">
         {' '}
         <FaPen />

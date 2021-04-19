@@ -71,9 +71,9 @@ const SearchCastAndCrewMovie = ({ movie }) => {
       {(conditional === true) ? (
         <div className="show-summary">
           <div className="show-name">Cast</div>
-          <div>{castMovie.length ? castMovie : 'No cast information'}</div>
+          <div>{castMovie.length ? castMovie : '---'}</div>
           <div className="show-name">Crew</div>
-          <div>{crewMovie.length ? crewMovie : 'No crew information'}</div>
+          <div>{crewMovie.length ? crewMovie : '---'}</div>
         </div>
       )
         : null}

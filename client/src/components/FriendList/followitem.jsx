@@ -31,7 +31,6 @@ class FollowItem extends Component {
     Promise.all(promises)
       .then((results) => results.map((show) => show.data))
       .then((shows) => {
-        console.log(shows);
         this.setState({ showSubs: shows });
       })
       .catch();
@@ -43,7 +42,6 @@ class FollowItem extends Component {
     Promise.all(promises)
       .then((results) => results.map((movie) => movie.data))
       .then((movies) => {
-        console.log(movies);
         this.setState({ showMovies: movies });
       })
       .catch();

@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-console */
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
@@ -11,6 +12,9 @@ import axios from 'axios';
 import HomePage from './HomePage/HomePage.jsx';
 import Nav from './nav.jsx';
 import HomeFeed from './HomeFeed/homeFeed.jsx';
+
+import RecommendedBoth from './Subscriptions/RecommendedBoth.jsx';
+
 import Sub from './Subscriptions/sub.jsx';
 import Post from './CreatePost/post.jsx';
 import DMs from './DMs/dms.jsx';
@@ -118,6 +122,10 @@ const App = () => {
       setSearch('');
       setSearchedMovies(data.results);
     }).catch((err) => { console.log(err); });
+    if (search === 'Space Jam' || search === 'come on and JAM!') {
+      console.log('heyya from redirect');
+      window.location.assign('https://www.spacejam.com/1996/');
+    }
   };
 
   const handleUserClick = (e) => {
@@ -164,12 +172,32 @@ const App = () => {
       changeView('Shows');
     }
   };
+
+  const viewSwitcher = (inputView) => {
+    setView(inputView);
+  };
+    // call to back end to delete show from database
+  const deleteShow = (show) => {
+    axios.put('/unsubscribe', { userId: user.id, showId: `${show}` })
+      .then((data) => { console.log(data.data); setUser(data.data); })
+      .catch((err) => console.log(err));
+  };
+    // call to back end to delete movie from database
+  const deleteMovie = (movie) => {
+    axios.put('/unsubscribeMovie', { userId: user.id, movieId: `${movie}` })
+      .then((data) => { console.log(data.data); setUser(data.data); })
+      .catch((err) => console.log(err));
+  };
+
   const getView = () => {
     if (view === 'homePage') {
       return <HomePage />;
     }
     if (view === 'sub') {
-      return <Sub user={user} setView={setView} />;
+      return <Sub user={user} setView={setView} deleteMovie={deleteMovie} deleteShow={deleteShow} />;
+    }
+    if (view === 'recommendedBoth') {
+      return <RecommendedBoth user={user} />;
     }
     if (view === 'post') {
       return <Post user={user} createPost={createPost} />;
@@ -204,10 +232,10 @@ const App = () => {
       return <FriendList user={user} users={users} setUser={setUser} />;
     }
     if (view === 'showFeed') {
-      return <ShowFeed showId={showId} subscribe={subscribe} />;
+      return <ShowFeed showId={showId} subscribe={subscribe} viewSwitcher={viewSwitcher} />;
     }
     if (view === 'movieFeed') {
-      return <MovieFeed movieId={movieId} subscribe={subscribeMovie} />;
+      return <MovieFeed movieId={movieId} subscribe={subscribeMovie} viewSwitcher={viewSwitcher} />;
     }
   };
 
