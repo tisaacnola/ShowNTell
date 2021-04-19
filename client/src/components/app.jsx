@@ -108,9 +108,11 @@ const App = () => {
   };
 
   const searchShows = () => {
+    // Telling the server to run this API call with the /search/value passed in.
     axios.get(`/search/${search}`).then(({ data }) => {
       setView('Shows');
       setSearch('');
+      // Sets searchedShows to [] of being mapped over in searchFeed.
       setSearchedShows(data);
     }).catch();
   };

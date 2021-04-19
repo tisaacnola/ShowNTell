@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './search.css';
 import noImgAvail from './no_img_avail.png';
+import SearchCastAndCrew from './SearchCastAndCrew.jsx';
 
 const SearchFeedEntry = ({ show, onClick }) => {
   const [state, setState] = useState('');
-
+  // console.log(show);
+  // All this is doing is parsing show.summary object.
   const getSummary = () => {
     let summary = show.summary.replace(/<p>|<\/p>/g, '');
     const output = [];
@@ -59,11 +61,13 @@ const SearchFeedEntry = ({ show, onClick }) => {
         >
           Summary
         </button>
-
         <div className="show-summary">
           {state}
         </div>
-
+        <SearchCastAndCrew
+          key={show.id}
+          show={show}
+        />
       </div>
     </div>
   );

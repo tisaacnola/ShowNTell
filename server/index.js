@@ -248,6 +248,7 @@ app.put('/sendMessage/:id/:text', (req, res) => {
   });
 });
 
+// API call to search endpoint with query parameter, using url.
 app.get('/search/:query', (req, res) => {
   const url = `http://api.tvmaze.com/search/shows?q=${req.params.query}`;
   return axios(url)
@@ -676,6 +677,41 @@ app.get('/users/:id/', (req, res) => {
   Users.findOne({ id: req.params.id })
     .then((data) => res.json(data))
     .catch((err) => res.send(err));
+});
+
+// Randolph's Tight Back End API Calls
+
+// 1a. TV show cast.
+app.get('/cast/:id', (req, res) => {
+  axios.get(`http://api.tvmaze.com/shows/${req.params.id}/cast`)
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
+// 1b. TV show crew.
+app.get('/crew/:id', (req, res) => {
+  axios.get(`http://api.tvmaze.com/shows/${req.params.id}/crew`)
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
+// 2. Movie cast and crew.
+app.get('/movieData/:id', (req, res) => {
+  axios.get(`https://api.themoviedb.org/3/movie/${req.params.id}/credits?api_key=${movieKey}&language=en-US&page=1`)
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
 });
 
 app.listen(3000, () => {
