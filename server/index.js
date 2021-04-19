@@ -617,27 +617,16 @@ app.get('/crew/:id', (req, res) => {
     });
 });
 
-// 2a. Movie cast.
-// app.get('/cast/:id', (req, res) => {
-//   axios.get(`(Movie API)`)
-//     .then((response) => {
-//       res.send(response.data);
-//     })
-//     .catch((err) => {
-//       res.send(err);
-//     });
-// });
-
-// 2b. Movie crew.
-// app.get('/crew/:id', (req, res) => {
-//   axios.get(`(Movie API)`)
-//     .then((response) => {
-//       res.send(response.data);
-//     })
-//     .catch((err) => {
-//       res.send(err);
-//     });
-// });
+// 2. Movie cast and crew.
+app.get('/movieData/:id', (req, res) => {
+  axios.get(`https://api.themoviedb.org/3/movie/${req.params.id}/credits?api_key=${movieKey}&language=en-US&page=1`)
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
 
 app.listen(3000, () => {
   // eslint-disable-next-line no-console

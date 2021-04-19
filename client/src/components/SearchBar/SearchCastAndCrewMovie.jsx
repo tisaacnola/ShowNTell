@@ -13,14 +13,10 @@ const SearchCastAndCrewMovie = ({ movie }) => {
   const movieId = movie.id;
   // Function which makes call to API endpoint using movieId, retrieving cast.
   const getCastMovie = () => {
-    // axios.get(`http://api.tvmaze.com/shows/${showId}/cast`)
-
-    // https://api.themoviedb.org/3/movie/457335/credits?api_key=bde28fb08435e87e8ee72260cc57ce13&language=en-US&page=1&include_adult=false
-
     // axios.get(`/cast/${movieId}`)
-    axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=bde28fb08435e87e8ee72260cc57ce13&language=en-US&page=1`)
+    // https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=bde28fb08435e87e8ee72260cc57ce13&language=en-US&page=1
+    axios.get(`/movieData/${movieId}`)
       .then((response) => {
-        // console.log(response);
         // Extract cast from response.data.
         const { cast } = response.data;
         // Map over cast, generating an array of cast and character names.
@@ -39,7 +35,8 @@ const SearchCastAndCrewMovie = ({ movie }) => {
 
   // Function which makes call to API endpoint using movieId, retrieving crew.
   const getCrewMovie = () => {
-    axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=bde28fb08435e87e8ee72260cc57ce13&language=en-US&page=1`)
+    // axios.get(`/crew/${movieId}`)
+    axios.get(`/movieData/${movieId}`)
       .then((response) => {
         // Extract crew from response.data.
         const { crew } = response.data;
