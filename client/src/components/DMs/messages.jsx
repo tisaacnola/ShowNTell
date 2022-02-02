@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './dms.css';
 
 const Messages = (props = {}) => {
   const [content, setContent] = useState();
   const { id, messages, setUser, user } = props;
+
   let message;
   if (messages) {
     messages.forEach((data) => {
