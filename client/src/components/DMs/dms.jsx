@@ -99,6 +99,7 @@ const DMs = ({ user, setUser }) => {
                 )
             }
             </div>
+            <button id="videoChatBtn">VideoChat</button>
             <div className="inbox">
               <h1>Inbox: </h1>
               {
