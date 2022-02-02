@@ -5,6 +5,7 @@ const axios = require('axios');
 const cors = require('cors');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 require('./db/index');
 
@@ -47,6 +48,12 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 app.get(
   '/auth/google',
@@ -714,7 +721,7 @@ app.get('/movieData/:id', (req, res) => {
     });
 });
 
-app.listen(3000, () => {
+app.listen(3001, () => {
   // eslint-disable-next-line no-console
-  console.log('http://localhost:3000');
+  console.log('http://localhost:3001');
 });

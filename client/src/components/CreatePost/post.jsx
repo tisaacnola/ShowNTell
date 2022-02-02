@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import pic from './createpost.png';
 import './post.css';
@@ -13,6 +13,9 @@ const Post = ({ user, createPost }) => {
   const [gotSubs, setGotSubs] = useState(false);
   const [movieSubs, setMovieSubs] = useState([]);
   const [gotMovieSubs, setGotMovieSubs] = useState(false);
+
+  const uploadedImg = useRef(null);
+  const imgUploader = useRef(null);
 
   const onClick = () => {
     if (show !== 'none' && title !== '') {
@@ -54,6 +57,20 @@ const Post = ({ user, createPost }) => {
     }
   };
 
+  const handleImageUpload = (e) => {
+    const [file] = e.target.files;
+    if (file) {
+      const reader = new FileReader();
+      const { current } = uploadedImg;
+
+      current.file = file;
+      reader.onload = (e) => {
+        current.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div>
       <h1 id="header">Create a post</h1>
@@ -80,6 +97,12 @@ const Post = ({ user, createPost }) => {
         </select>
         <div className="title-container">
           <input id="post-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="title" />
+        </div>
+        <div className="img-content-container">
+          <input type="file" accept="image/*" ref={imgUploader} onChange={handleImageUpload} multiple="false" style={{ display: 'none' }} />
+          <div id="img-content-sub-container" onClick={() => imgUploader.current.click()}>
+            <img id="post-img" ref={uploadedImg} alt="post a meme" />
+          </div>
         </div>
         <div className="content-container">
           <textarea id="post-text" value={content} onChange={(e) => setContent(e.target.value)} placeholder="what's your message?" />
