@@ -1,4 +1,6 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable max-len */
+import axios from 'axios';
 import React, { useState } from 'react';
 import './search.css';
 import noImgAvail from './no_img_avail.png';
@@ -10,13 +12,16 @@ const SearchFeedEntry = ({ show, onClick }) => {
 
   const [open, setOpen] = useState(false);
 
-  const handleOpen = (event) => {
-    setOpen(true);
+  const [videoResultId, setVideoResultId] = useState('');
+
+  const search = (showName) => {
+    axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${showName += 'trailer'}&key=${process.env.YOUTUBE_API_KEY}`)
+      .then(({ data }) => {
+        setVideoResultId(data.items[0].id.videoId);
+      })
+      .catch((error) => console.error(error));
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
   // console.log(show);
   // All this is doing is parsing show.summary object.
   const getSummary = () => {
@@ -42,9 +47,20 @@ const SearchFeedEntry = ({ show, onClick }) => {
         summary = '';
       }
     }
-
     return output;
   };
+
+  const handleOpen = (event) => {
+    setVideoResultId(search(show.name));
+    setState(getSummary());
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setState('');
+    setOpen(false);
+  };
+
   // if there is an image, get the image
   const getImage = () => {
     if (show.image !== null) {
@@ -95,13 +111,14 @@ const SearchFeedEntry = ({ show, onClick }) => {
             {state}
           </div> */}
           <SearchCastAndCrew
+            className="cast-crew"
             key={show.id}
             show={show}
           />
         </div>
       </div>
       <div>
-        {open ? <Info show={show} open={open} handleClose={handleClose} getSummary={getSummary} state={state} setState={setState} /> : null}
+        {open ? <Info videoResultId={videoResultId} show={show} open={open} handleClose={handleClose} state={state} /> : null}
       </div>
     </>
   );

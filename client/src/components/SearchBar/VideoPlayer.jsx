@@ -4,7 +4,7 @@ const Trailer = ({ trailerId }) => {
   return (
     <div className="trailer">
       <div className="embeddedPlayer">
-        <iframe title="Video Player" className="embeddable" src={`https://www.youtube.com/embed/${trailerId}`}>VideoPlayer</iframe>
+        <iframe title="Video Player" className="video-player" src={`https://www.youtube.com/embed/${trailerId}`}>VideoPlayer</iframe>
       </div>
     </div>
   );

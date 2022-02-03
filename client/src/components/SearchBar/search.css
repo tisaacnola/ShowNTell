@@ -61,10 +61,11 @@
   margin-top: 0.5rem;
   color: white;
   font-family: 'Work Sans', sans-serif;
-  font-size: 14px;
-  height:200px;
+  font-size: 12px;
+  height: 170px;
   overflow:scroll;
   overflow-x:hidden;
+  overflow-y: auto;
   padding-right: 5px;
 }
 
@@ -103,8 +104,8 @@
     color: #f0ccb3;
     display: flex;
     font-size: 14px;
-    margin-left: 25%;
-    margin-top: 3%;
+    margin-left: 34%;
+    margin-top: 1%;
     border-style: solid;
   }
 
@@ -148,11 +149,48 @@
     background-color:rgb(57, 39, 171);
     border-style: solid;
     border: 2px solid #f3f3f3;
-    width: 300px;
-    height: 78.5%;
+    width: 301px;
+    height: 394px;
     display: inline-block;
     flex-direction: column;
     align-items: center;
     position: relative;
     padding-right: 10px;
-    }
+  }
+
+  .close-button {
+    border-radius: 25px;
+    padding: 4px 20px;
+    border-color: #f0ccb3;
+    background-color: #140e3e;
+    color: #f0ccb3;
+    display: flex;
+    font-size: 14px;
+    margin-left: 37%;
+    margin-bottom: 8%;
+    border-style: solid;
+  }
+
+  .close-button:hover{
+    background-color: #f0ccb3;
+    color: #dd3e42;
+  }
+
+  .embeddedPlayer {
+    padding-left: 3px;
+    padding-top: 5px;
+  }
+
+  .cast-crew {
+    border-radius: 25px;
+    padding: 4px 20px;
+    border-color: #f0ccb3;
+    background-color: #140e3e;
+    color: #f0ccb3;
+    display: flex;
+    font-size: 14px;
+    margin-left: 23%;
+    margin-top: 1%;
+    margin-bottom: 3%;
+    border-style: solid;
+  }

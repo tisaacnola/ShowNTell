@@ -58,7 +58,7 @@ const SearchCastAndCrew = ({ show }) => {
   return (
     <div>
       <button
-        className="summary-button"
+        className="cast-crew"
         onClick={(event) => {
           event.stopPropagation();
           setConditional(!conditional);
