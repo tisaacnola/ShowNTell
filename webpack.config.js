@@ -1,4 +1,6 @@
 const path = require('path');
+require('dotenv').config({ path: './.env' });
+const webpack = require('webpack');
 
 module.exports = {
   mode: 'development',
@@ -25,6 +27,11 @@ module.exports = {
       test: /\.(gif|svg|jpg|png)$/,
       loader: 'file-loader',
     },
+    // {
+    //   browser: {
+    //     fs: false,
+    //   },
+    // },
     {
       test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
       use: [{
@@ -36,4 +43,14 @@ module.exports = {
       }],
     }],
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(process.env),
+    }),
+  ],
+  plugins:[
+    new webpack.DefinePlugin({
+        process: {env: {}}
+    })
+  ],
 };

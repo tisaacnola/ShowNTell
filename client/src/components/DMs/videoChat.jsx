@@ -6,7 +6,7 @@ const VideoChat = ({ peerId }) => {
   const remoteRef = useRef(null);
   const userRef = useRef(null);
   const peerI = useRef(null)
-  const peer = new Peer()
+  // const peer = new Peer()
 
   
 
@@ -30,22 +30,22 @@ const VideoChat = ({ peerId }) => {
   
 ;
   
- const call = () => {
-  var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-  getUserMedia({video: true}, function(stream) {
-    userRef.current.srcObject = stream
-    userRef.current.play()
-    var call = peer.call(peerId, stream);
+//  const call = () => {
+//   var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+//   getUserMedia({video: true}, function(stream) {
+//     userRef.current.srcObject = stream
+//     userRef.current.play()
+//     var call = peer.call(peerId, stream);
 
-    call.on('stream', function(remoteStream) {
-      // Show stream in some video/canvas element.
-      remoteRef.current.srcObject = remoteStream
-      remoteRef.current.play();
-    });
-  }, function(err) {
-    console.log('Failed to get local stream' ,err);
-  });
- }
+//     call.on('stream', function(remoteStream) {
+//       // Show stream in some video/canvas element.
+//       remoteRef.current.srcObject = remoteStream
+//       remoteRef.current.play();
+//     });
+//   }, function(err) {
+//     console.log('Failed to get local stream' ,err);
+//   });
+//  }
   
 
 
@@ -53,7 +53,7 @@ const VideoChat = ({ peerId }) => {
   return (
     <div>
        <header>
-        <button id="videoCall" text-align="align-right" onClick={call}>VideoCall</button>
+        <button id="videoCall" text-align="align-right" >VideoCall</button>
       </header> 
       <header>
         <button id="answer" text-align="align-right" >Answer</button>
