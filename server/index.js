@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const path = require('path');
 const express = require('express');
 const passport = require('passport');
@@ -714,7 +715,7 @@ app.get('/movieData/:id', (req, res) => {
     });
 });
 
-app.listen(3000, () => {
+app.listen(3001, () => {
   // eslint-disable-next-line no-console
   console.log('http://localhost:3000');
 });
