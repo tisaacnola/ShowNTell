@@ -17,6 +17,10 @@ const Messages = (props = {}) => {
   let current;
   return (
     <div>
+      <header>
+        <button id="videoChatBtn" text-align="align-right">VideoChat</button>
+      </header>
+
       <div className="message-content">
         {
         message
@@ -53,7 +57,9 @@ const Messages = (props = {}) => {
         >
           send
         </button>
+
       </div>
+      <footer />
     </div>
   );
 };

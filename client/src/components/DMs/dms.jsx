@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Peer from 'peerjs';
+// import Peer from 'peerjs';
 import Messages from './messages.jsx';
 import './dms.css';
 
@@ -101,7 +101,6 @@ const DMs = ({ user, setUser }) => {
                 )
             }
             </div>
-            <button id="videoChatBtn">VideoChat</button>
             <div className="inbox">
               <h1>Inbox: </h1>
               {

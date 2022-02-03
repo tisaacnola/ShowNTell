@@ -714,7 +714,7 @@ app.get('/movieData/:id', (req, res) => {
     });
 });
 
-app.listen(3001, () => {
+app.listen(8080, () => {
   // eslint-disable-next-line no-console
-  console.log('http://localhost:3001');
+  console.log('http://localhost:8080');
 });
