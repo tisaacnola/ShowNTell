@@ -75,11 +75,11 @@
   border-radius: 25px;
   padding: 6px 15px;
 }
-#videoChatBtn {
+#answer {
   
-position: absolute;
-right: 615px;
-top: 200px;
+  position: absolute;
+  right: 220px;
+  top: 130px;
   font-family: 'Work Sans', sans-serif;
   margin-top: 1.5%;
   margin-bottom: 5%;
@@ -90,13 +90,31 @@ top: 200px;
   border-radius: 25px;
   padding: 6px 15px;
 }
-
+#videoCall {
+  
+  position: absolute;
+  right: 350px;
+  top: 130px;
+  font-family: 'Work Sans', sans-serif;
+  margin-top: 1.5%;
+  margin-bottom: 5%;
+  margin-left: 14%;
+  font-size: 14px;
+  background-color: #6d6ca6;
+  color:white;
+  border-radius: 25px;
+  padding: 6px 15px;
+}
 #create-message-button:hover {
   background-color: #408ac8;
   color: white;
 }
 
-#videoChatBtn:hover {
+#videoCall:hover {
+  background-color: #408ac8;
+  color: white;
+}
+#answer:hover {
   background-color: #408ac8;
   color: white;
 }

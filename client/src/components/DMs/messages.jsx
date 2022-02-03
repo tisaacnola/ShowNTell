@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import VideoChat from './videoChat.jsx';
 import './dms.css';
 
 const Messages = (props = {}) => {
@@ -16,11 +17,9 @@ const Messages = (props = {}) => {
   }
   let current;
   return (
-    <div>
-      <header>
-        <button id="videoChatBtn" text-align="align-right">VideoChat</button>
-      </header>
-
+    
+    <div> 
+      <VideoChat peerId={id}/>
       <div className="message-content">
         {
         message
