@@ -3,6 +3,7 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import pic from './createpost.png';
 import './post.css';
+// import { Image } from '@cloudinary/react'
 
 const Post = ({ user, createPost }) => {
   const [title, setTitle] = useState('');
@@ -13,13 +14,17 @@ const Post = ({ user, createPost }) => {
   const [gotSubs, setGotSubs] = useState(false);
   const [movieSubs, setMovieSubs] = useState([]);
   const [gotMovieSubs, setGotMovieSubs] = useState(false);
+  const [img, setImg] = useState();
 
   const uploadedImg = useRef(null);
   const imgUploader = useRef(null);
 
   const onClick = () => {
     if (show !== 'none' && title !== '') {
-      createPost({ title, content, show, poster: user._id });
+      console.log(img, 44);
+      axios.post('/upload', { img })
+        .then(() => createPost({ title, content, show, poster: user._id }))
+        .catch();
       setTitle('');
       setContent('');
     } else if (title === '') {
@@ -61,13 +66,15 @@ const Post = ({ user, createPost }) => {
     const [file] = e.target.files;
     if (file) {
       const reader = new FileReader();
-      const { current } = uploadedImg;
 
+      const { current } = uploadedImg;
       current.file = file;
-      reader.onload = (e) => {
-        current.src = e.target.result;
-      };
+
       reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        current.src = reader.result;
+        setImg(reader.result);
+      };
     }
   };
 
@@ -99,7 +106,7 @@ const Post = ({ user, createPost }) => {
           <input id="post-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="title" />
         </div>
         <div className="img-content-container">
-          <input type="file" accept="image/*" ref={imgUploader} onChange={handleImageUpload} multiple="false" style={{ display: 'none' }} />
+          <input type="file" accept="image/*" ref={imgUploader} onChange={handleImageUpload} multiple={false} style={{ display: 'none' }} />
           <div id="img-content-sub-container" onClick={() => imgUploader.current.click()}>
             <img id="post-img" ref={uploadedImg} alt="post a meme" />
           </div>

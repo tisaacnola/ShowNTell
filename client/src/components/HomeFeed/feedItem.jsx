@@ -78,7 +78,8 @@ const FeedItem = ({ post, user = {}, setPosts, setUser }) => {
         <h2 className="post-show">{`${show}`}</h2>
         <div id="post-show-title">{`${currentPost.title}`}</div>
         <h4 className="post-author">{`${name}`}</h4>
-        <div id="post-content">{currentPost.content}</div>
+        <div id="post-text-content">{currentPost.content}</div>
+        {/* insert post img content */}
         <div className="post-btn-container">
           <div className="like-count">{number}</div>
           <FaHeart

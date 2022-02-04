@@ -54,7 +54,9 @@
 }
 
 #post-img {
-  position: absolute
+  /* position: absolute; */
+  height: 120px;
+  width: 120px
 }
 
 #post-text {

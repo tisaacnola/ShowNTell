@@ -56,7 +56,7 @@
  }
 
 
- #post-content{
+ #post-text-content{
   color: white;
   margin-left: 15%;
   margin-bottom: 5%;
@@ -122,9 +122,9 @@ color: #f0ccb3;
   bottom: 38px;
 }
 
-.comment-box{
+/* .comment-box{
 
-}
+} */
 .comment-txt-box{
   background-color: #1d3b61;
   color: white;
