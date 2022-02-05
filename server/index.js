@@ -427,10 +427,11 @@ app.get('/logout', (req, res) => {
 });
 
 app.post('/upload', (req, res) => {
-  console.log(req.body, 428);
+  // console.log(req.body, 428);
 
   // const pic = req.body.img;
-  // cloudinary.uploader.upload(pic, { upload_preset: 'showntell' });
+  // const uploadedRes = cloudinary.uploader.upload(pic, { upload_preset: 'showntell' });
+  console.log(434);
 
   res.status(201).end();
 });
