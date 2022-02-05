@@ -426,23 +426,27 @@ app.get('/logout', (req, res) => {
   res.status(200).json(userInfo);
 });
 
-app.post('/upload', (req, res) => {
+app.post('/upload', async (req, res) => {
   // console.log(req.body, 428);
+  try {
+    const pic = req.body.img;
+    const uploadedRes = await cloudinary.uploader.upload(pic, { upload_preset: 'showntell' });
+    // console.log(uploadedRes, 'hello');
 
-  // const pic = req.body.img;
-  // const uploadedRes = cloudinary.uploader.upload(pic, { upload_preset: 'showntell' });
-  console.log(434);
-
-  res.status(201).end();
+    res.status(201).send(uploadedRes.public_id);
+  } catch (error) {
+    console.error(error, 438);
+  }
 });
 
 app.post('/posts', (req, res) => {
   const { title, content, poster, show, name } = req.body;
+  const { text, pic } = content;
   Users.findOne({ id: req.cookies.ShowNTellId }).then((data) => {
     userInfo = data;
     return Posts.create({
       title,
-      content,
+      content: { text, pic },
       user: poster,
       name,
       show,
@@ -473,7 +477,10 @@ app.post('/posts', (req, res) => {
           .catch();
       })
       .then(() => res.status(201).send())
-      .catch(() => res.status(500).send());
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send();
+      });
   });
 });
 

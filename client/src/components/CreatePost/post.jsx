@@ -14,19 +14,26 @@ const Post = ({ user, createPost }) => {
   const [gotSubs, setGotSubs] = useState(false);
   const [movieSubs, setMovieSubs] = useState([]);
   const [gotMovieSubs, setGotMovieSubs] = useState(false);
-  const [img, setImg] = useState();
+  const [img, setImg] = useState(null);
 
   const uploadedImg = useRef(null);
   const imgUploader = useRef(null);
 
   const onClick = () => {
     if (show !== 'none' && title !== '') {
-      console.log(img, 44);
-      axios.post('/upload', { img })
-        .then(() => createPost({ title, content, show, poster: user._id }))
-        .catch();
-      setTitle('');
-      setContent('');
+      if (img === null) {
+        createPost({ title, content: { text: content, pic: img }, show, poster: user._id });
+        setTitle('');
+        setContent('');
+      } else {
+        axios.post('/upload', { img })
+          .then((id) => {
+            createPost({ title, content: { text: content, pic: id.data }, show, poster: user._id });
+          })
+          .catch();
+        setTitle('');
+        setContent('');
+      }
     } else if (title === '') {
       setError('Must have a title.');
     } else if (show === 'none') {
@@ -108,7 +115,7 @@ const Post = ({ user, createPost }) => {
         <div className="img-content-container">
           <input type="file" accept="image/*" ref={imgUploader} onChange={handleImageUpload} multiple={false} style={{ display: 'none' }} />
           <div id="img-content-sub-container" onClick={() => imgUploader.current.click()}>
-            <img id="post-img" ref={uploadedImg} alt="post a meme" />
+            <img id="post-img" ref={uploadedImg} alt="" />
           </div>
         </div>
         <div className="content-container">
