@@ -4,7 +4,8 @@ import './homefeed.css';
 import { FaHeart, FaRegCommentDots, FaTimes, FaHandshake } from 'react-icons/fa';
 import { AdvancedImage } from '@cloudinary/react';
 import { Cloudinary } from '@cloudinary/url-gen';
-import { thumbnail } from '@cloudinary/url-gen/actions/resize';
+// import { thumbnail } from '@cloudinary/url-gen/actions/resize';
+import { fill } from '@cloudinary/url-gen/actions/resize';
 import Reply from './reply.jsx';
 
 const FeedItem = ({ post, user = {}, setPosts, setUser }) => {
@@ -22,7 +23,7 @@ const FeedItem = ({ post, user = {}, setPosts, setUser }) => {
     },
   });
   const img = cld.image(currentPost.content.pic);
-  img.resize(thumbnail().width(250).height(250));
+  img.resize(fill().width(250).height(250));
 
   const isFollowing = () => {
     let following = false;

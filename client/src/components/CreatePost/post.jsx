@@ -113,6 +113,7 @@ const Post = ({ user, createPost }) => {
           <input id="post-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="title" />
         </div>
         <div className="img-content-container">
+          Post a meme!
           <input type="file" accept="image/*" ref={imgUploader} onChange={handleImageUpload} multiple={false} style={{ display: 'none' }} />
           <div id="img-content-sub-container" onClick={() => imgUploader.current.click()}>
             <img id="post-img" ref={uploadedImg} alt="" />

@@ -44,19 +44,25 @@
   font-size: 20px;
 }
 
-#img-content-sub-container {
-  height: 120px;
-  width: 120px;
-  border: 2px dashed black;
-  outline: none;
+.img-content-container {
+  font-family: 'Work Sans', sans-serif;
   margin-left: 5%;
+  margin-top: 2%;
+  color:#bfbed2;
+}
+
+#img-content-sub-container {
+  height: 150px;
+  width: 150px;
+  border: 2px dashed #140e3e;
+  outline: none;
   display: block
 }
 
 #post-img {
   /* position: absolute; */
-  height: 120px;
-  width: 120px
+  height: 150px;
+  width: 150px;
 }
 
 #post-text {
