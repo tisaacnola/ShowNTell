@@ -19,8 +19,18 @@ const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
 
 const { Users, Posts, Shows, Replys, Movies } = require('./db/schema.js');
+const {ExpressPeerServer} = require('peer');
+
 
 const app = express();
+
+const peerServer = ExpressPeerServer(app, {
+  proxied: true,
+  debug: true,
+  path: '/ShowNTell',
+  ssl: {}
+});
+app.use(peerServer);
 
 const client = path.resolve(__dirname, '..', 'client', 'dist');
 

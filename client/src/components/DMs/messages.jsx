@@ -19,7 +19,7 @@ const Messages = (props = {}) => {
   return (
     
     <div> 
-      <VideoChat peerId={id}/>
+      <VideoChat peerId={id} user={user}/>
       <div className="message-content">
         {
         message
