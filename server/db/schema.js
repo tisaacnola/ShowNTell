@@ -38,7 +38,10 @@ const postSchema = mongoose.Schema({
   user: String,
   show: String,
   title: String,
-  content: String,
+  content: {
+    text: String,
+    pic: String,
+  },
   comment: Array,
   createdAt: Date,
   likes: Array,

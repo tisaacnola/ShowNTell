@@ -6,6 +6,7 @@ const axios = require('axios');
 const cors = require('cors');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 require('./db/index');
 
@@ -27,7 +28,8 @@ const client = path.resolve(__dirname, '..', 'client', 'dist');
 let userInfo = null;
 
 app.use(express.static(client));
-app.use(express.json());
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ limit: '100mb', extended: true }));
 app.use(cookieParser());
 app.use(cors());
 
@@ -48,6 +50,12 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 app.get(
   '/auth/google',
@@ -418,13 +426,27 @@ app.get('/logout', (req, res) => {
   res.status(200).json(userInfo);
 });
 
+app.post('/upload', async (req, res) => {
+  // console.log(req.body, 428);
+  try {
+    const pic = req.body.img;
+    const uploadedRes = await cloudinary.uploader.upload(pic, { upload_preset: 'showntell' });
+    // console.log(uploadedRes, 'hello');
+
+    res.status(201).send(uploadedRes.public_id);
+  } catch (error) {
+    console.error(error, 438);
+  }
+});
+
 app.post('/posts', (req, res) => {
   const { title, content, poster, show, name } = req.body;
+  const { text, pic } = content;
   Users.findOne({ id: req.cookies.ShowNTellId }).then((data) => {
     userInfo = data;
     return Posts.create({
       title,
-      content,
+      content: { text, pic },
       user: poster,
       name,
       show,
@@ -455,7 +477,10 @@ app.post('/posts', (req, res) => {
           .catch();
       })
       .then(() => res.status(201).send())
-      .catch(() => res.status(500).send());
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send();
+      });
   });
 });
 
@@ -715,7 +740,7 @@ app.get('/movieData/:id', (req, res) => {
     });
 });
 
-app.listen(3001, () => {
+app.listen(8080, () => {
   // eslint-disable-next-line no-console
-  console.log('http://localhost:3000');
+  console.log('http://localhost:8080');
 });
