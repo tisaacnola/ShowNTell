@@ -17,11 +17,20 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const movieKey = process.env.MOVIE_DATABASE_KEY;
 const omdbKey = process.env.OMDB_KEY;
 const Notifs = require('twilio')(accountSid, authToken);
+const { ExpressPeerServer } = require('peer');
 const { GoogleStrategy } = require('./oauth/passport');
 
 const { Users, Posts, Shows, Replys, Movies } = require('./db/schema.js');
 
 const app = express();
+
+const peerServer = ExpressPeerServer(app, {
+  proxied: true,
+  debug: true,
+  path: '/ShowNTell',
+  ssl: {},
+});
+app.use(peerServer);
 
 const client = path.resolve(__dirname, '..', 'client', 'dist');
 

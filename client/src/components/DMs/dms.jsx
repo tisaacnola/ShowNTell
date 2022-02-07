@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+// import Peer from 'peerjs';
 import Messages from './messages.jsx';
 import './dms.css';
 
@@ -7,6 +8,7 @@ const DMs = ({ user, setUser }) => {
   const [messages, setMessages] = useState();
   const [Users, setUsers] = useState();
   const [find, setfind] = useState();
+
   return (
     <div>
       { messages ? <Messages id={messages} messages={user.messages} user={user} setUser={setUser} />

@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import VideoChat from './videoChat.jsx';
 import './dms.css';
 
 const Messages = (props = {}) => {
   const [content, setContent] = useState();
   const { id, messages, setUser, user } = props;
+
   let message;
   if (messages) {
     messages.forEach((data) => {
@@ -15,7 +17,9 @@ const Messages = (props = {}) => {
   }
   let current;
   return (
-    <div>
+    
+    <div> 
+      <VideoChat peerId={id} user={user}/>
       <div className="message-content">
         {
         message
@@ -52,7 +56,9 @@ const Messages = (props = {}) => {
         >
           send
         </button>
+
       </div>
+      <footer />
     </div>
   );
 };
