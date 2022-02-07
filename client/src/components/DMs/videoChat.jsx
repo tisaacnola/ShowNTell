@@ -13,6 +13,7 @@ const VideoChat = ({ peerId, user }) => {
    path: '/ShowNTell'
  })
   
+ console.log(user.id, peerId);
   peer.current.on('call', function(call) {
     const answer = confirm('Do you want to answer?');
     if(answer){
@@ -26,7 +27,7 @@ const VideoChat = ({ peerId, user }) => {
   // Show stream in some video/canvas element.
       remoteRef.current.srcObject = remoteStream
       remoteRef.current.autoplay = true;
-  });
+  })
   }, function(err) {
   console.log('Failed to get local stream' ,err);
   });
@@ -39,9 +40,20 @@ const VideoChat = ({ peerId, user }) => {
 
   
   }, [])
+  
 
   window.peer = peer.current;
 
+const hangUp = () => {
+    peer.current.disconnect();
+    let x = document.getElementsByClassName('video');
+    for(let element of x) {
+      element.remove();
+      element.remove();
+    }
+   
+    
+  }
   
  const call = () => {
   var getUserMedia = 
@@ -53,7 +65,6 @@ const VideoChat = ({ peerId, user }) => {
     userRef.current.autoplay = true;
     call.on('stream', function(remoteStream) {
       // Show stream in some video/canvas element.
-      console.log(remoteStream, 92);
       remoteRef.current.srcObject = remoteStream
       remoteRef.current.autoplay = true;
     });
@@ -69,9 +80,7 @@ const VideoChat = ({ peerId, user }) => {
     <div className="video-Grid">
        <header>
         <button id="videoCall" text-align="align-right" onClick={call} >VideoCall</button>
-      </header> 
-      <header>
-        <button id="answer" text-align="align-right"  >Answer</button>
+        <button id="hangup" text-align="align-right" onClick={hangUp} >Hang Up</button>
       </header> 
       <div>
         <video  className='video' ref={userRef}>user</video>

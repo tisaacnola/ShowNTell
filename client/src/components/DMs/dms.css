@@ -75,7 +75,7 @@
   border-radius: 25px;
   padding: 6px 15px;
 }
-#answer {
+#hangup {
   
   position: absolute;
   right: 220px;
@@ -114,12 +114,13 @@
   background-color: #408ac8;
   color: white;
 }
-#answer:hover {
+#hangup:hover {
   background-color: #408ac8;
   color: white;
 }
 
 #video-grid {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(auto-fill, 300px);
   grid-auto-rows: 300px;
