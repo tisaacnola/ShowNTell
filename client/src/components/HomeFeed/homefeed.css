@@ -33,7 +33,7 @@
   text-decoration: none;
   color:  white;
   font-size: 18px;
-  margin-left: 10%;
+  margin-left: 5%;
   font-weight: bold;
 }
 
@@ -43,24 +43,29 @@
 
 #post-show-title{
   margin-top: 1.5%;
-  margin-left: 15%;
+  margin-left: 10%;
   font-size: 16px;
   margin-bottom: -2%;
 }
 
 .post-author {
-  margin-left: 15%;
+  margin-left: 10%;
   color: #408ac8;
   font-size: 14px;
   font-weight: bold;
  }
 
-
- #post-content{
+ #post-text-content{
   color: white;
-  margin-left: 15%;
+  margin-left: 10%;
+  margin-right: 10%;
   margin-bottom: 5%;
   font-size: 14px;
+ }
+
+ #post-img-content{
+   margin-left: 5%;
+   margin-bottom: 5%
  }
 
 .post-like-btn{
@@ -111,7 +116,6 @@ color: #f0ccb3;
 }
 .post-btn-container{
   display: flex;
-  margin-right: px;
   padding-bottom: 10px;
 }
 .post-comment-btn{
@@ -122,9 +126,9 @@ color: #f0ccb3;
   bottom: 38px;
 }
 
-.comment-box{
+/* .comment-box{
 
-}
+} */
 .comment-txt-box{
   background-color: #1d3b61;
   color: white;

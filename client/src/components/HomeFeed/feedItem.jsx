@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './homefeed.css';
 import { FaHeart, FaRegCommentDots, FaTimes, FaHandshake } from 'react-icons/fa';
+import { AdvancedImage } from '@cloudinary/react';
+import { Cloudinary } from '@cloudinary/url-gen';
+// import { thumbnail } from '@cloudinary/url-gen/actions/resize';
+import { fill } from '@cloudinary/url-gen/actions/resize';
 import Reply from './reply.jsx';
 
 const FeedItem = ({ post, user = {}, setPosts, setUser }) => {
@@ -12,6 +16,15 @@ const FeedItem = ({ post, user = {}, setPosts, setUser }) => {
   const [number, setNumber] = useState(currentPost.likes.length);
   const [box, setBox] = useState(false);
   const [content, setContent] = useState('');
+
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName: process.env.CLOUDINARY_NAME,
+    },
+  });
+  const img = cld.image(currentPost.content.pic);
+  img.resize(fill().width(250).height(250));
+
   const isFollowing = () => {
     let following = false;
     if (user.following) {
@@ -78,7 +91,10 @@ const FeedItem = ({ post, user = {}, setPosts, setUser }) => {
         <h2 className="post-show">{`${show}`}</h2>
         <div id="post-show-title">{`${currentPost.title}`}</div>
         <h4 className="post-author">{`${name}`}</h4>
-        <div id="post-content">{currentPost.content}</div>
+        <div id="post-text-content">{currentPost.content.text}</div>
+        <div id="post-img-content">
+          <AdvancedImage cldImg={img} />
+        </div>
         <div className="post-btn-container">
           <div className="like-count">{number}</div>
           <FaHeart

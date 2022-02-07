@@ -44,6 +44,27 @@
   font-size: 20px;
 }
 
+.img-content-container {
+  font-family: 'Work Sans', sans-serif;
+  margin-left: 5%;
+  margin-top: 2%;
+  color:#bfbed2;
+}
+
+#img-content-sub-container {
+  height: 150px;
+  width: 150px;
+  border: 2px dashed #140e3e;
+  outline: none;
+  display: block
+}
+
+#post-img {
+  /* position: absolute; */
+  height: 150px;
+  width: 150px;
+}
+
 #post-text {
   font-family: 'Work Sans', sans-serif;
   background-color:#6d6ca6;
