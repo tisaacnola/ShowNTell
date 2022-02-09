@@ -27,7 +27,7 @@ const app = express();
 const peerServer = ExpressPeerServer(app, {
   proxied: true,
   debug: true,
-  path: '/ShowNTell',
+  path: '/',
   ssl: {},
 });
 app.use('/peerjs', peerServer);
