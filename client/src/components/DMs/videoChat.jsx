@@ -57,7 +57,7 @@ const hangUp = () => {
  const call = () => {
   var getUserMedia = 
     navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-  getUserMedia({video: true}, function(stream) {
+  getUserMedia({video: true, audio: true}, function(stream) {
     
     var call = peer.current.call(peerId, stream);
     userRef.current.srcObject = stream;
