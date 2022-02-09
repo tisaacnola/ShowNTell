@@ -8,14 +8,13 @@ const VideoChat = ({ peerId, user }) => {
   const peer = useRef(null);
   useEffect(() => {
   peer.current = new Peer(user.id, {
-   host:location.hostname,
    debug: 1,
-   path: '/ShowNTell'
+   path: '/'
  })
   
  console.log(user.id, peerId);
   peer.current.on('call', function(call) {
-    const answer = confirm('Do you want to answer?');
+    const answer = confirm(`${user.name} is calling... Do you want to answer?`);
     if(answer){
       var getUserMedia =
       navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
@@ -45,7 +44,7 @@ const VideoChat = ({ peerId, user }) => {
   window.peer = peer.current;
 
 const hangUp = () => {
-    peer.current.disconnect();
+    peer.current.destroy();
     let x = document.getElementsByClassName('video');
     for(let element of x) {
       element.remove();

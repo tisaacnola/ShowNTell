@@ -1,8 +1,12 @@
-runtime: nodejs14
-readiness_check:
-  path: "/readiness_check"
-  check_interval_sec: 5
-  timeout_sec: 4
-  failure_threshold: 2
-  success_threshold: 2
-  app_start_timeout_sec: 300
+runtime: nodejs
+
+# Flex environment required for WebSocket support, which is required for PeerJS.
+env: flex
+
+# Limit resources to one instance, one CPU, very little memory or disk.
+manual_scaling:
+  instances: 1
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 0.5

@@ -9,7 +9,6 @@ const cookieParser = require('cookie-parser');
 const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 require('./db/index');
-
 const movieDbKey = process.env.MOVIE_DATABASE_KEY;
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -24,14 +23,14 @@ const { Users, Posts, Shows, Replys, Movies } = require('./db/schema.js');
 
 const app = express();
 
-const peerServer = ExpressPeerServer(app, {
-  proxied: true,
-  debug: true,
+// app.enable('trust proxy');
+const server = app.listen(443)
+const peerServer = ExpressPeerServer(server, {
   path: '/',
-  ssl: {},
+  // proxied: true
 });
-app.use('/peerjs', peerServer);
 
+app.use("/peerjs", peerServer);
 const client = path.resolve(__dirname, '..', 'client', 'dist');
 
 let userInfo = null;
