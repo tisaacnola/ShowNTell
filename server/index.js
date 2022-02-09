@@ -30,7 +30,7 @@ const peerServer = ExpressPeerServer(app, {
   path: '/ShowNTell',
   ssl: {},
 });
-app.use(peerServer);
+app.use('/peerjs', peerServer);
 
 const client = path.resolve(__dirname, '..', 'client', 'dist');
 
