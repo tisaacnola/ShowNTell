@@ -18,7 +18,7 @@ const VideoChat = ({ peerId, user }) => {
     if(answer){
       var getUserMedia =
       navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-    getUserMedia({video: true}, function(stream) {
+    getUserMedia({video: true, audio: true}, function(stream) {
     call.answer(stream); // Answer the call with an A/V stream.
       userRef.current.srcObject = stream;
       userRef.current.autoplay = true;
